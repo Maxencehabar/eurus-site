@@ -1,0 +1,9 @@
+{
+  "version": 2,
+  "name": "eurus-agency",
+  "buildCommand": "",
+  "outputDirectory": ".",
+  "rewrites": [
+    { "source": "/(.*)", "destination": "/index.html" }
+  ]
+}

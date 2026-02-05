@@ -1,0 +1,10 @@
+{
+  "name": "eurus-agency",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Eurus - Agence de développement mobile & web",
+  "scripts": {
+    "dev": "npx serve .",
+    "deploy": "npx vercel --prod --yes"
+  }
+}
