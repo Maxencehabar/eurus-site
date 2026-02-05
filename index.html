@@ -893,14 +893,17 @@
           </div>
         </a>
       </div>
-      <form class="contact-form fade-in" id="contactForm">
+      <form class="contact-form fade-in" id="contactForm" action="https://formspree.io/f/maxencehabar@gmail.com" method="POST">
+        <input type="hidden" name="_subject" value="[Eurus] Nouveau message depuis le site">
+        <input type="hidden" name="_next" value="https://maxencehabar.github.io/eurus-site/#contact">
+        <input type="text" name="_gotcha" style="display:none">
         <div class="form-group">
           <label for="name">Nom</label>
           <input type="text" id="name" name="name" placeholder="Votre nom" required>
         </div>
         <div class="form-group">
           <label for="email">Email</label>
-          <input type="email" id="email" name="email" placeholder="votre@email.com" required>
+          <input type="email" id="email" name="_replyto" placeholder="votre@email.com" required>
         </div>
         <div class="form-group">
           <label for="message">Message</label>
@@ -913,7 +916,7 @@
 
   <!-- FOOTER -->
   <footer>
-    <p>© 2025 Eurus. Tous droits réservés.</p>
+    <p>© 2026 Eurus. Tous droits réservés.</p>
   </footer>
 
   <script>
@@ -946,14 +949,10 @@
     });
 
     // Contact form → mailto
-    document.getElementById('contactForm').addEventListener('submit', function(e) {
-      e.preventDefault();
-      const name = document.getElementById('name').value;
-      const email = document.getElementById('email').value;
-      const message = document.getElementById('message').value;
-      const subject = encodeURIComponent(`[Eurus] Nouveau message de ${name}`);
-      const body = encodeURIComponent(`Nom: ${name}\nEmail: ${email}\n\n${message}`);
-      window.location.href = `mailto:maxencehabar@gmail.com?subject=${subject}&body=${body}`;
+    document.getElementById('contactForm').addEventListener('submit', function() {
+      const btn = this.querySelector('.form-btn');
+      btn.textContent = 'Envoi en cours...';
+      btn.disabled = true;
     });
   </script>
 </body>
