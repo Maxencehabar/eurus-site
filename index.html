@@ -640,6 +640,123 @@
       .form-row { grid-template-columns: 1fr; }
     }
 
+    /* Multi-step form */
+    .form-step {
+      display: none;
+      animation: fadeIn 0.3s ease;
+    }
+
+    .form-step.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateX(10px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+
+    .form-progress {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 2rem;
+      position: relative;
+    }
+
+    .form-progress::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: var(--border);
+      transform: translateY(-50%);
+      z-index: 0;
+    }
+
+    .progress-step {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: var(--bg-primary);
+      border: 2px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      position: relative;
+      z-index: 1;
+      transition: all 0.3s;
+    }
+
+    .progress-step.active {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    .progress-step.completed {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: white;
+    }
+
+    .form-nav {
+      display: flex;
+      gap: 1rem;
+      margin-top: 1.5rem;
+    }
+
+    .btn-back {
+      flex: 1;
+      padding: 0.875rem;
+      background: transparent;
+      color: var(--text-secondary);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-family: inherit;
+    }
+
+    .btn-back:hover {
+      background: var(--bg-primary);
+      color: var(--text-primary);
+    }
+
+    .btn-next {
+      flex: 2;
+      padding: 0.875rem;
+      background: var(--accent);
+      color: white;
+      border: none;
+      border-radius: 10px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-family: inherit;
+    }
+
+    .btn-next:hover {
+      background: var(--accent-hover);
+    }
+
+    .btn-next:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .step-title {
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin-bottom: 1.5rem;
+      color: var(--text-primary);
+    }
+
     .form-btn {
       width: 100%;
       padding: 0.875rem;
@@ -919,39 +1036,64 @@
         </a>
       </div>
       <form class="contact-form fade-in" id="contactForm">
-        <div class="form-row">
+        <!-- Progress bar -->
+        <div class="form-progress">
+          <div class="progress-step active" data-step="1">1</div>
+          <div class="progress-step" data-step="2">2</div>
+          <div class="progress-step" data-step="3">3</div>
+          <div class="progress-step" data-step="4">4</div>
+        </div>
+
+        <!-- Step 1: Contact -->
+        <div class="form-step active" data-step="1">
+          <p class="step-title">👋 Commençons par faire connaissance</p>
           <div class="form-group">
-            <label for="name">Nom *</label>
-            <input type="text" id="name" name="name" placeholder="Votre nom" required>
+            <label for="name">Votre nom</label>
+            <input type="text" id="name" name="name" placeholder="Jean Dupont" required>
           </div>
           <div class="form-group">
-            <label for="email">Email *</label>
-            <input type="email" id="email" name="email" placeholder="votre@email.com" required>
+            <label for="email">Votre email</label>
+            <input type="email" id="email" name="email" placeholder="jean@exemple.com" required>
+          </div>
+          <div class="form-nav">
+            <button type="button" class="btn-next" onclick="nextStep()">Continuer →</button>
           </div>
         </div>
-        <div class="form-group">
-          <label for="projectType">Type de projet *</label>
-          <select id="projectType" name="projectType" required>
-            <option value="" disabled selected>Sélectionnez...</option>
-            <option value="app-mobile">Application mobile</option>
-            <option value="app-web">Application web</option>
-            <option value="site-vitrine">Site vitrine</option>
-            <option value="backend-api">Backend / API</option>
-            <option value="autre">Autre</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label for="hasSpec">Avez-vous un cahier des charges ? *</label>
-          <select id="hasSpec" name="hasSpec" required>
-            <option value="" disabled selected>Sélectionnez...</option>
-            <option value="oui">Oui, c'est prêt</option>
-            <option value="en-cours">En cours de rédaction</option>
-            <option value="non">Non, juste une idée</option>
-          </select>
-        </div>
-        <div class="form-row">
+
+        <!-- Step 2: Project type -->
+        <div class="form-step" data-step="2">
+          <p class="step-title">💡 Quel type de projet avez-vous ?</p>
           <div class="form-group">
-            <label for="budget">Budget estimé *</label>
+            <label for="projectType">Type de projet</label>
+            <select id="projectType" name="projectType" required>
+              <option value="" disabled selected>Sélectionnez...</option>
+              <option value="app-mobile">📱 Application mobile</option>
+              <option value="app-web">🌐 Application web</option>
+              <option value="site-vitrine">🖥️ Site vitrine</option>
+              <option value="backend-api">⚙️ Backend / API</option>
+              <option value="autre">💬 Autre</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="hasSpec">Avez-vous un cahier des charges ?</label>
+            <select id="hasSpec" name="hasSpec" required>
+              <option value="" disabled selected>Sélectionnez...</option>
+              <option value="oui">✅ Oui, c'est prêt</option>
+              <option value="en-cours">📝 En cours de rédaction</option>
+              <option value="non">💭 Non, juste une idée</option>
+            </select>
+          </div>
+          <div class="form-nav">
+            <button type="button" class="btn-back" onclick="prevStep()">← Retour</button>
+            <button type="button" class="btn-next" onclick="nextStep()">Continuer →</button>
+          </div>
+        </div>
+
+        <!-- Step 3: Budget & Timeline -->
+        <div class="form-step" data-step="3">
+          <p class="step-title">📊 Budget et planning</p>
+          <div class="form-group">
+            <label for="budget">Budget estimé</label>
             <select id="budget" name="budget" required>
               <option value="" disabled selected>Sélectionnez...</option>
               <option value="moins-5k">Moins de 5 000€</option>
@@ -962,36 +1104,46 @@
             </select>
           </div>
           <div class="form-group">
-            <label for="timeline">Deadline souhaitée *</label>
+            <label for="timeline">Deadline souhaitée</label>
             <select id="timeline" name="timeline" required>
               <option value="" disabled selected>Sélectionnez...</option>
-              <option value="urgent">Moins d'1 mois</option>
-              <option value="1-3-mois">1 à 3 mois</option>
-              <option value="3-6-mois">3 à 6 mois</option>
-              <option value="flexible">Pas de rush</option>
+              <option value="urgent">🔥 Moins d'1 mois</option>
+              <option value="1-3-mois">📅 1 à 3 mois</option>
+              <option value="3-6-mois">🗓️ 3 à 6 mois</option>
+              <option value="flexible">😌 Pas de rush</option>
             </select>
           </div>
+          <div class="form-nav">
+            <button type="button" class="btn-back" onclick="prevStep()">← Retour</button>
+            <button type="button" class="btn-next" onclick="nextStep()">Continuer →</button>
+          </div>
         </div>
-        <div class="form-group">
-          <label for="source">Comment nous avez-vous trouvé ?</label>
-          <select id="source" name="source">
-            <option value="" disabled selected>Sélectionnez...</option>
-            <option value="bouche-a-oreille">Bouche à oreille</option>
-            <option value="google">Google</option>
-            <option value="linkedin">LinkedIn</option>
-            <option value="autre">Autre</option>
-          </select>
+
+        <!-- Step 4: Final -->
+        <div class="form-step" data-step="4">
+          <p class="step-title">🚀 Dernière étape !</p>
+          <div class="form-group">
+            <label for="message">Décrivez brièvement votre projet (optionnel)</label>
+            <textarea id="message" name="message" placeholder="Quelques mots sur votre idée..."></textarea>
+          </div>
+          <div class="form-group">
+            <label for="source">Comment nous avez-vous trouvé ?</label>
+            <select id="source" name="source">
+              <option value="" disabled selected>Sélectionnez...</option>
+              <option value="bouche-a-oreille">🗣️ Bouche à oreille</option>
+              <option value="google">🔍 Google</option>
+              <option value="linkedin">💼 LinkedIn</option>
+              <option value="autre">Autre</option>
+            </select>
+          </div>
+          <div class="form-nav">
+            <button type="button" class="btn-back" onclick="prevStep()">← Retour</button>
+            <button type="submit" class="btn-next" id="submitBtn">Réserver mon appel →</button>
+          </div>
+          <p style="text-align: center; font-size: 0.8rem; color: var(--text-muted); margin-top: 1rem;">
+            Vous serez redirigé vers le calendrier pour choisir un créneau.
+          </p>
         </div>
-        <div class="form-group">
-          <label for="message">Décrivez brièvement votre projet</label>
-          <textarea id="message" name="message" placeholder="Quelques mots sur votre idée ou besoin..."></textarea>
-        </div>
-        <button type="submit" class="form-btn" id="submitBtn">
-          Réserver un appel découverte →
-        </button>
-        <p style="text-align: center; font-size: 0.8rem; color: var(--text-muted); margin-top: 1rem;">
-          Vous serez redirigé vers mon calendrier pour choisir un créneau.
-        </p>
       </form>
     </div>
   </section>
@@ -1029,6 +1181,54 @@
         document.getElementById('navLinks').classList.remove('open');
       });
     });
+
+    // Multi-step form navigation
+    let currentStep = 1;
+    const totalSteps = 4;
+
+    function updateProgress() {
+      document.querySelectorAll('.progress-step').forEach((step, index) => {
+        const stepNum = index + 1;
+        step.classList.remove('active', 'completed');
+        if (stepNum < currentStep) {
+          step.classList.add('completed');
+        } else if (stepNum === currentStep) {
+          step.classList.add('active');
+        }
+      });
+    }
+
+    function showStep(step) {
+      document.querySelectorAll('.form-step').forEach(s => s.classList.remove('active'));
+      document.querySelector(`.form-step[data-step="${step}"]`).classList.add('active');
+      updateProgress();
+    }
+
+    function validateStep(step) {
+      const currentStepEl = document.querySelector(`.form-step[data-step="${step}"]`);
+      const inputs = currentStepEl.querySelectorAll('input[required], select[required]');
+      for (let input of inputs) {
+        if (!input.value) {
+          input.focus();
+          return false;
+        }
+      }
+      return true;
+    }
+
+    function nextStep() {
+      if (validateStep(currentStep) && currentStep < totalSteps) {
+        currentStep++;
+        showStep(currentStep);
+      }
+    }
+
+    function prevStep() {
+      if (currentStep > 1) {
+        currentStep--;
+        showStep(currentStep);
+      }
+    }
 
     // Contact form submission
     document.getElementById('contactForm').addEventListener('submit', async function(e) {
