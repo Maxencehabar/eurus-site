@@ -1,0 +1,9 @@
+# *
+User-agent: *
+Allow: /
+
+# Host
+Host: https://eurus.agency
+
+# Sitemaps
+Sitemap: https://eurus.agency/sitemap.xml
