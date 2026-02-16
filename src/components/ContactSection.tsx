@@ -17,11 +17,14 @@ export default function ContactSection() {
       <div className="grid grid-cols-2 gap-12 max-md:grid-cols-1">
         <FadeIn>
           <div>
-            <h3 className="mb-4 text-2xl font-bold">Prenons contact</h3>
-            <p className="mb-8 leading-relaxed text-text-secondary">
+            <h3 className="mb-4 text-2xl font-bold">&Eacute;changeons sur votre projet</h3>
+            <p className="mb-2 leading-relaxed text-text-secondary">
               Que vous ayez un projet pr&eacute;cis ou simplement une
               id&eacute;e &agrave; explorer, nous sommes &agrave; votre
               &eacute;coute. R&eacute;ponse garantie sous 24h.
+            </p>
+            <p className="mb-8 text-sm font-medium text-accent">
+              Gratuit, sans engagement &mdash; 30 min pour comprendre votre besoin.
             </p>
 
             <a

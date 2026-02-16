@@ -9,8 +9,7 @@ export default function Hero() {
 
       <div className="relative z-10 max-w-3xl">
         <div className="mb-8 inline-flex items-center gap-2 rounded-full border border-border bg-bg-card px-4 py-2 text-xs text-text-secondary">
-          <span className="h-1.5 w-1.5 animate-[blink_2s_ease-in-out_infinite] rounded-full bg-green-500" />
-          Disponible pour de nouveaux projets
+          &#x1F5D3; 2 cr&eacute;neaux disponibles ce mois
         </div>
 
         <h1 className="mb-6 text-[clamp(2.5rem,6vw,4.5rem)] font-bold leading-[1.1] tracking-tight">
@@ -31,7 +30,7 @@ export default function Hero() {
             href="#contact"
             className="inline-flex items-center gap-2 rounded-xl bg-accent px-8 py-3.5 text-[0.95rem] font-semibold text-white shadow-[0_4px_20px_rgba(59,130,246,0.3)] transition-all hover:-translate-y-0.5 hover:bg-accent-hover hover:shadow-[0_6px_30px_rgba(59,130,246,0.4)]"
           >
-            Nous contacter
+            Discutons de votre projet
             <svg
               width="16"
               height="16"

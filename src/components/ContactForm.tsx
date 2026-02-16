@@ -2,7 +2,7 @@
 
 import { useState, type FormEvent } from "react";
 
-const TOTAL_STEPS = 4;
+const TOTAL_STEPS = 2;
 
 export default function ContactForm() {
   const [step, setStep] = useState(1);
@@ -13,11 +13,7 @@ export default function ContactForm() {
     name: "",
     email: "",
     projectType: "",
-    hasSpec: "",
-    budget: "",
-    timeline: "",
     message: "",
-    source: "",
   });
 
   function update(field: string, value: string) {
@@ -35,24 +31,8 @@ export default function ContactForm() {
         setError("Veuillez entrer un email valide.");
         return false;
       }
-    }
-    if (step === 2) {
       if (!form.projectType) {
-        setError("Veuillez sélectionner un type de projet.");
-        return false;
-      }
-      if (!form.hasSpec) {
-        setError("Veuillez indiquer si vous avez un cahier des charges.");
-        return false;
-      }
-    }
-    if (step === 3) {
-      if (!form.budget) {
-        setError("Veuillez sélectionner un budget.");
-        return false;
-      }
-      if (!form.timeline) {
-        setError("Veuillez sélectionner une deadline.");
+        setError("Veuillez s\u00e9lectionner un type de projet.");
         return false;
       }
     }
@@ -88,11 +68,7 @@ export default function ContactForm() {
           name: form.name,
           email: form.email,
           projectType: form.projectType,
-          hasSpec: form.hasSpec,
-          budget: form.budget,
-          timeline: form.timeline,
-          source: form.source || "Non renseigné",
-          message: form.message || "Non renseigné",
+          message: form.message || "Non renseign\u00e9",
         }),
       });
 
@@ -104,7 +80,7 @@ export default function ContactForm() {
       }
     } catch {
       setError(
-        "Une erreur est survenue. Veuillez réessayer ou nous contacter directement par email."
+        "Une erreur est survenue. Veuillez r\u00e9essayer ou nous contacter directement par email."
       );
       setSubmitting(false);
     }
@@ -122,21 +98,17 @@ export default function ContactForm() {
       className="rounded-2xl border border-border bg-bg-card p-8"
       noValidate
     >
-      {/* Progress */}
-      <div className="relative mb-8 flex justify-between before:absolute before:top-1/2 before:right-0 before:left-0 before:h-0.5 before:-translate-y-1/2 before:bg-border before:content-['']">
-        {[1, 2, 3, 4].map((s) => (
+      {/* Progress dots */}
+      <div className="mb-8 flex justify-center gap-3">
+        {[1, 2].map((s) => (
           <div
             key={s}
-            className={`relative z-10 flex h-8 w-8 items-center justify-center rounded-full text-xs font-semibold transition-all ${
-              s < step
-                ? "border-2 border-accent bg-accent text-white"
-                : s === step
-                  ? "border-2 border-accent bg-bg-primary text-accent"
-                  : "border-2 border-border bg-bg-primary text-text-muted"
+            className={`h-2.5 rounded-full transition-all ${
+              s <= step
+                ? "w-8 bg-accent"
+                : "w-2.5 bg-border"
             }`}
-          >
-            {s}
-          </div>
+          />
         ))}
       </div>
 
@@ -147,11 +119,11 @@ export default function ContactForm() {
         </p>
       )}
 
-      {/* Step 1 */}
+      {/* Step 1: Name, email, project type */}
       {step === 1 && (
         <div className="animate-[fade-in-step_0.3s_ease]">
           <p className="mb-6 text-lg font-semibold">
-            👋 Commençons par faire connaissance
+            Parlez-nous de vous et de votre projet
           </p>
           <div className="mb-5">
             <label
@@ -187,15 +159,6 @@ export default function ContactForm() {
               required
             />
           </div>
-        </div>
-      )}
-
-      {/* Step 2 */}
-      {step === 2 && (
-        <div className="animate-[fade-in-step_0.3s_ease]">
-          <p className="mb-6 text-lg font-semibold">
-            💡 Quel type de projet avez-vous ?
-          </p>
           <div className="mb-5">
             <label
               htmlFor="projectType"
@@ -211,138 +174,38 @@ export default function ContactForm() {
               required
             >
               <option value="" disabled>
-                Sélectionnez...
+                S&eacute;lectionnez...
               </option>
-              <option value="app-mobile">📱 Application mobile</option>
-              <option value="app-web">🌐 Application web</option>
-              <option value="site-vitrine">🖥️ Site vitrine</option>
-              <option value="backend-api">⚙️ Backend / API</option>
-              <option value="autre">💬 Autre</option>
-            </select>
-          </div>
-          <div className="mb-5">
-            <label
-              htmlFor="hasSpec"
-              className="mb-2 block text-sm font-medium text-text-secondary"
-            >
-              Avez-vous un cahier des charges ?
-            </label>
-            <select
-              id="hasSpec"
-              value={form.hasSpec}
-              onChange={(e) => update("hasSpec", e.target.value)}
-              className={selectClass}
-              required
-            >
-              <option value="" disabled>
-                Sélectionnez...
-              </option>
-              <option value="oui">✅ Oui, c&apos;est prêt</option>
-              <option value="en-cours">📝 En cours de rédaction</option>
-              <option value="non">💭 Non, juste une idée</option>
+              <option value="app-mobile">Application mobile</option>
+              <option value="app-web">Application web</option>
+              <option value="site-vitrine">Site vitrine</option>
+              <option value="backend-api">Backend / API</option>
+              <option value="autre">Autre</option>
             </select>
           </div>
         </div>
       )}
 
-      {/* Step 3 */}
-      {step === 3 && (
+      {/* Step 2: Message + submit */}
+      {step === 2 && (
         <div className="animate-[fade-in-step_0.3s_ease]">
           <p className="mb-6 text-lg font-semibold">
-            📊 Budget et planning
-          </p>
-          <div className="mb-5">
-            <label
-              htmlFor="budget"
-              className="mb-2 block text-sm font-medium text-text-secondary"
-            >
-              Budget estimé
-            </label>
-            <select
-              id="budget"
-              value={form.budget}
-              onChange={(e) => update("budget", e.target.value)}
-              className={selectClass}
-              required
-            >
-              <option value="" disabled>
-                Sélectionnez...
-              </option>
-              <option value="moins-5k">Moins de 5 000€</option>
-              <option value="5k-15k">5 000€ - 15 000€</option>
-              <option value="15k-30k">15 000€ - 30 000€</option>
-              <option value="plus-30k">Plus de 30 000€</option>
-              <option value="a-definir">À définir ensemble</option>
-            </select>
-          </div>
-          <div className="mb-5">
-            <label
-              htmlFor="timeline"
-              className="mb-2 block text-sm font-medium text-text-secondary"
-            >
-              Deadline souhaitée
-            </label>
-            <select
-              id="timeline"
-              value={form.timeline}
-              onChange={(e) => update("timeline", e.target.value)}
-              className={selectClass}
-              required
-            >
-              <option value="" disabled>
-                Sélectionnez...
-              </option>
-              <option value="urgent">🔥 Moins d&apos;1 mois</option>
-              <option value="1-3-mois">📅 1 à 3 mois</option>
-              <option value="3-6-mois">🗓️ 3 à 6 mois</option>
-              <option value="flexible">😌 Pas de rush</option>
-            </select>
-          </div>
-        </div>
-      )}
-
-      {/* Step 4 */}
-      {step === 4 && (
-        <div className="animate-[fade-in-step_0.3s_ease]">
-          <p className="mb-6 text-lg font-semibold">
-            🚀 Dernière étape !
+            Un mot sur votre projet ?
           </p>
           <div className="mb-5">
             <label
               htmlFor="message"
               className="mb-2 block text-sm font-medium text-text-secondary"
             >
-              Décrivez brièvement votre projet (optionnel)
+              D&eacute;crivez bri&egrave;vement votre projet (optionnel)
             </label>
             <textarea
               id="message"
               value={form.message}
               onChange={(e) => update("message", e.target.value)}
-              placeholder="Quelques mots sur votre idée..."
-              className={`${inputClass} min-h-[100px] resize-y`}
+              placeholder="Quelques mots sur votre id&eacute;e..."
+              className={`${inputClass} min-h-[120px] resize-y`}
             />
-          </div>
-          <div className="mb-5">
-            <label
-              htmlFor="source"
-              className="mb-2 block text-sm font-medium text-text-secondary"
-            >
-              Comment nous avez-vous trouvé ?
-            </label>
-            <select
-              id="source"
-              value={form.source}
-              onChange={(e) => update("source", e.target.value)}
-              className={selectClass}
-            >
-              <option value="" disabled>
-                Sélectionnez...
-              </option>
-              <option value="bouche-a-oreille">🗣️ Bouche à oreille</option>
-              <option value="google">🔍 Google</option>
-              <option value="linkedin">💼 LinkedIn</option>
-              <option value="autre">Autre</option>
-            </select>
           </div>
         </div>
       )}
@@ -355,7 +218,7 @@ export default function ContactForm() {
             onClick={prev}
             className="flex-1 cursor-pointer rounded-[10px] border border-border bg-transparent py-3.5 text-[0.95rem] font-semibold text-text-secondary transition-all hover:bg-bg-primary hover:text-text-primary"
           >
-            ← Retour
+            &larr; Retour
           </button>
         )}
         {step < TOTAL_STEPS ? (
@@ -364,7 +227,7 @@ export default function ContactForm() {
             onClick={next}
             className="flex-[2] cursor-pointer rounded-[10px] bg-accent py-3.5 text-[0.95rem] font-semibold text-white transition-all hover:bg-accent-hover"
           >
-            Continuer →
+            Continuer &rarr;
           </button>
         ) : (
           <button
@@ -372,14 +235,14 @@ export default function ContactForm() {
             disabled={submitting}
             className="flex-[2] cursor-pointer rounded-[10px] bg-accent py-3.5 text-[0.95rem] font-semibold text-white transition-all hover:bg-accent-hover disabled:cursor-not-allowed disabled:opacity-50"
           >
-            {submitting ? "Envoi en cours..." : "Réserver mon appel →"}
+            {submitting ? "Envoi en cours..." : "Discutons ensemble \u2192"}
           </button>
         )}
       </div>
 
       {step === TOTAL_STEPS && (
         <p className="mt-4 text-center text-xs text-text-muted">
-          Vous serez redirigé vers le calendrier pour choisir un créneau.
+          Vous serez redirig&eacute; vers le calendrier pour choisir un cr&eacute;neau.
         </p>
       )}
     </form>

@@ -19,6 +19,7 @@ const projects: Project[] = [
     description:
       "Système complet de réservation avec paiement Stripe, gestion de calendrier et notifications. Architecture full-stack moderne.",
     tags: ["React", "Next.js", "Spring Boot", "Firestore", "Stripe"],
+    stat: "Livré en 3 mois",
   },
   {
     number: "03",
@@ -27,6 +28,7 @@ const projects: Project[] = [
     description:
       "Application de gestion complète : données métier, tableaux de bord interactifs, exports analytics. Interface fluide et performante.",
     tags: ["Spring Boot", "Vue.js", "PostgreSQL"],
+    stat: "5x plus rapide",
   },
 ];
 

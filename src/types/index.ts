@@ -22,9 +22,5 @@ export interface ContactFormData {
   name: string;
   email: string;
   projectType: string;
-  hasSpec: string;
-  budget: string;
-  timeline: string;
   message: string;
-  source: string;
 }
