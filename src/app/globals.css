@@ -88,3 +88,102 @@ body {
   left: 0;
   top: 0;
 }
+
+/* Blog prose styles */
+.prose-eurus {
+  color: var(--color-text-secondary);
+  line-height: 1.8;
+  font-size: 1rem;
+}
+
+.prose-eurus h2 {
+  color: var(--color-text-primary);
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-top: 2.5rem;
+  margin-bottom: 1rem;
+}
+
+.prose-eurus h3 {
+  color: var(--color-text-primary);
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-top: 2rem;
+  margin-bottom: 0.75rem;
+}
+
+.prose-eurus p {
+  margin-bottom: 1.25rem;
+}
+
+.prose-eurus a {
+  color: var(--color-accent);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.prose-eurus a:hover {
+  color: var(--color-accent-hover);
+  text-decoration: underline;
+}
+
+.prose-eurus ul,
+.prose-eurus ol {
+  margin-bottom: 1.25rem;
+  padding-left: 1.5rem;
+}
+
+.prose-eurus ul {
+  list-style-type: disc;
+}
+
+.prose-eurus ol {
+  list-style-type: decimal;
+}
+
+.prose-eurus li {
+  margin-bottom: 0.5rem;
+}
+
+.prose-eurus blockquote {
+  border-left: 3px solid var(--color-accent);
+  padding-left: 1rem;
+  margin: 1.5rem 0;
+  font-style: italic;
+  color: var(--color-text-muted);
+}
+
+.prose-eurus code {
+  background: var(--color-bg-card);
+  border: 1px solid var(--color-border);
+  border-radius: 4px;
+  padding: 0.15rem 0.4rem;
+  font-size: 0.875em;
+}
+
+.prose-eurus pre {
+  background: var(--color-bg-card);
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  padding: 1rem 1.25rem;
+  overflow-x: auto;
+  margin-bottom: 1.5rem;
+}
+
+.prose-eurus pre code {
+  background: none;
+  border: none;
+  padding: 0;
+  font-size: 0.875rem;
+}
+
+.prose-eurus hr {
+  border: none;
+  border-top: 1px solid var(--color-border);
+  margin: 2rem 0;
+}
+
+.prose-eurus strong {
+  color: var(--color-text-primary);
+  font-weight: 600;
+}

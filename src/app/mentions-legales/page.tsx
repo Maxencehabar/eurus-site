@@ -77,12 +77,21 @@ export default function MentionsLegales() {
 
         <div>
           <h2 className="mb-3 text-xl font-semibold text-text-primary">
-            Cookies
+            Cookies &amp; Analytics
           </h2>
           <p>
             Ce site n&apos;utilise pas de cookies de suivi ni de cookies
             publicitaires. Seuls des cookies techniques essentiels au
             fonctionnement du site peuvent &ecirc;tre utilis&eacute;s.
+          </p>
+          <p className="mt-2">
+            Nous utilisons Vercel Analytics et Vercel Speed Insights pour
+            mesurer les performances du site de mani&egrave;re anonyme. Ces
+            outils ne d&eacute;posent pas de cookies, ne collectent aucune
+            donn&eacute;e personnelle et sont conformes au RGPD. Les
+            donn&eacute;es agr&eacute;g&eacute;es (temps de chargement,
+            pages visit&eacute;es) nous aident uniquement &agrave;
+            am&eacute;liorer l&apos;exp&eacute;rience utilisateur.
           </p>
         </div>
       </div>

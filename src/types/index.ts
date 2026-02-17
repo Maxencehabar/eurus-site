@@ -4,14 +4,6 @@ export interface ServiceCard {
   description: string;
 }
 
-export interface Project {
-  number: string;
-  title: string;
-  subtitle: string;
-  description: string;
-  tags: string[];
-  stat?: string;
-}
 
 export interface Stat {
   value: string;

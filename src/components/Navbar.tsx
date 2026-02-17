@@ -1,11 +1,14 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { NAV_ITEMS } from "@/lib/constants";
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const pathname = usePathname();
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 50);
@@ -26,6 +29,11 @@ export default function Navbar() {
     }
   }, [menuOpen, closeMenu]);
 
+  const resolveHref = (href: string) => {
+    if (href.startsWith("#") && pathname !== "/") return `/${href}`;
+    return href;
+  };
+
   return (
     <nav
       className={`fixed inset-x-0 top-0 z-50 border-b border-border backdrop-blur-xl transition-all duration-300 ${
@@ -35,23 +43,32 @@ export default function Navbar() {
       }`}
     >
       <div className="mx-auto flex max-w-[1200px] items-center justify-between">
-        <a
-          href="#"
+        <Link
+          href="/"
           className="bg-gradient-to-br from-accent to-[#8b5cf6] bg-clip-text text-2xl font-bold tracking-tight text-transparent"
         >
           eurus
-        </a>
+        </Link>
 
         {/* Desktop links */}
         <ul className="hidden gap-8 md:flex">
           {NAV_ITEMS.map((item) => (
             <li key={item.href}>
-              <a
-                href={item.href}
-                className="relative text-sm font-medium text-text-secondary transition-colors hover:text-text-primary after:absolute after:-bottom-1 after:left-0 after:h-0.5 after:w-0 after:bg-accent after:transition-all hover:after:w-full"
-              >
-                {item.label}
-              </a>
+              {item.href.startsWith("/") ? (
+                <Link
+                  href={item.href}
+                  className="relative text-sm font-medium text-text-secondary transition-colors hover:text-text-primary after:absolute after:-bottom-1 after:left-0 after:h-0.5 after:w-0 after:bg-accent after:transition-all hover:after:w-full"
+                >
+                  {item.label}
+                </Link>
+              ) : (
+                <a
+                  href={resolveHref(item.href)}
+                  className="relative text-sm font-medium text-text-secondary transition-colors hover:text-text-primary after:absolute after:-bottom-1 after:left-0 after:h-0.5 after:w-0 after:bg-accent after:transition-all hover:after:w-full"
+                >
+                  {item.label}
+                </a>
+              )}
             </li>
           ))}
         </ul>
@@ -86,14 +103,25 @@ export default function Navbar() {
         >
           {NAV_ITEMS.map((item) => (
             <li key={item.href} role="none">
-              <a
-                href={item.href}
-                onClick={closeMenu}
-                className="text-sm font-medium text-text-secondary transition-colors hover:text-text-primary"
-                role="menuitem"
-              >
-                {item.label}
-              </a>
+              {item.href.startsWith("/") ? (
+                <Link
+                  href={item.href}
+                  onClick={closeMenu}
+                  className="text-sm font-medium text-text-secondary transition-colors hover:text-text-primary"
+                  role="menuitem"
+                >
+                  {item.label}
+                </Link>
+              ) : (
+                <a
+                  href={resolveHref(item.href)}
+                  onClick={closeMenu}
+                  className="text-sm font-medium text-text-secondary transition-colors hover:text-text-primary"
+                  role="menuitem"
+                >
+                  {item.label}
+                </a>
+              )}
             </li>
           ))}
         </ul>
