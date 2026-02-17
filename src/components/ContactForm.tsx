@@ -52,6 +52,10 @@ export default function ContactForm() {
 
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
+    if (step < TOTAL_STEPS) {
+      next();
+      return;
+    }
     if (!validateStep()) return;
 
     setSubmitting(true);
