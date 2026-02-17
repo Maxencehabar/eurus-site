@@ -1,13 +1,6 @@
 {
   "queue": [
     {
-      "slug": "cahier-des-charges-application-mobile",
-      "title": "Cahier des charges application mobile : template et guide complet",
-      "description": "Comment rédiger un cahier des charges efficace pour votre application mobile. Template gratuit inclus.",
-      "tags": ["Guide", "Mobile", "Gestion de projet"],
-      "keyword": "cahier des charges application mobile"
-    },
-    {
       "slug": "combien-temps-developper-application",
       "title": "Combien de temps pour développer une application mobile ?",
       "description": "Estimez le délai de développement de votre application selon sa complexité. Planning type et facteurs d'influence.",
@@ -191,7 +184,15 @@
       "tags": ["Guide", "Budget", "Conseil"],
       "keyword": "freelance vs agence développement",
       "publishedDate": "2025-02-17"
+    },
+    {
+      "slug": "cahier-des-charges-application-mobile",
+      "title": "Cahier des charges application mobile : template et guide complet",
+      "description": "Comment rédiger un cahier des charges efficace pour votre application mobile. Template gratuit inclus.",
+      "tags": ["Guide", "Mobile", "Gestion de projet"],
+      "keyword": "cahier des charges application mobile",
+      "publishedDate": "2026-02-17"
     }
   ],
-  "lastPublished": "2025-02-17"
+  "lastPublished": "2026-02-17"
 }
