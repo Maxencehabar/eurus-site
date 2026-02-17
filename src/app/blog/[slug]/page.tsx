@@ -27,8 +27,53 @@ export async function generateMetadata({
       url: `${SITE_URL}/blog/${slug}`,
       type: "article",
       publishedTime: post.frontmatter.date,
+      authors: [post.frontmatter.author],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: post.frontmatter.title,
+      description: post.frontmatter.description,
     },
   };
+}
+
+// Extract FAQ from content (questions starting with ### in FAQ section)
+function extractFAQ(content: string): { question: string; answer: string }[] {
+  const faqSection = content.split(/^## FAQ/im)[1];
+  if (!faqSection) return [];
+
+  const faqs: { question: string; answer: string }[] = [];
+  const lines = faqSection.split("\n");
+  let currentQuestion = "";
+  let currentAnswer = "";
+
+  for (const line of lines) {
+    if (line.startsWith("### ")) {
+      if (currentQuestion && currentAnswer) {
+        faqs.push({
+          question: currentQuestion,
+          answer: currentAnswer.trim(),
+        });
+      }
+      currentQuestion = line.replace("### ", "").trim();
+      currentAnswer = "";
+    } else if (line.startsWith("## ")) {
+      // New H2 section, stop parsing FAQ
+      break;
+    } else if (currentQuestion) {
+      currentAnswer += line + " ";
+    }
+  }
+
+  // Push last FAQ item
+  if (currentQuestion && currentAnswer) {
+    faqs.push({
+      question: currentQuestion,
+      answer: currentAnswer.trim(),
+    });
+  }
+
+  return faqs;
 }
 
 const formatDate = (dateStr: string) =>
@@ -47,30 +92,122 @@ export default async function BlogPostPage({
   const post = getPostBySlug(slug);
   if (!post) notFound();
 
-  const jsonLd = {
+  const faqs = extractFAQ(post.content);
+
+  // JSON-LD Article Schema (enhanced)
+  const articleJsonLd = {
     "@context": "https://schema.org",
-    "@type": "BlogPosting",
+    "@type": "Article",
     headline: post.frontmatter.title,
     description: post.frontmatter.description,
     datePublished: post.frontmatter.date,
-    author: { "@type": "Person", name: post.frontmatter.author },
-    publisher: { "@type": "Organization", name: SITE_NAME, url: SITE_URL },
+    dateModified: post.frontmatter.date,
+    author: {
+      "@type": "Organization",
+      name: SITE_NAME,
+      url: SITE_URL,
+    },
+    publisher: {
+      "@type": "Organization",
+      name: SITE_NAME,
+      url: SITE_URL,
+      logo: {
+        "@type": "ImageObject",
+        url: `${SITE_URL}/favicon.svg`,
+      },
+    },
+    mainEntityOfPage: {
+      "@type": "WebPage",
+      "@id": `${SITE_URL}/blog/${slug}`,
+    },
     url: `${SITE_URL}/blog/${slug}`,
+    keywords: post.frontmatter.tags.join(", "),
+    articleSection: "Blog",
+    inLanguage: "fr-FR",
+  };
+
+  // JSON-LD FAQ Schema (if FAQs exist)
+  const faqJsonLd = faqs.length > 0 ? {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: faqs.map((faq) => ({
+      "@type": "Question",
+      name: faq.question,
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: faq.answer,
+      },
+    })),
+  } : null;
+
+  // BreadcrumbList Schema
+  const breadcrumbJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      {
+        "@type": "ListItem",
+        position: 1,
+        name: "Accueil",
+        item: SITE_URL,
+      },
+      {
+        "@type": "ListItem",
+        position: 2,
+        name: "Blog",
+        item: `${SITE_URL}/blog`,
+      },
+      {
+        "@type": "ListItem",
+        position: 3,
+        name: post.frontmatter.title,
+        item: `${SITE_URL}/blog/${slug}`,
+      },
+    ],
   };
 
   return (
     <section className="mx-auto max-w-3xl px-8 pt-32 pb-24 max-md:px-6 max-md:pt-24">
+      {/* Article Schema */}
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd) }}
+      />
+      
+      {/* FAQ Schema */}
+      {faqJsonLd && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
+        />
+      )}
+      
+      {/* Breadcrumb Schema */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
       />
 
-      <Link
-        href="/blog"
-        className="mb-8 inline-flex items-center gap-2 text-sm text-text-secondary transition-colors hover:text-accent"
-      >
-        &larr; Retour au blog
-      </Link>
+      {/* Breadcrumb navigation */}
+      <nav aria-label="Breadcrumb" className="mb-8 text-sm text-text-muted">
+        <ol className="flex items-center gap-2">
+          <li>
+            <Link href="/" className="hover:text-accent transition-colors">
+              Accueil
+            </Link>
+          </li>
+          <li>/</li>
+          <li>
+            <Link href="/blog" className="hover:text-accent transition-colors">
+              Blog
+            </Link>
+          </li>
+          <li>/</li>
+          <li className="text-text-secondary truncate max-w-[200px]">
+            {post.frontmatter.title}
+          </li>
+        </ol>
+      </nav>
 
       <header className="mb-12">
         <div className="mb-4 flex items-center gap-3 text-sm text-text-muted">
