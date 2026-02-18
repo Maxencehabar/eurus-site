@@ -1,13 +1,6 @@
 {
   "queue": [
     {
-      "slug": "creer-application-mobile-guide",
-      "title": "Créer une application mobile : le guide complet pour démarrer",
-      "description": "Toutes les étapes pour créer votre application mobile, de l'idée au lancement sur les stores.",
-      "tags": ["Mobile", "Guide", "Débutant"],
-      "keyword": "créer application mobile"
-    },
-    {
       "slug": "application-mobile-startup-guide",
       "title": "Application mobile pour startup : guide complet 2025",
       "description": "Comment développer une application mobile pour votre startup. MVP, budget, timeline et conseils pratiques.",
@@ -192,6 +185,14 @@
       "description": "Estimez le délai de développement de votre application selon sa complexité. Planning type et facteurs d'influence.",
       "tags": ["Mobile", "Guide", "Planning"],
       "keyword": "temps développement application",
+      "publishedDate": "2026-02-18"
+    },
+    {
+      "slug": "creer-application-mobile-guide",
+      "title": "Créer une application mobile : le guide complet pour démarrer",
+      "description": "Toutes les étapes pour créer votre application mobile, de l'idée au lancement sur les stores.",
+      "tags": ["Mobile", "Guide", "Débutant"],
+      "keyword": "créer application mobile",
       "publishedDate": "2026-02-18"
     }
   ],
