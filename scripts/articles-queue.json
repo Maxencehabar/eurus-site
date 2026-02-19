@@ -1,13 +1,6 @@
 {
   "queue": [
     {
-      "slug": "application-mobile-startup-guide",
-      "title": "Application mobile pour startup : guide complet 2025",
-      "description": "Comment développer une application mobile pour votre startup. MVP, budget, timeline et conseils pratiques.",
-      "tags": ["Startup", "Mobile", "Guide"],
-      "keyword": "application mobile startup"
-    },
-    {
       "slug": "budget-application-mobile-startup",
       "title": "Budget application mobile startup : combien prévoir ?",
       "description": "Quel budget prévoir pour développer l'application de votre startup ? Fourchettes de prix et conseils d'optimisation.",
@@ -194,7 +187,15 @@
       "tags": ["Mobile", "Guide", "Débutant"],
       "keyword": "créer application mobile",
       "publishedDate": "2026-02-18"
+    },
+    {
+      "slug": "application-mobile-startup-guide",
+      "title": "Application mobile pour startup : guide complet 2025",
+      "description": "Comment développer une application mobile pour votre startup. MVP, budget, timeline et conseils pratiques.",
+      "tags": ["Startup", "Mobile", "Guide"],
+      "keyword": "application mobile startup",
+      "publishedDate": "2026-02-19"
     }
   ],
-  "lastPublished": "2026-02-18"
+  "lastPublished": "2026-02-19"
 }
