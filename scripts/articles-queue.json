@@ -1,13 +1,6 @@
 {
   "queue": [
     {
-      "slug": "budget-application-mobile-startup",
-      "title": "Budget application mobile startup : combien prévoir ?",
-      "description": "Quel budget prévoir pour développer l'application de votre startup ? Fourchettes de prix et conseils d'optimisation.",
-      "tags": ["Startup", "Budget", "Mobile"],
-      "keyword": "budget application startup"
-    },
-    {
       "slug": "digitaliser-entreprise-application",
       "title": "Digitaliser son entreprise : créer une application sur mesure",
       "description": "Comment une application sur mesure peut transformer et digitaliser les process de votre PME.",
@@ -194,6 +187,14 @@
       "description": "Comment développer une application mobile pour votre startup. MVP, budget, timeline et conseils pratiques.",
       "tags": ["Startup", "Mobile", "Guide"],
       "keyword": "application mobile startup",
+      "publishedDate": "2026-02-19"
+    },
+    {
+      "slug": "budget-application-mobile-startup",
+      "title": "Budget application mobile startup : combien prévoir ?",
+      "description": "Quel budget prévoir pour développer l'application de votre startup ? Fourchettes de prix et conseils d'optimisation.",
+      "tags": ["Startup", "Budget", "Mobile"],
+      "keyword": "budget application startup",
       "publishedDate": "2026-02-19"
     }
   ],
