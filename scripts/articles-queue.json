@@ -1,13 +1,6 @@
 {
   "queue": [
     {
-      "slug": "digitaliser-entreprise-application",
-      "title": "Digitaliser son entreprise : créer une application sur mesure",
-      "description": "Comment une application sur mesure peut transformer et digitaliser les process de votre PME.",
-      "tags": ["PME", "Digital", "Guide"],
-      "keyword": "digitalisation entreprise"
-    },
-    {
       "slug": "application-interne-entreprise",
       "title": "Application interne entreprise : automatiser vos process",
       "description": "Développer une application métier interne pour optimiser la productivité de vos équipes.",
@@ -196,7 +189,15 @@
       "tags": ["Startup", "Budget", "Mobile"],
       "keyword": "budget application startup",
       "publishedDate": "2026-02-19"
+    },
+    {
+      "slug": "digitaliser-entreprise-application",
+      "title": "Digitaliser son entreprise : créer une application sur mesure",
+      "description": "Comment une application sur mesure peut transformer et digitaliser les process de votre PME.",
+      "tags": ["PME", "Digital", "Guide"],
+      "keyword": "digitalisation entreprise",
+      "publishedDate": "2026-02-20"
     }
   ],
-  "lastPublished": "2026-02-19"
+  "lastPublished": "2026-02-20"
 }
