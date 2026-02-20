@@ -13,11 +13,10 @@ export default function Hero() {
         </div>
 
         <h1 className="mb-6 text-[clamp(2.5rem,6vw,4.5rem)] font-bold leading-[1.1] tracking-tight">
-          Nous construisons vos{" "}
+          Bienvenue chez{" "}
           <span className="bg-gradient-to-br from-accent to-[#8b5cf6] bg-clip-text text-transparent">
-            applications mobiles et web
+            Eurus
           </span>
-          , de l&apos;id&eacute;e &agrave; la production.
         </h1>
 
         <p className="mx-auto mb-10 max-w-xl text-[clamp(1rem,2vw,1.25rem)] leading-relaxed text-text-secondary">
