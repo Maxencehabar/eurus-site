@@ -1,13 +1,6 @@
 {
   "queue": [
     {
-      "slug": "application-interne-entreprise",
-      "title": "Application interne entreprise : automatiser vos process",
-      "description": "Développer une application métier interne pour optimiser la productivité de vos équipes.",
-      "tags": ["PME", "Productivité", "Mobile"],
-      "keyword": "application interne entreprise"
-    },
-    {
       "slug": "pwa-vs-application-native",
       "title": "PWA vs Application native : que choisir en 2025 ?",
       "description": "Progressive Web App ou application native ? Comparatif détaillé pour faire le bon choix.",
@@ -196,6 +189,14 @@
       "description": "Comment une application sur mesure peut transformer et digitaliser les process de votre PME.",
       "tags": ["PME", "Digital", "Guide"],
       "keyword": "digitalisation entreprise",
+      "publishedDate": "2026-02-20"
+    },
+    {
+      "slug": "application-interne-entreprise",
+      "title": "Application interne entreprise : automatiser vos process",
+      "description": "Développer une application métier interne pour optimiser la productivité de vos équipes.",
+      "tags": ["PME", "Productivité", "Mobile"],
+      "keyword": "application interne entreprise",
       "publishedDate": "2026-02-20"
     }
   ],
