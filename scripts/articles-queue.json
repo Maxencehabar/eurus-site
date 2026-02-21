@@ -1,13 +1,6 @@
 {
   "queue": [
     {
-      "slug": "firebase-vs-backend-personnalise",
-      "title": "Firebase vs Backend personnalisé : quel choix pour votre app ?",
-      "description": "Comparez Firebase et un backend sur mesure. Avantages, limites et cas d'usage de chaque solution.",
-      "tags": ["Technique", "Backend", "Guide"],
-      "keyword": "Firebase vs backend custom"
-    },
-    {
       "slug": "api-integrations-application",
       "title": "API et intégrations : connecter votre app à vos outils",
       "description": "Comment intégrer des API tierces dans votre application. CRM, paiement, analytics et plus.",
@@ -198,6 +191,14 @@
       "description": "Progressive Web App ou application native ? Comparatif détaillé pour faire le bon choix.",
       "tags": ["Technique", "Mobile", "Web"],
       "keyword": "PWA vs native",
+      "publishedDate": "2026-02-21"
+    },
+    {
+      "slug": "firebase-vs-backend-personnalise",
+      "title": "Firebase vs Backend personnalisé : quel choix pour votre app ?",
+      "description": "Comparez Firebase et un backend sur mesure. Avantages, limites et cas d'usage de chaque solution.",
+      "tags": ["Technique", "Backend", "Guide"],
+      "keyword": "Firebase vs backend custom",
       "publishedDate": "2026-02-21"
     }
   ],
