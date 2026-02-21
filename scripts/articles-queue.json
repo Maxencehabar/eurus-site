@@ -1,13 +1,6 @@
 {
   "queue": [
     {
-      "slug": "pwa-vs-application-native",
-      "title": "PWA vs Application native : que choisir en 2025 ?",
-      "description": "Progressive Web App ou application native ? Comparatif détaillé pour faire le bon choix.",
-      "tags": ["Technique", "Mobile", "Web"],
-      "keyword": "PWA vs native"
-    },
-    {
       "slug": "firebase-vs-backend-personnalise",
       "title": "Firebase vs Backend personnalisé : quel choix pour votre app ?",
       "description": "Comparez Firebase et un backend sur mesure. Avantages, limites et cas d'usage de chaque solution.",
@@ -198,7 +191,15 @@
       "tags": ["PME", "Productivité", "Mobile"],
       "keyword": "application interne entreprise",
       "publishedDate": "2026-02-20"
+    },
+    {
+      "slug": "pwa-vs-application-native",
+      "title": "PWA vs Application native : que choisir en 2025 ?",
+      "description": "Progressive Web App ou application native ? Comparatif détaillé pour faire le bon choix.",
+      "tags": ["Technique", "Mobile", "Web"],
+      "keyword": "PWA vs native",
+      "publishedDate": "2026-02-21"
     }
   ],
-  "lastPublished": "2026-02-20"
+  "lastPublished": "2026-02-21"
 }
