@@ -1,13 +1,6 @@
 {
   "queue": [
     {
-      "slug": "securite-application-mobile",
-      "title": "Sécurité application mobile : les bonnes pratiques",
-      "description": "Protégez votre application mobile et les données de vos utilisateurs. Guide des bonnes pratiques sécurité.",
-      "tags": ["Sécurité", "Mobile", "Guide"],
-      "keyword": "sécurité application mobile"
-    },
-    {
       "slug": "maintenance-application-mobile-couts",
       "title": "Maintenance application mobile : les coûts à prévoir",
       "description": "Budget maintenance d'une app mobile : mises à jour, hébergement, support. Tout ce qu'il faut anticiper.",
@@ -200,6 +193,14 @@
       "description": "Comment intégrer des API tierces dans votre application. CRM, paiement, analytics et plus.",
       "tags": ["Technique", "API", "Intégration"],
       "keyword": "intégration API application",
+      "publishedDate": "2026-02-22"
+    },
+    {
+      "slug": "securite-application-mobile",
+      "title": "Sécurité application mobile : les bonnes pratiques",
+      "description": "Protégez votre application mobile et les données de vos utilisateurs. Guide des bonnes pratiques sécurité.",
+      "tags": ["Sécurité", "Mobile", "Guide"],
+      "keyword": "sécurité application mobile",
       "publishedDate": "2026-02-22"
     }
   ],

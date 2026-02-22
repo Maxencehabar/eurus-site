@@ -1,0 +1,192 @@
+---
+title: "Sécurité application mobile : les bonnes pratiques"
+description: "Protégez votre application mobile et les données de vos utilisateurs. Guide des bonnes pratiques sécurité basé sur notre expérience terrain."
+date: "2026-02-22"
+author: "Eurus"
+tags: ["Sécurité", "Mobile", "Guide"]
+---
+
+# Sécurité application mobile : ce qu'on a appris sur le terrain
+
+La sécurité, c'est un peu comme l'assurance. Personne n'aime en parler, tout le monde trouve ça cher, et on ne réalise son importance que quand il est trop tard. En 3 ans chez Eurus, on a vu des projets où la sécurité était une priorité dès le jour 1, et d'autres où c'était "on verra plus tard". Spoiler : ceux qui ont dit "plus tard" l'ont souvent regretté.
+
+Alors concrètement, comment sécuriser une application mobile sans tomber dans la paranoïa ou, à l'inverse, dans la négligence ? C'est ce qu'on va voir ensemble.
+
+## Pourquoi la sécurité mobile est différente
+
+Une app mobile, ce n'est pas un site web. Elle vit sur l'appareil de l'utilisateur, dans un environnement qu'on ne contrôle pas. L'utilisateur peut avoir un téléphone rooté, utiliser un WiFi public douteux, ou avoir installé des apps malveillantes qui espionnent tout ce qui se passe.
+
+Du coup, la surface d'attaque est énorme. Et les conséquences d'une faille peuvent être catastrophiques : vol de données personnelles, usurpation d'identité, accès aux comptes bancaires si votre app gère des paiements...
+
+Sur DrMilou, on gère des milliers de dossiers médicaux d'animaux. Ça peut sembler anodin — c'est pas des dossiers médicaux humains après tout. Sauf que ces dossiers contiennent les coordonnées des propriétaires, leurs moyens de paiement, parfois même leur adresse. Une fuite de données, et c'est la confiance de centaines de vétérinaires qui s'effondre. Chez Eurus, on a posé les bases sécurité dès les premières lignes de code, pas après.
+
+## Les fondamentaux qu'on ne négocie jamais
+
+### Le stockage des données sensibles
+
+Premier réflexe : ne jamais stocker en clair ce qui est sensible. Ça paraît évident dit comme ça, mais vous seriez surpris du nombre d'apps qui stockent des tokens d'authentification dans les SharedPreferences Android ou le UserDefaults iOS sans aucun chiffrement.
+
+Concrètement, voici ce qu'on fait systématiquement :
+
+Pour les tokens et credentials, on utilise le Keychain sur iOS et le EncryptedSharedPreferences sur Android. Ces systèmes sont conçus pour ça — ils bénéficient du chiffrement matériel du device.
+
+Pour les données utilisateur sensibles stockées localement, on chiffre avec AES-256. Et la clé de chiffrement ? Elle est elle-même stockée dans le Keychain/Keystore, jamais en dur dans le code.
+
+Un bug qu'on a eu sur Youdy nous a appris une leçon importante : on stockait les préférences utilisateur avec leur timezone. Sauf qu'un développeur avait mis le timezone en clair dans les logs de debug. Résultat : en analysant les logs d'un crash, on pouvait déduire la localisation approximative de l'utilisateur. Pas une faille critique, mais le genre de détail qui peut s'accumuler et poser problème.
+
+### La communication réseau
+
+Toute communication avec votre serveur doit passer par HTTPS. Ça, c'est le minimum syndical. Mais ce n'est pas suffisant.
+
+Le certificate pinning, c'est ce qui empêche une attaque man-in-the-middle même si quelqu'un a installé un certificat malveillant sur l'appareil. En gros, votre app vérifie que le certificat du serveur correspond exactement à celui que vous attendez, pas juste qu'il est "valide".
+
+Chez Eurus, on l'implémente sur toutes les apps qui manipulent des données sensibles. C'est un peu plus de travail (il faut penser à mettre à jour le pin quand on renouvelle le certificat), mais ça vaut le coup.
+
+Et si on faisait autrement pour les environnements de dev ? En fait, non. On garde le même niveau de rigueur en dev qu'en prod. Parce que les mauvaises habitudes prises en dev finissent toujours par se retrouver en production.
+
+### L'authentification
+
+Le combo email/mot de passe, c'est has-been. Enfin, pas complètement — c'est encore nécessaire comme option de fallback. Mais aujourd'hui, on pousse systématiquement vers :
+
+L'authentification biométrique (Face ID, Touch ID, empreinte digitale Android) pour le déverrouillage de l'app. C'est plus sécurisé qu'un code PIN et plus pratique pour l'utilisateur.
+
+L'authentification sociale (Sign in with Apple, Google Sign-In) qui délègue la gestion des credentials à des acteurs qui ont des équipes sécurité plus grosses que les nôtres.
+
+Le MFA (authentification multi-facteurs) pour les actions sensibles. Pas pour se connecter tous les jours — ça saoulerait l'utilisateur — mais pour changer son mot de passe ou valider une transaction importante.
+
+Sur Youdy, on a implémenté un système où l'app redemande la biométrie après 15 minutes d'inactivité. Au début, certains utilisateurs ont râlé. Puis on leur a expliqué que ça protégeait leurs données si quelqu'un leur piquait leur téléphone déverrouillé. Du coup, ils ont compris et apprécié.
+
+## Les erreurs qu'on voit (trop) souvent
+
+### Faire confiance au client
+
+Règle numéro 1 : tout ce qui vient du client est suspect. Votre app peut être décompilée, modifiée, et republiée. Les requêtes réseau peuvent être interceptées et rejouées avec des paramètres modifiés.
+
+Concrètement, ça veut dire que toute validation doit être faite côté serveur. Si votre app vérifie qu'un utilisateur a le droit de faire une action, votre API doit le revérifier. Si votre app calcule un prix, votre serveur doit le recalculer.
+
+On a vu une app e-commerce où le prix total était calculé côté client et envoyé tel quel au serveur. Quelqu'un de malin a modifié la requête pour payer 1€ au lieu de 100€. Autant dire que le client n'a pas apprécié quand on lui a montré la faille lors de l'audit.
+
+### Exposer des clés API dans le code
+
+Les clés API, les secrets, les credentials de base de données — tout ça n'a rien à faire dans le code de votre app. Même obfusqué, même caché dans les ressources, ça finira par être extrait par quelqu'un de motivé.
+
+Pour les clés publiques (comme une clé Google Maps côté client), on les restreint au maximum : limitation par package name, par domaine, par quota. Pour tout le reste, ça passe par votre backend qui, lui, a accès aux vrais secrets.
+
+### Négliger les logs
+
+Les logs, c'est super utile pour débugger. C'est aussi un risque de sécurité si on y met n'importe quoi.
+
+On a une règle simple : en production, on ne log jamais de données personnelles, jamais de tokens, jamais de mots de passe. Et on utilise des niveaux de log appropriés pour que les logs de debug n'apparaissent pas en prod.
+
+Les cabinets vétérinaires qui utilisent DrMilou ont des contraintes qu'on n'imaginait pas au départ : connexion internet instable, PC sous Windows XP, urgences qui arrivent pendant qu'on tape une ordonnance. Du coup, on avait besoin de logs détaillés pour comprendre les bugs terrain. Mais on a mis en place un système de sanitization automatique qui remplace toutes les données sensibles par des placeholders avant d'envoyer les logs au serveur.
+
+## Sécuriser au-delà du code
+
+### La gestion des dépendances
+
+Votre app utilise probablement des dizaines de librairies tierces. Chacune est un vecteur d'attaque potentiel. Une faille dans une lib populaire, et des milliers d'apps sont vulnérables d'un coup.
+
+Ce qu'on fait chez Eurus : audit régulier des dépendances avec des outils comme Snyk ou Dependabot. Mise à jour proactive quand une faille est détectée, pas juste quand ça nous arrange. Et surtout, on évite d'ajouter une dépendance pour trois lignes de code qu'on pourrait écrire nous-mêmes.
+
+### Le processus de release
+
+Une app sécurisée qui est buildée sur le laptop d'un développeur avec des credentials traînant dans l'environnement, c'est un problème. Le build doit être reproductible, automatisé, et exécuté dans un environnement contrôlé.
+
+On utilise des pipelines CI/CD où les secrets sont injectés au moment du build via des variables d'environnement sécurisées. Jamais stockés dans le repo, jamais accessibles aux développeurs directement.
+
+### La formation de l'équipe
+
+La sécurité, c'est l'affaire de tout le monde, pas juste du "responsable sécurité" (qui souvent n'existe pas dans les petites structures). Chez Eurus, chaque développeur est formé aux bases : OWASP Mobile Top 10, bonnes pratiques de code sécurisé, reconnaissance des patterns à risque.
+
+Et on fait des revues de code systématiques avec un œil sécurité. Pas une revue façon audit annuel, mais une attention continue à chaque merge request.
+
+## Le cas particulier des apps avec paiement
+
+Si votre app manipule des paiements, le niveau d'exigence monte d'un cran. La conformité PCI-DSS n'est pas optionnelle — c'est une obligation légale.
+
+La bonne nouvelle : en utilisant des solutions comme Stripe ou PayPal, vous déléguez la partie la plus sensible à des acteurs certifiés. Votre app ne voit jamais les numéros de carte, juste des tokens.
+
+La mauvaise nouvelle : ça ne vous exonère pas de tout. Vous restez responsable de la sécurité de tout ce qui entoure le paiement — l'authentification de l'utilisateur, la validation des montants, la gestion des confirmations.
+
+Sur un projet e-commerce qu'on a repris chez Eurus, le précédent prestataire avait bien intégré Stripe... mais stockait l'historique des transactions avec les 4 derniers chiffres de la carte et la date d'expiration "pour le support client". Techniquement pas une violation PCI-DSS (ces infos ne sont pas considérées comme sensibles), mais une très mauvaise idée quand même. On a nettoyé tout ça.
+
+## Tester la sécurité : plus facile qu'on ne le pense
+
+### Les tests automatisés
+
+Des outils comme MobSF (Mobile Security Framework) permettent d'analyser automatiquement le binaire de votre app pour détecter les failles courantes : permissions excessives, données stockées en clair, communications non sécurisées...
+
+C'est pas parfait — ça ne remplace pas un audit manuel — mais ça attrape 80% des erreurs bêtes. On l'intègre dans notre pipeline CI pour que chaque build soit analysé.
+
+### Le bug bounty
+
+Pour les apps avec une base d'utilisateurs significative, mettre en place un programme de bug bounty peut être intéressant. Vous payez des chercheurs en sécurité pour trouver des failles. C'est moins cher qu'un audit formel, et vous avez des yeux experts qui regardent en continu.
+
+Attention cependant : il faut être prêt à recevoir les rapports et à les traiter rapidement. Un chercheur qui trouve une faille critique et qui n'a pas de réponse pendant 3 semaines, il risque de la publier.
+
+### L'audit externe
+
+Pour les apps critiques (fintech, santé, données sensibles), un audit de sécurité externe par une boîte spécialisée est quasi indispensable. Ça coûte entre 5 000 et 20 000 € selon la complexité, mais ça peut vous éviter des problèmes bien plus coûteux.
+
+On recommande de faire un audit après le développement initial, puis tous les ans ou après chaque refonte majeure.
+
+## Le RGPD : sécurité et conformité vont ensemble
+
+La sécurité des données et la conformité RGPD, c'est pas la même chose mais c'est intimement lié. Une faille de sécurité qui expose des données personnelles, c'est aussi une violation RGPD avec les sanctions qui vont avec (jusqu'à 4% du CA mondial, on rigole pas).
+
+Ce qu'on intègre systématiquement :
+
+Le chiffrement des données personnelles at rest et in transit. Le principe de minimisation : on ne collecte que ce dont on a vraiment besoin. La possibilité pour l'utilisateur de supprimer ses données (le fameux droit à l'oubli). Et la notification en cas de breach — oui, on espère ne jamais avoir à s'en servir, mais le process doit être prêt.
+
+## Checklist sécurité : l'essentiel en un coup d'œil
+
+Avant chaque release, on passe cette checklist. C'est pas exhaustif, mais ça couvre les bases.
+
+**Stockage des données :**
+Les tokens sont stockés dans le Keychain/Keystore. Les données sensibles locales sont chiffrées. Aucun secret n'est en dur dans le code. Les logs de prod ne contiennent pas de données personnelles.
+
+**Communication réseau :**
+Toutes les communications passent par HTTPS. Le certificate pinning est implémenté pour les endpoints critiques. Les certificats sont à jour et correctement configurés.
+
+**Authentification :**
+Les mots de passe sont hashés côté serveur (jamais stockés en clair). La biométrie est proposée comme alternative. Le MFA est disponible pour les actions sensibles. Les sessions expirent après une période d'inactivité.
+
+**Code et build :**
+Les dépendances sont à jour et sans faille connue. Le build est automatisé et reproductible. Les secrets sont injectés via variables d'environnement. Le code a été review avec un focus sécurité.
+
+**Tests :**
+L'app a été analysée avec un outil d'audit automatique. Les cas d'erreur et d'attaque ont été testés. Un audit externe a été réalisé (pour les apps critiques).
+
+## En résumé : la sécurité comme culture, pas comme checkbox
+
+Le piège, c'est de voir la sécurité comme une liste de cases à cocher avant la release. "On a mis HTTPS, on a chiffré les données, c'est bon." Non, c'est pas bon.
+
+La sécurité, c'est une culture d'équipe. C'est se poser la question "et si quelqu'un de malveillant faisait ça ?" à chaque fonctionnalité. C'est refuser de prendre des raccourcis "parce qu'on verra plus tard". C'est accepter de passer du temps sur des choses invisibles pour l'utilisateur mais cruciales pour sa protection.
+
+En 3 ans chez Eurus, j'ai vu des projets échouer non pas à cause du code, mais parce que personne n'avait vraiment compris le besoin métier. En sécurité, c'est pareil : si vous ne comprenez pas les risques spécifiques de votre domaine (santé, finance, e-commerce...), vous ne pourrez pas les adresser correctement.
+
+## FAQ : Questions fréquentes sur la sécurité mobile
+
+**Combien coûte la mise en place d'une bonne sécurité ?**
+
+Ça dépend de la complexité de l'app, mais comptez 10-20% du budget de développement initial. C'est un investissement, pas un coût — une faille de sécurité peut coûter bien plus cher en réputation et en sanctions.
+
+**Mon app est simple, j'ai vraiment besoin de tout ça ?**
+
+Même une app "simple" manipule probablement des données utilisateur (email, nom, préférences). Le minimum syndical (HTTPS, stockage sécurisé des tokens, pas de secrets dans le code) est non négociable. Pour le reste, adaptez le niveau d'effort au niveau de risque.
+
+**Comment savoir si mon app actuelle est sécurisée ?**
+
+Faites un audit. Commencez par un outil automatisé comme MobSF, c'est gratuit et ça donne déjà une idée. Pour une analyse plus poussée, faites appel à un expert externe.
+
+**Que faire si on découvre une faille en production ?**
+
+Pas de panique. Évaluez la criticité et l'exploitabilité. Corrigez en priorité. Notifiez les utilisateurs si des données ont pu être compromises (c'est une obligation RGPD). Faites une post-mortem pour comprendre comment c'est arrivé et éviter que ça se reproduise.
+
+---
+
+## Besoin d'un regard expert sur la sécurité de votre app ?
+
+Chez Eurus, on intègre la sécurité dès la conception, pas en afterthought. Que vous partiez de zéro ou que vous ayez une app existante à auditer, on peut vous accompagner.
+
+**Vous avez des doutes sur la sécurité de votre application ?** [Contactez-nous](/contact) pour un diagnostic. On vous dira franchement où vous en êtes et ce qu'il faudrait améliorer.
