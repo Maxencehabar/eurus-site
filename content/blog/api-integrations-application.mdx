@@ -1,0 +1,364 @@
+---
+title: "API et intégrations : connecter votre app à vos outils"
+description: "Comment intégrer des API tierces dans votre application. CRM, paiement, analytics et plus. Guide complet avec exemples concrets."
+date: "2026-02-22"
+author: "Eurus"
+tags: ["Technique", "API", "Intégration"]
+---
+
+# API et intégrations : connecter votre application à vos outils métier
+
+Votre application ne vit pas en isolation. Pour offrir une expérience utilisateur complète et automatiser vos process, elle doit communiquer avec vos outils existants : CRM, système de paiement, plateforme d'emailing, analytics... C'est là qu'interviennent les **API** (Application Programming Interface).
+
+Dans ce guide, nous allons voir concrètement comment intégrer des API tierces dans votre application, quelles sont les bonnes pratiques, et comment éviter les pièges courants.
+
+## Qu'est-ce qu'une API et pourquoi c'est essentiel ?
+
+Une API est un **contrat de communication** entre deux systèmes. Elle définit comment votre application peut demander des données ou déclencher des actions dans un autre logiciel.
+
+### L'analogie du restaurant
+
+Imaginez un restaurant. Vous (le client) ne rentrez pas en cuisine pour préparer votre plat. Vous passez par un serveur qui prend votre commande, la transmet aux cuisines, et vous rapporte le résultat. L'API, c'est ce serveur : une interface standardisée entre vous et le système en coulisses.
+
+### Pourquoi intégrer des API dans votre app ?
+
+**1. Ne pas réinventer la roue**
+
+Pourquoi développer votre propre système de paiement quand Stripe propose une API robuste, testée, et conforme aux normes bancaires ? Intégrer des services existants vous fait gagner des mois de développement.
+
+**2. Offrir une expérience unifiée**
+
+Vos utilisateurs utilisent déjà Gmail, Slack, ou Salesforce. En connectant votre app à ces outils, vous vous intégrez dans leur workflow existant au lieu de les forcer à changer leurs habitudes.
+
+**3. Automatiser les process**
+
+Quand un client passe commande sur votre app, vous pouvez automatiquement :
+- Créer une fiche dans votre CRM
+- Envoyer un email de confirmation
+- Mettre à jour votre tableau de bord analytics
+- Déclencher une notification Slack pour l'équipe
+
+Sans API, tout cela nécessiterait des interventions manuelles.
+
+## Les types d'API les plus courants
+
+### API REST
+
+C'est le standard actuel. Les API REST utilisent les méthodes HTTP classiques :
+- **GET** pour récupérer des données
+- **POST** pour créer une ressource
+- **PUT/PATCH** pour modifier
+- **DELETE** pour supprimer
+
+**Exemple concret :** Pour récupérer la liste de vos clients Stripe, vous faites un GET sur `https://api.stripe.com/v1/customers`. Simple et intuitif.
+
+### API GraphQL
+
+Alternative plus récente, GraphQL vous permet de demander exactement les données dont vous avez besoin, ni plus ni moins. Particulièrement utile quand vous avez des besoins précis et ne voulez pas charger des données inutiles.
+
+**Avantage :** Une seule requête peut récupérer des données de plusieurs sources.
+**Inconvénient :** Courbe d'apprentissage plus raide.
+
+### Webhooks
+
+Les webhooks fonctionnent à l'inverse des API classiques : au lieu que vous appeliez le service, c'est le service qui vous notifie quand quelque chose se passe.
+
+**Exemple :** Stripe vous envoie un webhook quand un paiement est reçu. Vous n'avez pas besoin de vérifier toutes les 5 secondes si un nouveau paiement est arrivé.
+
+## Les intégrations indispensables selon votre activité
+
+### Pour une application e-commerce
+
+| Fonction | Services recommandés |
+|----------|---------------------|
+| Paiement | Stripe, PayPal, Mollie |
+| Livraison | Sendcloud, Shippo, Boxtal |
+| Emailing | Mailchimp, Brevo, Customer.io |
+| Analytics | Mixpanel, Amplitude, PostHog |
+| Support | Intercom, Zendesk, Crisp |
+
+### Pour une application SaaS B2B
+
+| Fonction | Services recommandés |
+|----------|---------------------|
+| CRM | HubSpot, Salesforce, Pipedrive |
+| Facturation | Stripe Billing, Chargebee |
+| Authentification | Auth0, Clerk, Firebase Auth |
+| Communication | Slack, Microsoft Teams |
+| Stockage | AWS S3, Google Cloud Storage |
+
+### Pour une application mobile grand public
+
+| Fonction | Services recommandés |
+|----------|---------------------|
+| Notifications push | Firebase Cloud Messaging, OneSignal |
+| Analytics | Firebase Analytics, Amplitude |
+| Crash reporting | Sentry, Crashlytics |
+| Authentification sociale | Sign in with Apple, Google Sign-In |
+| Maps | Google Maps, Mapbox |
+
+## Guide pratique : intégrer une API pas à pas
+
+Prenons l'exemple concret de l'intégration de **Stripe** pour accepter des paiements.
+
+### Étape 1 : Obtenir vos clés API
+
+Chaque service vous fournit des clés d'authentification :
+- Une **clé publique** (utilisable côté client)
+- Une **clé secrète** (uniquement côté serveur, ne jamais l'exposer)
+
+Chez Stripe, vous les trouvez dans Dashboard > Developers > API Keys.
+
+### Étape 2 : Installer le SDK
+
+Plutôt que d'appeler l'API directement, utilisez le SDK officiel qui simplifie les appels et gère les cas d'erreur.
+
+```bash
+# Pour un backend Node.js
+npm install stripe
+
+# Pour une app React Native
+npm install @stripe/stripe-react-native
+```
+
+### Étape 3 : Configurer l'environnement
+
+Stockez vos clés dans des variables d'environnement, jamais dans le code :
+
+```env
+STRIPE_SECRET_KEY=sk_test_xxx
+STRIPE_PUBLISHABLE_KEY=pk_test_xxx
+```
+
+### Étape 4 : Implémenter le flux de paiement
+
+Côté serveur, créez une intention de paiement :
+
+```javascript
+const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
+
+async function createPaymentIntent(amount) {
+  const paymentIntent = await stripe.paymentIntents.create({
+    amount: amount * 100, // Stripe compte en centimes
+    currency: 'eur',
+  });
+  return paymentIntent.client_secret;
+}
+```
+
+Côté client, utilisez ce secret pour confirmer le paiement via le SDK Stripe.
+
+### Étape 5 : Gérer les webhooks
+
+Configurez un endpoint pour recevoir les notifications de Stripe :
+
+```javascript
+app.post('/webhook', express.raw({type: 'application/json'}), (req, res) => {
+  const event = stripe.webhooks.constructEvent(
+    req.body,
+    req.headers['stripe-signature'],
+    process.env.STRIPE_WEBHOOK_SECRET
+  );
+
+  if (event.type === 'payment_intent.succeeded') {
+    // Le paiement a réussi, livrez le produit
+    handleSuccessfulPayment(event.data.object);
+  }
+
+  res.json({received: true});
+});
+```
+
+## Bonnes pratiques pour des intégrations robustes
+
+### 1. Gérez les erreurs gracieusement
+
+Les API tierces peuvent être indisponibles. Prévoyez toujours un plan B :
+
+```javascript
+try {
+  const result = await callExternalAPI();
+  return result;
+} catch (error) {
+  // Log l'erreur pour investigation
+  logger.error('API call failed', { error, context });
+  
+  // Retournez un fallback ou mettez en queue pour retry
+  return fallbackBehavior();
+}
+```
+
+### 2. Implémentez des retry avec backoff
+
+Quand une API répond avec une erreur temporaire (429, 503...), réessayez avec un délai croissant :
+
+```javascript
+async function callWithRetry(fn, maxRetries = 3) {
+  for (let i = 0; i < maxRetries; i++) {
+    try {
+      return await fn();
+    } catch (error) {
+      if (i === maxRetries - 1) throw error;
+      await sleep(Math.pow(2, i) * 1000); // 1s, 2s, 4s...
+    }
+  }
+}
+```
+
+### 3. Utilisez une couche d'abstraction
+
+Ne dépendez pas directement de l'implémentation d'un service. Créez une interface :
+
+```javascript
+// services/payment.js
+class PaymentService {
+  async createPayment(amount, currency) {
+    // Aujourd'hui c'est Stripe, demain peut-être autre chose
+    return this.stripeAdapter.createPayment(amount, currency);
+  }
+}
+```
+
+Si vous changez de provider, vous n'avez qu'un fichier à modifier.
+
+### 4. Stockez les données critiques localement
+
+Ne dépendez pas d'une API externe pour les données critiques. Synchronisez régulièrement :
+
+- Stockez une copie des transactions dans votre base
+- Gardez un cache des informations utilisateur fréquemment utilisées
+- Prévoyez un mode dégradé si l'API est down
+
+### 5. Sécurisez vos clés API
+
+**Règles d'or :**
+- Jamais de clé secrète dans le code frontend
+- Utilisez des variables d'environnement
+- Rotez régulièrement vos clés
+- Limitez les permissions au strict nécessaire
+- Utilisez des clés différentes en dev et en prod
+
+## Les pièges à éviter
+
+### Piège #1 : Ignorer les rate limits
+
+La plupart des API limitent le nombre de requêtes par minute. Si vous les ignorez, vous serez temporairement bloqué.
+
+**Solution :** Implémentez un système de queue qui respecte les limites, ou utilisez le caching pour réduire les appels.
+
+### Piège #2 : Ne pas versionner les appels
+
+Les API évoluent. Si vous appelez `/v1/users` et que le provider sort une v2, votre code peut casser.
+
+**Solution :** Fixez explicitement la version dans vos appels et testez les migrations avant de mettre à jour.
+
+### Piège #3 : Faire confiance aveuglément
+
+Les données reçues d'une API peuvent être incorrectes ou malformées.
+
+**Solution :** Validez toujours les données entrantes avec un schéma (Zod, Joi, etc.) avant de les utiliser.
+
+### Piège #4 : Oublier la conformité RGPD
+
+Quand vous envoyez des données utilisateur à un service tiers, vous êtes responsable de la conformité.
+
+**Solution :** 
+- Vérifiez que le provider est conforme RGPD
+- Signez un DPA (Data Processing Agreement)
+- N'envoyez que les données strictement nécessaires
+
+## Les outils pour faciliter vos intégrations
+
+### Zapier / Make (ex-Integromat)
+
+Pour des intégrations simples sans code. Connectez des centaines d'apps entre elles via une interface visuelle. Parfait pour les automatisations internes ou le MVP.
+
+**Exemple :** Quand un formulaire Typeform est soumis → Créer un contact HubSpot → Envoyer un message Slack.
+
+### n8n (self-hosted)
+
+Alternative open-source à Zapier. Vous l'hébergez vous-même, donc pas de limite de volume et contrôle total sur vos données.
+
+### Pipedream
+
+Plateforme d'intégration pour développeurs. Écrivez du code Node.js qui réagit aux événements de centaines de services.
+
+### Postman / Insomnia
+
+Indispensables pour tester et documenter vos appels API pendant le développement.
+
+## Combien coûte l'intégration d'API ?
+
+Le coût dépend de plusieurs facteurs :
+
+### Coût de développement
+
+| Complexité | Temps estimé | Coût approximatif |
+|------------|--------------|-------------------|
+| Intégration simple (auth, notifications) | 2-4 jours | 1 000 - 2 000 € |
+| Intégration moyenne (paiement, CRM) | 1-2 semaines | 2 000 - 5 000 € |
+| Intégration complexe (ERP, multi-services) | 3-6 semaines | 5 000 - 15 000 € |
+
+### Coût des services tiers
+
+La plupart des API sont facturées à l'usage :
+- **Stripe** : 1,4% + 0,25€ par transaction
+- **Twilio** (SMS) : ~0,07€ par SMS
+- **SendGrid** (email) : gratuit jusqu'à 100/jour, puis ~15€/mois
+- **Google Maps** : gratuit jusqu'à 28 000 chargements/mois
+
+**Conseil :** Estimez votre volume prévu et calculez les coûts avant de choisir un provider.
+
+## FAQ : Questions fréquentes sur les intégrations API
+
+### Puis-je intégrer n'importe quel service ?
+
+Non. Le service doit proposer une API publique ou vous accorder un accès. Certains logiciels legacy n'ont pas d'API, ce qui complique fortement l'intégration.
+
+### Comment choisir entre plusieurs providers similaires ?
+
+Comparez sur ces critères :
+1. **Documentation** : est-elle claire et à jour ?
+2. **SDK** : existe-t-il pour votre stack technique ?
+3. **Support** : quel est le délai de réponse ?
+4. **Pricing** : comment évolue le coût avec le volume ?
+5. **Fiabilité** : quel est le SLA (uptime garanti) ?
+
+### Que faire si l'API change ?
+
+C'est inévitable. Pour minimiser l'impact :
+- Abonnez-vous aux changelogs du provider
+- Utilisez des versions fixes de l'API
+- Testez régulièrement vos intégrations
+- Prévoyez du temps de maintenance dans votre roadmap
+
+### Faut-il tout intégrer dès le début ?
+
+Non. Commencez par les intégrations critiques pour votre MVP (paiement, auth). Ajoutez les autres au fur et à mesure des besoins réels de vos utilisateurs.
+
+### Comment tester mes intégrations ?
+
+La plupart des services proposent un environnement "sandbox" ou "test" :
+- Stripe : mode test avec cartes de crédit fictives
+- PayPal : compte sandbox
+- Twilio : numéros de test
+
+Utilisez ces environnements pour vos tests automatisés.
+
+## Conclusion : les API, pilier de votre écosystème digital
+
+Les intégrations API ne sont pas un "nice to have" — elles sont essentielles pour créer une application moderne et connectée. En suivant les bonnes pratiques décrites dans ce guide, vous construirez des intégrations robustes, maintenables et évolutives.
+
+**Les points clés à retenir :**
+- Choisissez des services avec une bonne documentation et des SDK pour votre stack
+- Gérez toujours les erreurs et prévoyez des fallbacks
+- Sécurisez vos clés API et respectez la conformité RGPD
+- Commencez simple et itérez selon les besoins
+
+---
+
+## Besoin d'aide pour vos intégrations ?
+
+Chez Eurus, nous avons intégré des dizaines d'API pour nos clients : Stripe, HubSpot, Salesforce, Slack, Google Workspace, et bien d'autres. Nous savons quels pièges éviter et comment construire des intégrations solides.
+
+**Vous avez un projet d'application nécessitant des intégrations ?** [Contactez-nous](/contact) pour en discuter. Nous vous aiderons à définir les intégrations prioritaires et à estimer le budget nécessaire.
