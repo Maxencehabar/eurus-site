@@ -1,13 +1,6 @@
 {
   "queue": [
     {
-      "slug": "maintenance-application-mobile-couts",
-      "title": "Maintenance application mobile : les coûts à prévoir",
-      "description": "Budget maintenance d'une app mobile : mises à jour, hébergement, support. Tout ce qu'il faut anticiper.",
-      "tags": ["Budget", "Maintenance", "Mobile"],
-      "keyword": "maintenance application mobile coût"
-    },
-    {
       "slug": "refonte-application-mobile",
       "title": "Refonte d'application mobile : quand et comment la faire ?",
       "description": "Signes qu'il est temps de refondre votre app et méthodologie pour réussir la refonte.",
@@ -202,7 +195,15 @@
       "tags": ["Sécurité", "Mobile", "Guide"],
       "keyword": "sécurité application mobile",
       "publishedDate": "2026-02-22"
+    },
+    {
+      "slug": "maintenance-application-mobile-couts",
+      "title": "Maintenance application mobile : les coûts à prévoir",
+      "description": "Budget maintenance d'une app mobile : mises à jour, hébergement, support. Tout ce qu'il faut anticiper.",
+      "tags": ["Budget", "Maintenance", "Mobile"],
+      "keyword": "maintenance application mobile coût",
+      "publishedDate": "2026-02-23"
     }
   ],
-  "lastPublished": "2026-02-22"
+  "lastPublished": "2026-02-23"
 }
