@@ -1,13 +1,6 @@
 {
   "queue": [
     {
-      "slug": "refonte-application-mobile",
-      "title": "Refonte d'application mobile : quand et comment la faire ?",
-      "description": "Signes qu'il est temps de refondre votre app et méthodologie pour réussir la refonte.",
-      "tags": ["Mobile", "Refonte", "Guide"],
-      "keyword": "refonte application mobile"
-    },
-    {
       "slug": "monetiser-application-mobile",
       "title": "Monétiser son application mobile : les modèles qui marchent",
       "description": "Freemium, abonnement, publicité, achat in-app... Quel modèle de monétisation pour votre app ?",
@@ -202,6 +195,14 @@
       "description": "Budget maintenance d'une app mobile : mises à jour, hébergement, support. Tout ce qu'il faut anticiper.",
       "tags": ["Budget", "Maintenance", "Mobile"],
       "keyword": "maintenance application mobile coût",
+      "publishedDate": "2026-02-23"
+    },
+    {
+      "slug": "refonte-application-mobile",
+      "title": "Refonte d'application mobile : quand et comment la faire ?",
+      "description": "Signes qu'il est temps de refondre votre app et méthodologie pour réussir la refonte.",
+      "tags": ["Mobile", "Refonte", "Guide"],
+      "keyword": "refonte application mobile",
       "publishedDate": "2026-02-23"
     }
   ],
