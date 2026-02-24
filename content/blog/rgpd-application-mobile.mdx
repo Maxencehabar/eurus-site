@@ -1,0 +1,304 @@
+---
+title: "Application mobile et RGPD : guide de conformité"
+description: "Rendez votre application conforme au RGPD. Checklist et bonnes pratiques pour la protection des données."
+date: "2026-02-24"
+author: "Eurus"
+tags: ["RGPD", "Légal", "Mobile"]
+---
+
+Le RGPD. Quatre lettres qui font frémir les développeurs et les entrepreneurs depuis 2018. Et pourtant, sept ans après son entrée en vigueur, je vois encore des applications lancer sans la moindre considération pour la protection des données. Jusqu'au jour où la CNIL envoie une lettre. Là, ça devient urgent.
+
+Chez Eurus, on intègre la conformité RGPD dès le début de chaque projet. Pas parce qu'on adore la paperasse — personne n'aime ça. Mais parce qu'ajouter la conformité après coup coûte trois fois plus cher que de la prévoir dès le départ. Et surtout, parce que vos utilisateurs méritent que leurs données soient traitées correctement.
+
+Ce guide n'est pas un cours de droit. C'est un guide pratique, écrit par des développeurs pour des développeurs et des entrepreneurs. Ce qu'il faut faire, concrètement, pour que votre application mobile soit conforme.
+
+## Le RGPD en 2 minutes : ce que vous devez vraiment savoir
+
+Le Règlement Général sur la Protection des Données s'applique à vous si votre application traite des données personnelles de résidents européens. Point. Que votre entreprise soit en France, aux États-Unis ou en Australie, si vous avez des utilisateurs en Europe, vous êtes concerné.
+
+Une donnée personnelle, c'est toute information qui permet d'identifier une personne, directement ou indirectement. Le nom, évidemment. Mais aussi l'email, le numéro de téléphone, l'adresse IP, la localisation GPS, les identifiants publicitaires, les données de santé, les préférences alimentaires... La liste est longue.
+
+Le RGPD repose sur quelques principes fondamentaux. Le premier : la minimisation des données. Ne collectez que ce dont vous avez réellement besoin. Le deuxième : la finalité. Chaque donnée collectée doit avoir un but précis et documenté. Le troisième : le consentement. Pour la plupart des traitements, vous devez obtenir l'accord explicite de l'utilisateur.
+
+En fait, la philosophie est simple : traitez les données des autres comme vous aimeriez qu'on traite les vôtres.
+
+## Avant de coder : la conception privacy-first
+
+La conformité RGPD ne se règle pas avec un bandeau de cookies. Elle se pense dès la conception de l'application.
+
+### Cartographier vos traitements de données
+
+Avant d'écrire la première ligne de code, posez-vous ces questions. Quelles données allez-vous collecter ? Pour quoi faire exactement ? Combien de temps allez-vous les conserver ? Qui y aura accès ? Où seront-elles stockées ?
+
+Sur DrMilou, l'application de gestion vétérinaire qu'on a développée, cette réflexion a pris deux jours entiers. Les données de santé animale, les coordonnées des propriétaires, les historiques de rendez-vous, les factures — chaque catégorie de données a ses propres règles de conservation et d'accès. Les vétérinaires ont besoin d'accéder aux infos critiques en 2 clics max, pas 5. Mais ça ne signifie pas que tout le personnel doit voir toutes les données.
+
+Le résultat de cette cartographie, c'est ce qu'on appelle un registre des traitements. Document obligatoire pour toute entreprise de plus de 250 salariés, et fortement recommandé pour les autres.
+
+### Définir les bases légales
+
+Chaque traitement de données doit reposer sur une base légale. Le RGPD en prévoit six, mais pour une application mobile, vous en utiliserez principalement trois.
+
+Le consentement : l'utilisateur accepte explicitement que vous traitiez ses données pour un but précis. C'est la base légale pour les newsletters, le marketing personnalisé, le tracking analytics non essentiel.
+
+L'exécution d'un contrat : vous avez besoin des données pour fournir le service que l'utilisateur a demandé. Créer un compte nécessite un email. Livrer un colis nécessite une adresse. Pas besoin de consentement supplémentaire pour ça.
+
+L'intérêt légitime : vous avez un intérêt commercial raisonnable qui ne porte pas atteinte aux droits de l'utilisateur. La prévention de la fraude, par exemple. Mais attention, cette base légale est souvent sur-utilisée et mal comprise.
+
+## L'inscription et le consentement : les fondations
+
+L'écran d'inscription est le moment de vérité. C'est là que vous établissez la relation de confiance avec votre utilisateur. Ou que vous la sabotez.
+
+### Ce que la loi exige
+
+Le consentement doit être libre, spécifique, éclairé et univoque. Décomposons.
+
+Libre signifie que l'utilisateur ne doit pas être forcé. Refuser le tracking publicitaire ne doit pas empêcher d'utiliser l'app. Les dark patterns du type "Accepter tout" en gros bouton vert et "Personnaliser" en petit lien gris sont illégaux.
+
+Spécifique signifie que chaque finalité nécessite un consentement distinct. Un seul checkbox pour "newsletter + partage avec partenaires + analytics" ne suffit pas.
+
+Éclairé signifie que l'utilisateur doit comprendre ce à quoi il consent. Pas de jargon juridique incompréhensible. Un langage clair, accessible.
+
+Univoque signifie une action positive. Les cases pré-cochées sont interdites. Le scroll ou l'inaction ne valent pas consentement.
+
+### Comment faire en pratique
+
+Voici ce qu'on recommande chez Eurus pour l'écran de consentement.
+
+Un texte court qui explique ce que vous faites avec les données, en langage humain. Quelque chose comme : "Nous utilisons votre email pour vous connecter et vous envoyer des notifications importantes. Nous ne le partagerons jamais avec des tiers."
+
+Des toggles séparés pour les finalités optionnelles. Analytics, notifications marketing, personnalisation — chacun son toggle, chacun désactivé par défaut.
+
+Un lien vers la politique de confidentialité complète. Pas un popup de 50 pages, un lien vers une page dédiée qu'ils peuvent consulter s'ils le souhaitent.
+
+Un bouton "Continuer" qui ne s'active que lorsque les choix obligatoires sont faits (accepter les CGU, par exemple), sans forcer les options marketing.
+
+Sur Youdy, on a dû refaire 3 fois le système de notifications push avant de trouver le bon équilibre entre engagement et spam. La première version demandait l'autorisation trop tôt, avant que l'utilisateur ne comprenne la valeur de l'app. Résultat : 60% de refus. La version finale demande après la première interaction significative, avec une explication claire de ce qu'il va recevoir.
+
+## Les droits des utilisateurs : ce que vous devez implémenter
+
+Le RGPD donne aux utilisateurs des droits sur leurs données. Et vous devez leur permettre de les exercer facilement.
+
+### Droit d'accès
+
+L'utilisateur peut demander une copie de toutes les données que vous détenez sur lui. Vous avez 30 jours pour répondre. En pratique, prévoyez une fonctionnalité "Télécharger mes données" dans les paramètres du compte. Format lisible — JSON ou PDF, pas un dump SQL.
+
+### Droit de rectification
+
+L'utilisateur doit pouvoir corriger ses données. Prénom mal orthographié, ancienne adresse, numéro de téléphone changé. Un écran "Modifier mon profil" classique suffit généralement.
+
+### Droit à l'effacement (droit à l'oubli)
+
+L'utilisateur peut demander la suppression de ses données. Et vous devez le faire, sauf obligation légale contraire (factures à conserver 10 ans, par exemple).
+
+Chez Eurus, on évite les "désactivations" de compte qui gardent tout en base. Quand un utilisateur demande la suppression, on supprime réellement. On anonymise ce qu'on doit conserver pour des raisons légales ou statistiques.
+
+Concrètement : un bouton "Supprimer mon compte" dans les paramètres, avec une confirmation claire, et une suppression effective sous 30 jours maximum.
+
+### Droit à la portabilité
+
+L'utilisateur peut demander ses données dans un format réutilisable pour les transférer vers un autre service. Le JSON structuré est idéal.
+
+### Droit d'opposition
+
+L'utilisateur peut s'opposer au traitement de ses données à tout moment, notamment pour le marketing direct. Un lien de désabonnement dans chaque email, un toggle dans les paramètres.
+
+## Le stockage et la sécurité des données
+
+Collecter des données, c'est une responsabilité. Si vous les perdez ou si elles sont volées, les conséquences sont sérieuses — amendes, réputation, confiance brisée.
+
+### Où stocker les données
+
+Pour les applications mobiles, les données sensibles doivent être stockées côté serveur, pas sur l'appareil. Le téléphone peut être perdu, volé, rooté.
+
+Si vous utilisez un service cloud, assurez-vous qu'il est conforme au RGPD. Les grands providers (AWS, Google Cloud, Azure) proposent des régions européennes et des garanties de conformité. Vérifiez les clauses contractuelles.
+
+Attention aux transferts hors UE. Depuis l'invalidation du Privacy Shield, transférer des données vers les États-Unis nécessite des garanties supplémentaires. Les clauses contractuelles types (SCC) de la Commission européenne sont généralement acceptées.
+
+### Chiffrement
+
+Les données personnelles doivent être chiffrées, au repos et en transit.
+
+En transit : HTTPS obligatoire, partout, tout le temps. Pas d'exception.
+
+Au repos : chiffrement de la base de données. La plupart des solutions managées le proposent par défaut. Vérifiez que c'est activé.
+
+Les mots de passe ne sont jamais stockés en clair. Jamais. Hashage avec bcrypt, Argon2 ou équivalent. Si vous utilisez un framework moderne, c'est généralement géré pour vous.
+
+### Authentification et accès
+
+Qui peut accéder aux données dans votre équipe ? Le principe du moindre privilège s'applique : chaque personne n'a accès qu'aux données nécessaires à son travail.
+
+L'authentification à deux facteurs pour l'accès admin est un minimum. Les logs d'accès permettent de tracer qui a consulté quoi et quand.
+
+Un bug de timezone sur Youdy a fait que les utilisateurs au Canada recevaient leurs rappels à 3h du mat. Leçon : toujours stocker en UTC. Mais cette anecdote illustre aussi autre chose — les logs nous ont permis de diagnostiquer le problème rapidement parce qu'on savait exactement quels utilisateurs étaient affectés.
+
+## Les SDK et services tiers : le piège classique
+
+Votre application utilise probablement des services tiers. Analytics, crash reporting, notifications push, publicité, paiement. Chacun de ces services peut collecter des données personnelles.
+
+### Votre responsabilité
+
+Vous restez responsable des données traitées par vos sous-traitants. Si vous intégrez un SDK qui collecte des données sans consentement, c'est vous qui êtes en infraction.
+
+Avant d'intégrer un service tiers, vérifiez sa conformité RGPD. Les providers sérieux publient des DPA (Data Processing Agreements) et documentent leurs pratiques.
+
+### Les cas courants
+
+Firebase Analytics et Google Analytics collectent des données personnelles (identifiants d'appareil, adresses IP). Vous devez obtenir le consentement avant de les activer.
+
+Facebook SDK, Adjust, AppsFlyer — même chose. Le tracking publicitaire nécessite un consentement explicite.
+
+Les solutions de crash reporting comme Crashlytics peuvent collecter des informations techniques sur l'appareil. Moins sensible, mais à mentionner dans votre politique de confidentialité.
+
+Les SDK de paiement (Stripe, PayPal) sont généralement des responsables de traitement indépendants pour les données de paiement. Mais vérifiez les contrats.
+
+### L'App Tracking Transparency d'Apple
+
+Depuis iOS 14.5, Apple impose un popup système pour tout tracking cross-app ou cross-website. Le fameux "Demander à l'app de ne pas me suivre". C'est une surcouche au RGPD, mais les deux s'articulent.
+
+En pratique : si l'utilisateur refuse le tracking iOS, ne déclenchez pas non plus vos SDK analytics/publicitaires, même si vous aviez obtenu un consentement RGPD auparavant. L'utilisateur a exprimé un refus, respectez-le.
+
+## La politique de confidentialité : pas juste un document légal
+
+Votre politique de confidentialité est obligatoire et doit être accessible depuis l'application. Mais au-delà de l'obligation, c'est un outil de transparence.
+
+### Ce qu'elle doit contenir
+
+L'identité du responsable de traitement (vous), avec une adresse de contact.
+
+Les catégories de données collectées et les finalités pour chacune.
+
+Les bases légales pour chaque traitement.
+
+Les destinataires des données (vos sous-traitants, notamment).
+
+Les transferts hors UE éventuels et leurs garanties.
+
+Les durées de conservation par catégorie de données.
+
+Les droits des utilisateurs et comment les exercer.
+
+Les coordonnées du DPO si vous en avez un, ou un point de contact pour les questions vie privée.
+
+### Comment la rédiger
+
+Évitez le jargon juridique abscons. Oui, c'est un document légal, mais il doit être compréhensible par un non-juriste.
+
+Structurez clairement avec des titres. Personne ne lit un bloc de texte de 15 pages.
+
+Soyez exhaustif mais concis. Chaque information importante doit être là, mais pas noyée dans du verbiage.
+
+Des générateurs de politique de confidentialité existent, mais personnalisez le résultat. Un template générique ne couvrira pas vos spécificités.
+
+## Les notifications et communications
+
+Les notifications push et les emails marketing sont soumis à des règles strictes.
+
+### Notifications push
+
+Le consentement est à deux niveaux : le consentement système (autoriser les notifications dans iOS/Android) et le consentement RGPD si les notifications sont marketing.
+
+Pour les notifications de service (votre commande est expédiée, rendez-vous demain), pas besoin de consentement marketing — c'est l'exécution du contrat.
+
+Pour les notifications promotionnelles, il vous faut le consentement explicite de l'utilisateur, au-delà du simple "autoriser les notifications" du système.
+
+Prévoyez des paramètres granulaires : l'utilisateur devrait pouvoir choisir les types de notifications qu'il veut recevoir.
+
+### Emails
+
+L'email marketing nécessite un consentement opt-in. Le double opt-in (email de confirmation) n'est pas obligatoire légalement, mais fortement recommandé pour prouver le consentement.
+
+Chaque email doit contenir un lien de désabonnement fonctionnel et simple. Un clic, pas un formulaire de 10 questions sur les raisons du départ.
+
+Conservez la preuve du consentement : date, heure, adresse IP, version des CGU acceptées.
+
+## Les données sensibles : attention particulière
+
+Le RGPD définit des catégories de données particulièrement sensibles qui nécessitent des protections renforcées.
+
+Les données de santé : si votre app touche au médical, au bien-être, au fitness avec données physiologiques.
+
+Les données biométriques : reconnaissance faciale, empreintes digitales utilisées pour l'identification.
+
+Les opinions politiques, les convictions religieuses, l'appartenance syndicale.
+
+Les données sur l'orientation sexuelle.
+
+L'origine raciale ou ethnique.
+
+Pour ces données, le consentement explicite est quasiment toujours nécessaire, et les mesures de sécurité doivent être renforcées.
+
+Les cabinets vétérinaires ont des contraintes qu'on n'imaginait pas : connexion internet instable, PC sous Windows XP, urgences qui arrivent pendant qu'on tape une ordonnance. Sur DrMilou, on ne traite pas de données de santé humaine, mais les données des animaux et de leurs propriétaires exigent quand même une attention particulière.
+
+## Les mineurs : règles spécifiques
+
+Si votre application s'adresse aux moins de 16 ans (15 ans en France), le consentement des parents ou tuteurs est requis pour la collecte de données personnelles.
+
+En pratique, c'est compliqué. Vérifier l'identité d'un parent à distance n'est pas trivial. Certaines apps demandent une adresse email parentale pour validation. D'autres excluent simplement les mineurs en demandant l'âge à l'inscription.
+
+Si votre app ne cible pas les mineurs, incluez une clause dans vos CGU indiquant qu'elle est réservée aux plus de 16 ans.
+
+## La violation de données : anticiper le pire
+
+Une violation de données (data breach), c'est tout incident de sécurité affectant des données personnelles : accès non autorisé, perte, destruction, altération.
+
+### L'obligation de notification
+
+Si une violation présente un risque pour les droits et libertés des personnes, vous devez notifier la CNIL sous 72 heures.
+
+Si le risque est élevé, vous devez également notifier les personnes concernées.
+
+### Préparez-vous avant que ça arrive
+
+Ayez une procédure documentée de gestion des incidents. Qui fait quoi, dans quel ordre, avec quels outils.
+
+Testez vos sauvegardes régulièrement. Une sauvegarde qu'on n'a jamais restaurée n'est pas une sauvegarde.
+
+Ayez les coordonnées de la CNIL sous la main. Le formulaire de notification est en ligne.
+
+## La checklist pratique RGPD
+
+Pour résumer, voici ce que vous devez avoir avant de lancer votre application.
+
+Un registre des traitements documenté.
+
+Des bases légales identifiées pour chaque traitement.
+
+Une politique de confidentialité accessible et compréhensible.
+
+Des écrans de consentement conformes (pas de cases pré-cochées, options claires).
+
+Les droits utilisateurs implémentés (accès, rectification, suppression, portabilité).
+
+Le chiffrement des données sensibles (transit et repos).
+
+Des contrats avec vos sous-traitants (DPA).
+
+Une procédure de gestion des violations de données.
+
+Une durée de conservation définie pour chaque catégorie de données.
+
+## FAQ : Questions fréquentes sur le RGPD mobile
+
+**Mon application ne collecte que des emails, suis-je concerné ?**
+Oui. L'email est une donnée personnelle. Vous devez informer l'utilisateur de ce que vous en faites, obtenir son consentement pour le marketing, et lui permettre de se désinscrire.
+
+**J'utilise Firebase, est-ce conforme au RGPD ?**
+Firebase propose des options conformes, mais vous devez les configurer correctement. Utilisez les régions européennes, signez le DPA avec Google, et n'activez Analytics qu'après consentement.
+
+**Dois-je nommer un DPO (Délégué à la Protection des Données) ?**
+C'est obligatoire si vous traitez des données sensibles à grande échelle, ou si le suivi des personnes est votre activité principale. Pour la plupart des applications, ce n'est pas requis mais peut être utile.
+
+**Les amendes RGPD sont-elles vraiment appliquées ?**
+Oui. La CNIL inflige régulièrement des amendes, y compris à des PME. Les montants vont de quelques milliers à plusieurs millions d'euros selon la gravité.
+
+**Puis-je utiliser les données pour entraîner une IA ?**
+L'entraînement d'un modèle IA sur des données personnelles nécessite généralement un consentement spécifique ou une anonymisation complète des données.
+
+## Besoin d'aide pour votre conformité ?
+
+La conformité RGPD n'est pas un frein à l'innovation — c'est une contrainte qui pousse à mieux concevoir. Les applications qui respectent leurs utilisateurs construisent une relation de confiance durable.
+
+Chez Eurus, on intègre ces considérations dès le premier jour de chaque projet. Si vous avez un projet d'application et des questions sur la conformité, on peut en discuter.
+
+[Contactez-nous](/contact) pour un échange sur votre projet.

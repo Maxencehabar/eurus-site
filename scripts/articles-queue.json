@@ -1,13 +1,6 @@
 {
   "queue": [
     {
-      "slug": "rgpd-application-mobile",
-      "title": "Application mobile et RGPD : guide de conformité",
-      "description": "Rendez votre application conforme au RGPD. Checklist et bonnes pratiques pour la protection des données.",
-      "tags": ["RGPD", "Légal", "Mobile"],
-      "keyword": "RGPD application mobile"
-    },
-    {
       "slug": "aso-referencement-app-store",
       "title": "ASO : référencer son application sur les stores",
       "description": "Optimisez la visibilité de votre app sur l'App Store et Google Play. Guide ASO complet.",
@@ -204,6 +197,14 @@
       "description": "Freemium, abonnement, publicité, achat in-app... Quel modèle de monétisation pour votre app ?",
       "tags": ["Business", "Monétisation", "Mobile"],
       "keyword": "monétisation application mobile",
+      "publishedDate": "2026-02-24"
+    },
+    {
+      "slug": "rgpd-application-mobile",
+      "title": "Application mobile et RGPD : guide de conformité",
+      "description": "Rendez votre application conforme au RGPD. Checklist et bonnes pratiques pour la protection des données.",
+      "tags": ["RGPD", "Légal", "Mobile"],
+      "keyword": "RGPD application mobile",
       "publishedDate": "2026-02-24"
     }
   ],
