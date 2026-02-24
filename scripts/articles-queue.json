@@ -1,13 +1,6 @@
 {
   "queue": [
     {
-      "slug": "monetiser-application-mobile",
-      "title": "Monétiser son application mobile : les modèles qui marchent",
-      "description": "Freemium, abonnement, publicité, achat in-app... Quel modèle de monétisation pour votre app ?",
-      "tags": ["Business", "Monétisation", "Mobile"],
-      "keyword": "monétisation application mobile"
-    },
-    {
       "slug": "rgpd-application-mobile",
       "title": "Application mobile et RGPD : guide de conformité",
       "description": "Rendez votre application conforme au RGPD. Checklist et bonnes pratiques pour la protection des données.",
@@ -204,7 +197,15 @@
       "tags": ["Mobile", "Refonte", "Guide"],
       "keyword": "refonte application mobile",
       "publishedDate": "2026-02-23"
+    },
+    {
+      "slug": "monetiser-application-mobile",
+      "title": "Monétiser son application mobile : les modèles qui marchent",
+      "description": "Freemium, abonnement, publicité, achat in-app... Quel modèle de monétisation pour votre app ?",
+      "tags": ["Business", "Monétisation", "Mobile"],
+      "keyword": "monétisation application mobile",
+      "publishedDate": "2026-02-24"
     }
   ],
-  "lastPublished": "2026-02-23"
+  "lastPublished": "2026-02-24"
 }
