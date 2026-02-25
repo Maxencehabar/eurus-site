@@ -1,13 +1,6 @@
 {
   "queue": [
     {
-      "slug": "aso-referencement-app-store",
-      "title": "ASO : référencer son application sur les stores",
-      "description": "Optimisez la visibilité de votre app sur l'App Store et Google Play. Guide ASO complet.",
-      "tags": ["ASO", "Marketing", "Mobile"],
-      "keyword": "ASO référencement app store"
-    },
-    {
       "slug": "kotlin-vs-swift-2025",
       "title": "Kotlin vs Swift : développement natif en 2025",
       "description": "Comparatif Kotlin (Android) vs Swift (iOS) pour le développement natif. Performances, syntaxe, écosystème.",
@@ -206,7 +199,15 @@
       "tags": ["RGPD", "Légal", "Mobile"],
       "keyword": "RGPD application mobile",
       "publishedDate": "2026-02-24"
+    },
+    {
+      "slug": "aso-referencement-app-store",
+      "title": "ASO : référencer son application sur les stores",
+      "description": "Optimisez la visibilité de votre app sur l'App Store et Google Play. Guide ASO complet.",
+      "tags": ["ASO", "Marketing", "Mobile"],
+      "keyword": "ASO référencement app store",
+      "publishedDate": "2026-02-25"
     }
   ],
-  "lastPublished": "2026-02-24"
+  "lastPublished": "2026-02-25"
 }
