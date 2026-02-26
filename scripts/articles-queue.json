@@ -1,13 +1,6 @@
 {
   "queue": [
     {
-      "slug": "application-vs-site-responsive",
-      "title": "Application mobile vs site responsive : que choisir ?",
-      "description": "Avez-vous vraiment besoin d'une app ou un site responsive suffit ? Critères de décision.",
-      "tags": ["Mobile", "Web", "Comparatif"],
-      "keyword": "application vs site responsive"
-    },
-    {
       "slug": "meilleures-technologies-app-mobile-2025",
       "title": "Les meilleures technologies pour une app mobile en 2025",
       "description": "Flutter, React Native, Swift, Kotlin... Panorama des technologies mobile en 2025.",
@@ -208,6 +201,14 @@
       "description": "Bubble, Adalo, Glide vs développement sur mesure. Quand utiliser le no-code et quand passer au custom ?",
       "tags": ["No-code", "Comparatif", "Guide"],
       "keyword": "no-code vs développement",
+      "publishedDate": "2026-02-26"
+    },
+    {
+      "slug": "application-vs-site-responsive",
+      "title": "Application mobile vs site responsive : que choisir ?",
+      "description": "Avez-vous vraiment besoin d'une app ou un site responsive suffit ? Critères de décision.",
+      "tags": ["Mobile", "Web", "Comparatif"],
+      "keyword": "application vs site responsive",
       "publishedDate": "2026-02-26"
     }
   ],
