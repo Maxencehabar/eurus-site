@@ -1,13 +1,6 @@
 {
   "queue": [
     {
-      "slug": "no-code-vs-developpement-custom",
-      "title": "No-code vs développement custom : avantages et limites",
-      "description": "Bubble, Adalo, Glide vs développement sur mesure. Quand utiliser le no-code et quand passer au custom ?",
-      "tags": ["No-code", "Comparatif", "Guide"],
-      "keyword": "no-code vs développement"
-    },
-    {
       "slug": "application-vs-site-responsive",
       "title": "Application mobile vs site responsive : que choisir ?",
       "description": "Avez-vous vraiment besoin d'une app ou un site responsive suffit ? Critères de décision.",
@@ -208,7 +201,15 @@
       "tags": ["Technique", "Natif", "Comparatif"],
       "keyword": "Kotlin vs Swift",
       "publishedDate": "2026-02-25"
+    },
+    {
+      "slug": "no-code-vs-developpement-custom",
+      "title": "No-code vs développement custom : avantages et limites",
+      "description": "Bubble, Adalo, Glide vs développement sur mesure. Quand utiliser le no-code et quand passer au custom ?",
+      "tags": ["No-code", "Comparatif", "Guide"],
+      "keyword": "no-code vs développement",
+      "publishedDate": "2026-02-26"
     }
   ],
-  "lastPublished": "2026-02-25"
+  "lastPublished": "2026-02-26"
 }
