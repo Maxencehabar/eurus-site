@@ -1,13 +1,6 @@
 {
   "queue": [
     {
-      "slug": "mvp-levee-de-fonds",
-      "title": "Lever des fonds avec un MVP : ce qu'attendent les investisseurs",
-      "description": "Comment présenter votre MVP aux investisseurs. Métriques clés et erreurs à éviter.",
-      "tags": ["Startup", "MVP", "Investissement"],
-      "keyword": "MVP levée de fonds"
-    },
-    {
       "slug": "analytics-application-mobile",
       "title": "Analytics application mobile : mesurer le succès de votre app",
       "description": "KPIs essentiels et outils d'analytics pour piloter la croissance de votre application.",
@@ -210,6 +203,14 @@
       "description": "Flutter, React Native, Swift, Kotlin... Panorama des technologies mobile en 2025.",
       "tags": ["Technique", "Mobile", "Tendances"],
       "keyword": "technologie application mobile 2025",
+      "publishedDate": "2026-02-27"
+    },
+    {
+      "slug": "mvp-levee-de-fonds",
+      "title": "Lever des fonds avec un MVP : ce qu'attendent les investisseurs",
+      "description": "Comment présenter votre MVP aux investisseurs. Métriques clés et erreurs à éviter.",
+      "tags": ["Startup", "MVP", "Investissement"],
+      "keyword": "MVP levée de fonds",
       "publishedDate": "2026-02-27"
     }
   ],
