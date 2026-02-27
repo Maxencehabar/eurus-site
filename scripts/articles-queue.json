@@ -1,13 +1,6 @@
 {
   "queue": [
     {
-      "slug": "meilleures-technologies-app-mobile-2025",
-      "title": "Les meilleures technologies pour une app mobile en 2025",
-      "description": "Flutter, React Native, Swift, Kotlin... Panorama des technologies mobile en 2025.",
-      "tags": ["Technique", "Mobile", "Tendances"],
-      "keyword": "technologie application mobile 2025"
-    },
-    {
       "slug": "mvp-levee-de-fonds",
       "title": "Lever des fonds avec un MVP : ce qu'attendent les investisseurs",
       "description": "Comment présenter votre MVP aux investisseurs. Métriques clés et erreurs à éviter.",
@@ -210,7 +203,15 @@
       "tags": ["Mobile", "Web", "Comparatif"],
       "keyword": "application vs site responsive",
       "publishedDate": "2026-02-26"
+    },
+    {
+      "slug": "meilleures-technologies-app-mobile-2025",
+      "title": "Les meilleures technologies pour une app mobile en 2025",
+      "description": "Flutter, React Native, Swift, Kotlin... Panorama des technologies mobile en 2025.",
+      "tags": ["Technique", "Mobile", "Tendances"],
+      "keyword": "technologie application mobile 2025",
+      "publishedDate": "2026-02-27"
     }
   ],
-  "lastPublished": "2026-02-26"
+  "lastPublished": "2026-02-27"
 }
