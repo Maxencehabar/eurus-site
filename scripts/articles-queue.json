@@ -1,13 +1,6 @@
 {
   "queue": [
     {
-      "slug": "performance-application-mobile",
-      "title": "Performance application mobile : optimiser la vitesse",
-      "description": "Techniques d'optimisation pour une app rapide et fluide. Temps de chargement, mémoire, batterie.",
-      "tags": ["Technique", "Performance", "Mobile"],
-      "keyword": "performance application mobile"
-    },
-    {
       "slug": "mise-a-jour-application-stores",
       "title": "Mettre à jour son application : guide iOS et Android",
       "description": "Process de mise à jour sur l'App Store et Google Play. Versioning, review, déploiement.",
@@ -212,6 +205,14 @@
       "description": "KPIs essentiels et outils d'analytics pour piloter la croissance de votre application.",
       "tags": ["Analytics", "Mobile", "KPIs"],
       "keyword": "analytics application mobile",
+      "publishedDate": "2026-02-28"
+    },
+    {
+      "slug": "performance-application-mobile",
+      "title": "Performance application mobile : optimiser la vitesse",
+      "description": "Techniques d'optimisation pour une app rapide et fluide. Temps de chargement, mémoire, batterie.",
+      "tags": ["Technique", "Performance", "Mobile"],
+      "keyword": "performance application mobile",
       "publishedDate": "2026-02-28"
     }
   ],

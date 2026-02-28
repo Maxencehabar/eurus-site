@@ -1,0 +1,193 @@
+---
+title: "Performance application mobile : optimiser la vitesse"
+description: "Techniques d'optimisation pour une app rapide et fluide. Temps de chargement, mémoire, batterie."
+date: "2026-02-28"
+author: "Eurus"
+tags: ["Technique", "Performance", "Mobile"]
+---
+
+# Performance application mobile : optimiser la vitesse
+
+Une app lente, c'est une app morte. Pas de nuance ici. Les utilisateurs ont été conditionnés par Instagram, TikTok, et toutes ces apps qui répondent instantanément. Trois secondes de chargement et ils partent. Définitivement.
+
+J'ai vu des projets techniquement brillants échouer parce que personne n'avait pensé à la performance. Des architectures élégantes, du code propre, des features innovantes — mais 4 secondes pour afficher l'écran principal. Game over.
+
+Chez Eurus, la performance n'est pas un "nice to have" qu'on optimise à la fin. C'est une contrainte qu'on pose dès le jour 1. Parce que rattraper une app lente après coup, c'est souvent plus coûteux que de la refaire.
+
+## Pourquoi votre app est lente (et vous ne le savez probablement pas)
+
+Le premier problème, c'est que les développeurs testent sur des conditions idéales. MacBook Pro dernier cri, connexion fibre, iPhone 15 Pro. Tout va vite. Tout est fluide.
+
+Sauf que vos vrais utilisateurs, eux, sont sur un Android milieu de gamme de 2022, dans le métro, avec une connexion 4G intermittente. Et là, votre app qui semblait rapide devient inutilisable.
+
+Sur DrMilou, une application pour cabinets vétérinaires qu'on a développée, on a découvert cette réalité de façon brutale. Les cabinets vétérinaires ont des contraintes qu'on n'imaginait pas : connexion internet instable, PC sous Windows XP parfois, et surtout des urgences qui arrivent pendant qu'on tape une ordonnance. L'app devait être réactive même dans les pires conditions. Pas le choix.
+
+Du coup, on a changé notre façon de tester. On bride artificiellement le réseau. On teste sur des devices d'entrée de gamme. On simule des conditions dégradées. Et là, les vrais problèmes apparaissent.
+
+## Les métriques de performance qui comptent
+
+Avant d'optimiser, il faut mesurer. Mais mesurer quoi exactement ?
+
+### Time to Interactive (TTI)
+
+C'est le temps entre le lancement de l'app et le moment où l'utilisateur peut réellement interagir. Pas juste voir un écran — interagir. Taper, scroller, cliquer.
+
+Un splash screen qui dure 3 secondes pendant que l'app charge en arrière-plan, ça ne compte pas comme "rapide". L'utilisateur attend. Il s'impatiente.
+
+Notre cible chez Eurus : TTI sous les 2 secondes sur un device milieu de gamme. C'est ambitieux, mais atteignable avec les bonnes pratiques.
+
+### Frame Rate et jank
+
+Le frame rate, c'est le nombre d'images par seconde que votre app affiche. Sur mobile, la cible est 60 fps — soit une nouvelle image toutes les 16 millisecondes. Quand l'app n'arrive pas à tenir ce rythme, vous avez du "jank" : ces micro-saccades qui donnent une impression de lenteur même si le contenu charge vite.
+
+Le jank est vicieux parce qu'il n'est pas toujours visible dans les métriques classiques. Votre temps de chargement peut être excellent, mais si le scroll est saccadé, l'utilisateur percevra l'app comme lente.
+
+### Temps de réponse des interactions
+
+Quand l'utilisateur tape sur un bouton, combien de temps avant qu'il se passe quelque chose ? Idéalement, moins de 100ms pour un feedback visuel (le bouton change d'état), moins de 1 seconde pour l'action complète.
+
+Sur Youdy, une application sociale qu'on a construite, on a intégré un assistant IA. La première version prenait 2 à 3 secondes pour répondre — techniquement correct, mais l'expérience était frustrante. On a appris que les utilisateurs préfèrent des réponses imparfaites mais rapides plutôt que parfaites mais lentes. Du coup, on a implémenté du streaming : la réponse s'affiche progressivement, mot par mot. Techniquement, le temps total est le même. Perceptuellement, c'est instantané.
+
+### Consommation mémoire et batterie
+
+Une app qui vide la batterie en 2 heures ou qui fait chauffer le téléphone, c'est une app qui sera désinstallée. Ces métriques sont souvent négligées, mais elles impactent directement la rétention.
+
+## Les optimisations qui font vraiment la différence
+
+### Optimiser le cold start
+
+Le cold start, c'est le premier lancement de l'app après qu'elle a été complètement fermée. C'est le moment le plus critique — et souvent le plus lent.
+
+Qu'est-ce qui se passe au cold start ? L'OS charge le binaire de l'app. Le runtime s'initialise. Vos dépendances se chargent. Votre code d'initialisation s'exécute. Et seulement après, l'écran s'affiche.
+
+Chaque milliseconde compte. Voici ce qu'on fait systématiquement chez Eurus.
+
+On retarde tout ce qui n'est pas critique. Analytics, tracking, préchargement de données secondaires — tout ça peut attendre que l'écran principal soit affiché. L'utilisateur ne voit pas la différence, mais le TTI chute drastiquement.
+
+On évite les initialisations synchrones. Si vous devez charger des données au démarrage, faites-le en arrière-plan pendant que l'UI s'affiche. Un skeleton screen ou un placeholder, c'est mieux qu'un écran blanc.
+
+On surveille les dépendances. Chaque librairie que vous ajoutez a un coût au démarrage. Certaines sont plus lourdes que d'autres. On a vu des apps où 50% du temps de cold start venait d'une seule dépendance mal optimisée.
+
+### Optimiser les images
+
+Les images, c'est souvent 60 à 80% du poids d'une app. Et pourtant, c'est là qu'on trouve le plus de gâchis.
+
+Redimensionnez côté serveur. Envoyer une image 4K pour l'afficher dans un thumbnail de 100x100 pixels, c'est du gaspillage pur. L'idéal est de générer plusieurs tailles côté serveur et de servir la bonne selon le contexte.
+
+Utilisez les bons formats. WebP est généralement 25 à 30% plus léger que JPEG à qualité équivalente. AVIF encore plus, mais le support est moins universel. Pour les icônes et illustrations, SVG quand c'est possible.
+
+Lazy loading systématique. Les images hors écran n'ont pas besoin d'être chargées immédiatement. Chargez-les au fur et à mesure que l'utilisateur scrolle.
+
+Cache agressif. Une image chargée une fois ne devrait pas être rechargée. Implémentez un cache disque avec une politique d'expiration raisonnable.
+
+Sur Getaway, une app de voyage qu'on a développée en Flutter, le plus gros challenge était de gérer les photos offline quand les voyageurs sont dans des zones sans réseau. On a implémenté un système de préchargement intelligent : l'app télécharge les photos des prochaines étapes du voyage quand l'utilisateur est en WiFi, et les stocke localement. Résultat : l'app reste fluide même au milieu de nulle part.
+
+### Optimiser les requêtes réseau
+
+Le réseau est souvent le goulot d'étranglement principal, surtout sur mobile où la latence est élevée et la connexion instable.
+
+Regroupez vos requêtes. Dix petites requêtes, c'est plus lent qu'une grosse. Chaque requête a un overhead de connexion, de handshake TLS, d'établissement de session. Quand c'est possible, agrégez côté serveur.
+
+Implémentez du caching intelligent. Pas juste un cache HTTP basique — un vrai cache applicatif qui sait quelles données sont susceptibles de changer et lesquelles peuvent être conservées longtemps.
+
+Utilisez la pagination. Charger 1000 éléments d'un coup quand l'utilisateur n'en verra que 20 à l'écran, c'est du gaspillage. Chargez par pages, anticipez le scroll.
+
+Prévoyez le mode offline. Pas forcément un mode offline complet, mais au minimum la capacité d'afficher les dernières données connues quand le réseau est indisponible. Rien de pire qu'une app qui affiche une erreur parce qu'elle ne peut pas joindre le serveur pendant 2 secondes.
+
+### Optimiser le backend (oui, c'est aussi votre problème)
+
+Une app mobile rapide avec un backend lent, ça n'existe pas. Si votre API met 3 secondes à répondre, votre app mettra au minimum 3 secondes — souvent plus avec la latence réseau.
+
+On a migré le backend DrMilou de PHP vers Java. Trois mois de travail, mais les temps de réponse ont été divisés par 4. L'app n'a pas changé d'une ligne côté mobile, mais les utilisateurs ont immédiatement senti la différence.
+
+Ce n'est pas toujours une question de langage. C'est souvent une question de requêtes base de données mal optimisées, d'absence de cache, d'architecture qui ne scale pas. Mais le résultat est le même : une app qui rame.
+
+## Les erreurs classiques à éviter
+
+### Le sur-engineering prématuré
+
+J'ai vu des équipes passer des semaines à optimiser des parties de l'app qui n'en avaient pas besoin. Micro-optimisations de code, architecture complexe pour gérer des cas qui n'arrivent jamais.
+
+La règle : mesurez d'abord, optimisez ensuite. Les profilers existent pour une raison. Utilisez-les pour identifier les vrais bottlenecks avant de vous lancer dans des optimisations aveugles.
+
+### Ignorer les devices low-end
+
+Votre cible marketing dit "18-35 ans urbains CSP+", donc vous testez sur iPhone 14. Sauf que même dans cette cible, beaucoup utilisent des Android milieu de gamme ou des iPhone plus anciens.
+
+Chez Eurus, on garde toujours un ou deux devices d'entrée de gamme pour les tests. Pas pour être exhaustif — pour rester honnête sur les performances réelles.
+
+### Sacrifier l'UX pour la performance
+
+L'inverse existe aussi. Des apps ultra-rapides mais avec une expérience dégradée. Pas d'animations parce que "ça ralentit". Pas de feedback visuel parce que "ça consomme des ressources". Une UI minimaliste à l'extrême parce que "chaque pixel compte".
+
+La performance est un moyen, pas une fin. Le but est une expérience utilisateur fluide, pas des métriques techniques parfaites. Une animation bien faite à 60fps améliore la perception de rapidité, même si elle ajoute techniquement quelques millisecondes.
+
+### Ne pas monitorer en production
+
+Les performances en développement et en production, ce n'est pas la même chose. Vos serveurs de dev ne sont pas sous la même charge que la prod. Vos utilisateurs de test ne se comportent pas comme les vrais utilisateurs.
+
+Mettez en place du monitoring de performance dès le lancement. Firebase Performance, New Relic, Datadog — peu importe l'outil, l'important est d'avoir de la visibilité sur ce qui se passe réellement.
+
+## Checklist performance avant lancement
+
+Avant chaque mise en production chez Eurus, on vérifie systématiquement ces points.
+
+Le cold start est-il sous les 3 secondes sur un device milieu de gamme ? Si non, on identifie et on corrige avant de lancer.
+
+Les écrans principaux chargent-ils en moins de 2 secondes avec une connexion 3G ? C'est notre benchmark réseau. Pas la fibre du bureau — la 3G du métro.
+
+Le scroll est-il fluide à 60fps ? On teste avec les outils de profiling intégrés aux SDKs. Le moindre jank visible est un bug à corriger.
+
+L'app fonctionne-t-elle en mode dégradé sans réseau ? Au minimum, elle doit afficher les dernières données connues, pas crasher ou afficher une erreur.
+
+La consommation batterie est-elle raisonnable ? On mesure sur une session typique. Si l'app consomme plus de 5% de batterie pour une utilisation normale de 10 minutes, il y a un problème.
+
+Les images sont-elles optimisées ? Bons formats, bonnes tailles, lazy loading, cache.
+
+Le backend répond-il en moins de 500ms sur les endpoints critiques ? Si non, c'est souvent là qu'il faut chercher les gains les plus importants.
+
+## Les outils qu'on utilise
+
+Pour profiler les apps natives, Xcode Instruments pour iOS et Android Studio Profiler pour Android restent les références. Ils permettent de voir exactement ce qui prend du temps, quelle mémoire est utilisée, où se situent les bottlenecks.
+
+Pour Flutter, DevTools est excellent. On y voit les rebuilds de widgets, les problèmes de performance GPU, la timeline détaillée de chaque frame.
+
+Pour le monitoring en production, Firebase Performance Monitoring est notre choix par défaut. Gratuit, bien intégré, et suffisant pour la plupart des cas. Pour des besoins plus avancés, on monte sur New Relic ou Datadog.
+
+Pour tester les conditions réseau dégradées, Charles Proxy sur desktop, ou simplement les options de throttling intégrées aux outils de développement mobile.
+
+## Et après ?
+
+La performance n'est jamais "terminée". Chaque nouvelle feature, chaque mise à jour de dépendance, chaque changement peut introduire des régressions. C'est un travail continu.
+
+Notre règle d'or : un MVP en 6 semaines max. Mais un MVP rapide. Parce que lancer vite ne sert à rien si les utilisateurs partent après 3 secondes d'attente.
+
+Si votre app actuelle souffre de problèmes de performance, ou si vous voulez partir sur de bonnes bases pour un nouveau projet, parlons-en. Chez Eurus, on construit des apps qui ne font pas attendre.
+
+---
+
+## FAQ
+
+### Quel est le temps de chargement acceptable pour une app mobile ?
+
+L'idéal est un Time to Interactive sous les 2 secondes. Au-delà de 3 secondes, vous commencez à perdre des utilisateurs de façon significative. Google a montré que chaque seconde supplémentaire de chargement augmente le taux de rebond de 20%.
+
+### Comment tester la performance de mon app sur des connexions lentes ?
+
+Utilisez les outils de throttling intégrés. Sur iOS, vous pouvez activer le Network Link Conditioner dans les paramètres développeur. Sur Android, les options développeur permettent de simuler différentes conditions réseau. Charles Proxy permet aussi de créer des profils de throttling personnalisés.
+
+### Flutter ou React Native, lequel est le plus performant ?
+
+Flutter a généralement un léger avantage en performance pure grâce à sa compilation en code natif et son moteur de rendu propre. Mais la différence est souvent négligeable pour des apps bien optimisées. Le choix devrait se faire sur d'autres critères : écosystème, compétences de l'équipe, besoins spécifiques du projet.
+
+### Comment réduire la taille de mon app mobile ?
+
+Supprimez les assets inutilisés, utilisez le tree shaking pour éliminer le code mort, compressez les images, évitez les dépendances lourdes quand des alternatives légères existent. Sur Android, utilisez les App Bundles pour ne livrer que le code nécessaire à chaque device.
+
+### La performance impacte-t-elle le référencement sur les stores ?
+
+Indirectement, oui. Les stores prennent en compte le taux de désinstallation et les avis utilisateurs. Une app lente génère plus de désinstallations et d'avis négatifs, ce qui impacte négativement son classement. De plus, Google a commencé à intégrer des signaux de performance dans ses critères de ranking pour le Play Store.
+
+---
+
+*Vous voulez une app qui ne fait pas attendre vos utilisateurs ? [Contactez l'équipe Eurus](/contact) — la performance est dans notre ADN.*
