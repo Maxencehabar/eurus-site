@@ -1,13 +1,6 @@
 {
   "queue": [
     {
-      "slug": "analytics-application-mobile",
-      "title": "Analytics application mobile : mesurer le succès de votre app",
-      "description": "KPIs essentiels et outils d'analytics pour piloter la croissance de votre application.",
-      "tags": ["Analytics", "Mobile", "KPIs"],
-      "keyword": "analytics application mobile"
-    },
-    {
       "slug": "performance-application-mobile",
       "title": "Performance application mobile : optimiser la vitesse",
       "description": "Techniques d'optimisation pour une app rapide et fluide. Temps de chargement, mémoire, batterie.",
@@ -212,7 +205,15 @@
       "tags": ["Startup", "MVP", "Investissement"],
       "keyword": "MVP levée de fonds",
       "publishedDate": "2026-02-27"
+    },
+    {
+      "slug": "analytics-application-mobile",
+      "title": "Analytics application mobile : mesurer le succès de votre app",
+      "description": "KPIs essentiels et outils d'analytics pour piloter la croissance de votre application.",
+      "tags": ["Analytics", "Mobile", "KPIs"],
+      "keyword": "analytics application mobile",
+      "publishedDate": "2026-02-28"
     }
   ],
-  "lastPublished": "2026-02-27"
+  "lastPublished": "2026-02-28"
 }

@@ -1,0 +1,191 @@
+---
+title: "Analytics application mobile : mesurer le succès de votre app"
+description: "KPIs essentiels et outils d'analytics pour piloter la croissance de votre application."
+date: "2026-02-28"
+author: "Eurus"
+tags: ["Analytics", "Mobile", "KPIs"]
+---
+
+# Analytics application mobile : mesurer le succès de votre app
+
+Votre application est en ligne. Les téléchargements arrivent. Mais comment savoir si elle fonctionne vraiment ? Et surtout, comment savoir ce qu'il faut améliorer ?
+
+J'ai vu trop de fondateurs se focaliser sur les mauvaises métriques. Nombre de téléchargements. Notes sur les stores. Vanité, vanité. Ces chiffres font plaisir à l'ego, mais ils ne racontent pas l'histoire complète. Ce qui compte, c'est ce que font les utilisateurs une fois qu'ils ont installé votre app. Est-ce qu'ils reviennent ? Est-ce qu'ils accomplissent ce pour quoi ils l'ont téléchargée ?
+
+Chez Eurus, on a accompagné des dizaines de projets. Certains avec des milliers de téléchargements qui n'ont jamais décollé. D'autres avec moins de downloads mais une rétention de folie. La différence ? Une culture de la data dès le jour 1.
+
+## Pourquoi la plupart des apps échouent à mesurer ce qui compte
+
+Le problème, c'est qu'installer des analytics, c'est facile. Comprendre quoi mesurer, c'est une autre histoire.
+
+Firebase Analytics, Amplitude, Mixpanel — tous ces outils vous donnent des dizaines de graphiques. Sessions quotidiennes. Temps moyen par session. Pages vues. Cool. Mais qu'est-ce que ça vous dit concrètement sur la santé de votre business ?
+
+En fait, pas grand-chose si vous n'avez pas défini ce qu'est le succès pour VOTRE application.
+
+Une app de méditation et une app de livraison n'ont pas les mêmes objectifs. Pour l'une, vous voulez que les gens passent du temps. Pour l'autre, vous voulez qu'ils commandent vite et partent. Mesurer le "temps passé" sur une app de livraison comme un indicateur positif serait une erreur monumentale — ça signifierait probablement que votre UX est confuse.
+
+Sur DrMilou, une application de gestion pour cabinets vétérinaires qu'on a développée, on a appris cette leçon de façon brutale. Au début, on mesurait le nombre de clics pour accéder aux dossiers patients. On était contents : les utilisateurs naviguaient beaucoup dans l'app. En réalité, ils galéraient. Les vétérinaires ont besoin d'accéder aux infos critiques en 2 clics max, pas 5. Quand on a optimisé les parcours et réduit le nombre d'interactions nécessaires, notre "engagement" a chuté sur le papier. Mais la satisfaction client a explosé.
+
+Du coup, première règle : définissez votre métrique North Star avant d'écrire la moindre ligne de code de tracking.
+
+## La métrique North Star : votre boussole
+
+Qu'est-ce qu'une métrique North Star ? C'est LE chiffre qui, s'il monte, signifie que votre business va dans la bonne direction. Un seul chiffre. Pas trois. Pas cinq. Un.
+
+Pour Spotify, c'est le temps d'écoute. Pour Airbnb, c'est le nombre de nuits réservées. Pour Slack, c'est le nombre de messages envoyés par équipe.
+
+Trouvez le vôtre. Si vous êtes une app de fitness, ce n'est pas le nombre d'inscriptions — c'est peut-être le nombre d'entraînements complétés par semaine. Si vous êtes une app de e-commerce, ce n'est pas le nombre de visites — c'est le taux de conversion ou le panier moyen.
+
+Cette métrique doit avoir trois caractéristiques. Elle doit refléter la valeur que vous apportez à vos utilisateurs. Elle doit être mesurable de façon fiable. Et elle doit être actionnable — c'est-à-dire que vos équipes peuvent influencer ce chiffre par leurs décisions.
+
+Sur Youdy, une application sociale qu'on a construite, notre North Star était le nombre de connexions significatives créées par utilisateur par mois. Pas juste les "amis ajoutés" — ça c'est du vanity. On comptait les utilisateurs qui avaient échangé au moins 5 messages avec une nouvelle connexion. C'est ça qui nous disait si l'app remplissait sa mission.
+
+## Les KPIs qui comptent vraiment (et ceux à ignorer)
+
+Une fois votre North Star définie, vous avez besoin de métriques secondaires pour comprendre ce qui l'influence. Voici celles qu'on regarde systématiquement chez Eurus.
+
+### Acquisition : d'où viennent vos utilisateurs ?
+
+Le nombre de téléchargements, oui, mais surtout le coût par installation (CPI) et le canal d'origine. Si 80% de vos users viennent d'un seul canal, vous êtes vulnérable. Si votre CPI est de 5€ mais que la lifetime value moyenne est de 3€, vous brûlez du cash.
+
+On veut aussi savoir si les utilisateurs qui viennent de l'App Store organique se comportent différemment de ceux qui viennent d'une campagne Facebook. Souvent, les organiques sont plus qualifiés — ils ont fait l'effort de chercher. Mais pas toujours. Seule la data vous le dira.
+
+### Activation : le moment de vérité
+
+L'activation, c'est le pourcentage d'utilisateurs qui atteignent le "aha moment" — ce moment où ils comprennent la valeur de votre app.
+
+Pour Facebook à ses débuts, c'était "ajouter 7 amis en 10 jours". Pour Dropbox, c'était "uploader un premier fichier". Pour votre app, c'est quoi ?
+
+Chez Eurus, on aide nos clients à identifier ce moment en analysant les cohortes. On compare les utilisateurs qui restent après 30 jours à ceux qui ont churné. Qu'est-ce que les premiers ont fait que les seconds n'ont pas fait ? La réponse est souvent surprenante.
+
+Sur Getaway, une application de voyage qu'on a développée en Flutter, on pensait que le aha moment était "créer un premier voyage". On avait tort. Les utilisateurs qui revenaient étaient ceux qui avaient uploadé au moins 3 photos. C'est en partageant leurs souvenirs qu'ils se sont attachés à l'app, pas en planifiant.
+
+### Rétention : la métrique qui sépare les winners des losers
+
+La rétention, c'est le pourcentage d'utilisateurs qui reviennent après X jours. On regarde généralement la rétention J1 (lendemain de l'installation), J7 (une semaine après), et J30 (un mois après).
+
+Des benchmarks ? En moyenne, les apps perdent 77% de leurs utilisateurs après 3 jours. 90% après 30 jours. Si vous faites mieux que ça, vous êtes sur la bonne voie.
+
+Mais attention, ces moyennes cachent d'énormes disparités selon les catégories. Une app de jeu et une app bancaire n'ont pas les mêmes courbes de rétention normales. Comparez-vous à votre secteur, pas au marché global.
+
+Et surtout, segmentez. La rétention globale, c'est un chiffre. La rétention par cohorte d'acquisition, par feature utilisée, par device — ça, c'est de l'intelligence actionnable.
+
+### Revenus : show me the money
+
+Si votre app est monétisée, vous devez suivre l'ARPU (revenu moyen par utilisateur) et la LTV (lifetime value). La LTV, c'est combien un utilisateur vous rapporte sur toute sa durée de vie.
+
+Calculer la LTV précisément demande du recul — il faut attendre que des cohortes complètes aient churné. Mais vous pouvez l'estimer en divisant l'ARPU mensuel par votre taux de churn mensuel.
+
+Si votre LTV est de 30€ et que votre coût d'acquisition est de 10€, vous avez un ratio de 3:1. C'est sain. En dessous de 2:1, ça devient tendu. Au-dessus de 5:1, vous pouvez probablement dépenser plus en acquisition.
+
+### Ce qu'on ignore volontairement
+
+Les sessions totales. Le nombre de pages vues. Les téléchargements cumulés. Les notes sur les stores (à moins qu'elles ne chutent brutalement).
+
+Ces métriques vont toujours dans le bon sens tant que vous existez. Elles ne vous disent rien sur la trajectoire réelle de votre app. C'est du bruit. Focus sur le signal.
+
+## Les outils qu'on utilise (et pourquoi)
+
+### Firebase Analytics : le socle gratuit
+
+Firebase Analytics, c'est le minimum syndical. Gratuit, intégré à l'écosystème Google, facile à mettre en place. Il vous donne les bases : utilisateurs actifs, événements, conversions.
+
+Ses limites ? L'analyse de cohortes est basique. Les entonnoirs de conversion sont rigides. Et l'export des données brutes vers BigQuery demande un setup technique.
+
+Pour un MVP ou une app avec un budget serré, c'est suffisant. Au-delà, vous allez vite sentir les murs.
+
+### Mixpanel : pour comprendre les parcours
+
+Mixpanel excelle dans l'analyse comportementale. Vous pouvez créer des funnels complexes, analyser des cohortes en profondeur, voir exactement où les utilisateurs décrochent.
+
+C'est notre recommandation quand le client a besoin de comprendre le "pourquoi" derrière les chiffres. Les rapports de rétention sont particulièrement puissants — vous pouvez voir l'impact de chaque feature sur la rétention à long terme.
+
+Le prix peut monter vite avec le volume de données. Prévoyez 20 à 50€/mois pour démarrer, plusieurs centaines pour une app avec du trafic.
+
+### Amplitude : la Rolls de l'analytics produit
+
+Amplitude, c'est le niveau au-dessus. Machine learning intégré pour détecter des patterns. Segmentation ultra-fine. Collaboration entre équipes product, marketing, data.
+
+On le recommande aux clients qui ont déjà validé leur product-market fit et qui cherchent à optimiser. Avant ça, c'est overkill.
+
+Le pricing est opaque (contactez-les pour un devis), mais attendez-vous à du premium.
+
+### PostHog : l'outsider open-source
+
+PostHog mérite une mention. Open-source, vous pouvez l'héberger vous-même. Session recordings inclus. Feature flags intégrés. Et un pricing agressif.
+
+Si vous êtes tech-savvy et que vous voulez garder le contrôle de vos données, c'est une option solide. On l'a utilisé sur plusieurs projets internes chez Eurus avec de bons résultats.
+
+## Implémenter le tracking sans tout casser
+
+Un truc qu'on voit souvent : des apps qui trackent TOUT. Chaque tap, chaque scroll, chaque seconde passée sur chaque écran. Résultat ? Une base de données énorme, du bruit partout, et personne qui comprend plus rien.
+
+Notre approche est différente. On commence par définir le plan de tracking AVANT de coder. On liste les événements critiques — ceux qui correspondent à des actions à valeur business. Et on s'y tient.
+
+Pour une app e-commerce typique, ça donne quoi ? Inscription complétée. Premier produit vu. Ajout au panier. Début de checkout. Achat complété. Peut-être une dizaine d'événements de plus selon les spécificités. Pas cinquante.
+
+Et chaque événement a des propriétés cohérentes. L'ID utilisateur toujours présent. Le timestamp toujours en UTC — un bug de timezone sur Youdy nous a appris ça de façon douloureuse, avec des utilisateurs au Canada qui recevaient leurs notifications à 3h du matin. Maintenant, on stocke tout en UTC et on convertit à l'affichage. Basique, mais vital.
+
+La convention de nommage aussi, c'est crucial. "purchase_completed", "PurchaseCompleted", "purchase-completed" — choisissez une convention et respectez-la religieusement. Sinon dans 6 mois vous aurez des événements en double partout et des analyses faussées.
+
+## Construire une culture data dans votre équipe
+
+Les meilleurs outils du monde ne servent à rien si personne ne regarde les dashboards.
+
+Chez Eurus, on a une règle : pas de réunion produit sans data. Vous voulez ajouter une feature ? Montrez-moi les chiffres qui suggèrent qu'elle est nécessaire. Vous voulez tuer une feature ? Montrez-moi les chiffres qui prouvent qu'elle n'est pas utilisée.
+
+Ça paraît évident dit comme ça. En pratique, c'est un changement culturel profond. Beaucoup de décisions produit sont prises sur l'intuition, l'opinion du HiPPO (Highest Paid Person's Opinion), ou simplement parce que "c'est ce qu'on a toujours fait".
+
+Pour ancrer la culture data, commencez par rendre les métriques visibles. Un dashboard sur un écran dans l'open space. Un récap hebdomadaire Slack avec les chiffres clés. Des reviews mensuelles où on analyse les cohortes.
+
+Et surtout, célébrez les décisions basées sur la data. Même quand elles contredisent l'intuition. SURTOUT quand elles contredisent l'intuition.
+
+En 3 ans chez Eurus, j'ai vu des projets échouer non pas à cause du code, mais parce que personne n'avait vraiment regardé ce que les utilisateurs faisaient dans l'app. Des features développées pendant des mois et utilisées par 2% des users. Des bugs critiques ignorés parce que le support n'était pas connecté aux analytics. Du gâchis, évitable avec un minimum de rigueur.
+
+## Les erreurs qu'on voit tout le temps
+
+Erreur numéro 1 : tracker trop tard. "On mettra les analytics après le lancement." Non. Vous perdez des semaines de données précieuses sur vos premiers utilisateurs — les plus importants pour comprendre votre produit.
+
+Erreur numéro 2 : ne pas segmenter. La moyenne cache tout. Un taux de rétention de 30% peut signifier que la moitié de vos users restent à 60% et l'autre moitié à 0%. Ce n'est pas le même problème à résoudre.
+
+Erreur numéro 3 : confondre corrélation et causalité. Les utilisateurs qui activent les notifications ont une meilleure rétention. Cool. Mais est-ce que les notifications causent la rétention, ou est-ce que les utilisateurs déjà engagés sont simplement plus enclins à activer les notifications ? Seul un A/B test peut trancher.
+
+Erreur numéro 4 : optimiser pour les métriques proxy plutôt que l'outcome. Si vous optimisez pour le nombre de sessions, vous allez peut-être ajouter des notifications pushy qui font revenir les gens... pour qu'ils désinstallent l'app une semaine plus tard, frustrés.
+
+## Et maintenant ?
+
+Mesurer, c'est bien. Agir sur les mesures, c'est mieux.
+
+Notre règle d'or chez Eurus : un MVP en 6 semaines max. Au-delà, on perd le feedback terrain. Les analytics ne remplacent pas le contact avec les vrais utilisateurs, mais ils le complètent. Ils vous disent quoi investiguer. Ils vous donnent des hypothèses à valider.
+
+Si vous démarrez, installez Firebase Analytics dès le jour 1. Définissez 5 à 10 événements critiques. Regardez vos chiffres chaque semaine. C'est déjà mieux que 90% des apps.
+
+Si vous êtes plus avancé et que vous cherchez à passer au niveau supérieur — segmentation fine, analyses de cohortes, dashboards sur mesure — parlons-en. C'est exactement ce qu'on fait chez Eurus : transformer des apps qui marchent en apps qui cartonnent, data à l'appui.
+
+---
+
+## FAQ
+
+### Quel outil d'analytics choisir pour commencer ?
+
+Firebase Analytics est le choix le plus simple pour démarrer. Gratuit, bien documenté, intégré à l'écosystème Google. Une fois que vous avez validé votre product-market fit et que vous avez besoin d'analyses plus poussées, migrez vers Mixpanel ou Amplitude.
+
+### Combien d'événements dois-je tracker ?
+
+Moins que vous ne pensez. Commencez par 10 à 20 événements critiques qui correspondent à des actions business (inscription, activation, achat, etc.). Vous pourrez toujours en ajouter plus tard. Tracker trop crée du bruit et complexifie l'analyse.
+
+### Comment calculer la lifetime value (LTV) de mes utilisateurs ?
+
+Méthode simple : divisez votre ARPU mensuel par votre taux de churn mensuel. Si vos utilisateurs vous rapportent 5€/mois et que 10% partent chaque mois, votre LTV est de 5€ / 0.10 = 50€. Pour un calcul plus précis, analysez des cohortes complètes sur plusieurs mois.
+
+### La rétention J1 de mon app est de 40%, c'est bien ?
+
+Ça dépend de votre catégorie. Pour une app de jeu casual, c'est excellent. Pour une app bancaire, c'est préoccupant. Comparez-vous aux benchmarks de votre secteur, pas aux moyennes globales du marché.
+
+### Faut-il investir dans les analytics avant d'avoir des utilisateurs ?
+
+Oui, absolument. Vos premiers utilisateurs sont les plus précieux pour comprendre votre produit. Si vous n'avez pas de tracking en place dès le lancement, vous perdez des données irremplaçables sur leur comportement.
+
+---
+
+*Vous voulez mettre en place un tracking analytics solide pour votre application ? [Contactez l'équipe Eurus](/contact) — on vous aide à définir les bonnes métriques et à construire les dashboards qui comptent.*
