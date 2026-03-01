@@ -1,0 +1,239 @@
+---
+title: "Mettre à jour son application : guide iOS et Android"
+description: "Process de mise à jour sur l'App Store et Google Play. Versioning, review, déploiement progressif et bonnes pratiques pour éviter les rejets."
+date: "2026-03-01"
+author: "Eurus"
+tags: ["Mobile", "Stores", "Guide"]
+---
+
+Publier une application, c'est une chose. La maintenir à jour, c'en est une autre. Et si personne ne vous a prévenu, laissez-moi vous le dire clairement : **les mises à jour, c'est là que les choses sérieuses commencent**.
+
+Chez Eurus, on gère des applications en production depuis des années. DrMilou, Youdy, Getaway... Chacune a son rythme de mises à jour, ses contraintes, ses petites surprises. On a appris à nos dépens qu'une mise à jour mal gérée peut faire plus de dégâts qu'un bug en production. Alors autant vous partager ce qu'on sait.
+
+## Pourquoi mettre à jour son application régulièrement ?
+
+La question peut paraître évidente, mais elle mérite qu'on s'y arrête. Parce que non, ce n'est pas juste "ajouter des features".
+
+**La sécurité d'abord.** Les failles de sécurité, ça ne prévient pas. Les librairies que vous utilisez aujourd'hui auront des vulnérabilités demain. Si vous ne mettez pas à jour, vous exposez vos utilisateurs. Et juridiquement, avec le RGPD, c'est votre responsabilité.
+
+**La compatibilité ensuite.** Apple sort une nouvelle version d'iOS chaque année. Google fait pareil avec Android. À chaque fois, des APIs changent, des comportements évoluent, des fonctionnalités sont dépréciées. Une app qui n'est pas mise à jour finit par casser. Pas "peut-être". Certainement.
+
+**L'algorithme des stores enfin.** Ce que peu de gens savent, c'est que l'App Store et le Google Play favorisent les applications régulièrement mises à jour dans leur classement. Une app inactive depuis 6 mois, c'est une app qui descend dans les résultats de recherche. Logique : les stores veulent proposer des apps maintenues, pas des abandonnwares.
+
+Concrètement, on recommande une mise à jour au minimum tous les 2-3 mois, même si c'est juste pour corriger des bugs mineurs ou mettre à jour les dépendances. C'est le minimum vital.
+
+## Comprendre le versioning : la base avant tout
+
+Avant de parler process, parlons numéros de version. Parce que si vous faites ça au feeling, vous allez vous perdre très vite.
+
+### Le standard Semantic Versioning
+
+La convention la plus répandue, c'est le **Semantic Versioning** (ou SemVer). Le format : `MAJOR.MINOR.PATCH`. Par exemple : `2.4.1`.
+
+- **MAJOR** : vous cassez la compatibilité. Refonte complète, changement d'architecture, features supprimées. Les utilisateurs vont voir une différence majeure.
+- **MINOR** : nouvelles fonctionnalités, mais rétrocompatible. L'app fait plus de choses, mais l'existant fonctionne toujours pareil.
+- **PATCH** : corrections de bugs, optimisations, mises à jour de sécurité. Rien de visible pour l'utilisateur, mais important en coulisses.
+
+En pratique, sur mobile, on simplifie souvent. Chez Eurus, on utilise plutôt `MAJOR.MINOR` pour la version visible par l'utilisateur, et un **build number** incrémental pour le suivi interne. Ça donne quelque chose comme `2.4 (build 147)`.
+
+### Version code vs version name
+
+Sur Android, vous avez deux champs distincts :
+- **versionCode** : un entier qui doit être strictement croissant à chaque upload sur le Play Store. C'est ce que Google utilise pour savoir si une version est plus récente qu'une autre.
+- **versionName** : la version affichée aux utilisateurs. Peut être n'importe quelle string.
+
+Sur iOS, c'est pareil avec **CFBundleVersion** (le build number) et **CFBundleShortVersionString** (la version marketing).
+
+Le piège classique ? Oublier d'incrémenter le versionCode/build number. Le store rejette l'upload, vous perdez 10 minutes à comprendre pourquoi. Ça nous est arrivé plus d'une fois avant d'automatiser ça dans nos scripts de build.
+
+## Le process de mise à jour sur Google Play
+
+Le Google Play Store est globalement plus souple que l'App Store. Les reviews sont plus rapides, les règles moins strictes. Mais ça ne veut pas dire qu'il n'y a pas de process.
+
+### Préparer sa release
+
+Avant d'uploader quoi que ce soit, checkez votre liste :
+
+1. **Tests sur devices réels.** L'émulateur c'est bien, les vrais téléphones c'est mieux. On a vu des bugs qui n'apparaissaient que sur certains modèles Samsung ou sur des versions spécifiques d'Android.
+
+2. **Build en mode release.** Pas en debug. Ça paraît évident, mais vérifiez que ProGuard/R8 est activé, que les logs de debug sont désactivés, que les API keys de prod sont en place.
+
+3. **Changelog préparé.** Ce que vous écrivez dans "Nouveautés de cette version" impacte directement la perception des utilisateurs. Soyez concis mais informatif.
+
+4. **Screenshots et assets à jour.** Si votre UI a changé significativement, mettez à jour les captures d'écran. Un décalage entre les screenshots et l'app réelle, ça fait amateur.
+
+### L'upload et la review
+
+Sur la Google Play Console, vous uploadez votre AAB (Android App Bundle, le format moderne qui a remplacé l'APK pour la distribution). Le process :
+
+1. Allez dans **Release > Production** (ou le track de votre choix)
+2. Créez une nouvelle release
+3. Uploadez votre AAB
+4. Remplissez les notes de version
+5. Passez en review
+
+La review Google prend généralement **quelques heures à 2-3 jours**. C'est beaucoup plus rapide qu'Apple. Mais attention : depuis 2023, Google a durci ses contrôles sur certains points, notamment les permissions sensibles et les contenus liés aux enfants.
+
+### Le déploiement progressif
+
+Et c'est là que Google brille. Vous pouvez faire un **staged rollout** : déployer votre mise à jour à 5%, puis 20%, puis 50%, puis 100% des utilisateurs.
+
+Pourquoi c'est génial ? Parce que si un bug critique passe en prod, vous n'avez impacté que 5% de votre base. Vous pouvez stopper le rollout, corriger, et repartir.
+
+Chez Eurus, c'est systématique pour toute mise à jour significative. On démarre à 10%, on attend 24-48h en surveillant les crashs via Firebase Crashlytics, puis on augmente progressivement. Sur DrMilou, cette approche nous a sauvés plus d'une fois. Une fois, un bug de synchronisation n'apparaissait que sur certaines configurations réseau. À 10%, on l'a détecté sur quelques dizaines d'utilisateurs. À 100%, ça aurait été des milliers de vétérinaires impactés en pleine journée de consultations.
+
+## Le process de mise à jour sur l'App Store
+
+Apple, c'est une autre histoire. Plus strict, plus lent, plus exigeant. Mais aussi plus prestigieux aux yeux de certains utilisateurs.
+
+### La préparation côté Apple
+
+Tout passe par **App Store Connect**. Avant d'uploader, assurez-vous :
+
+1. **Certificats et provisioning profiles à jour.** Rien de plus frustrant qu'un upload qui échoue parce que votre certificat a expiré la veille. Mettez des rappels dans votre calendrier.
+
+2. **Build signé correctement.** Via Xcode ou Fastlane, le build doit être signé avec le bon profil de distribution.
+
+3. **Compliance export.** Si votre app utilise du chiffrement (et c'est le cas de presque toutes les apps modernes via HTTPS), vous devez répondre aux questions de compliance. C'est rapide, mais obligatoire.
+
+4. **Privacy Nutrition Labels.** Depuis iOS 14, Apple exige que vous déclariez exactement quelles données vous collectez et pourquoi. Si ça a changé depuis la dernière version, mettez à jour.
+
+### La review Apple : ce qu'il faut savoir
+
+La review Apple prend en moyenne **24 à 48 heures**, mais peut aller jusqu'à une semaine dans certains cas. Et contrairement à Google, les rejets sont fréquents.
+
+Les raisons de rejet les plus courantes :
+
+- **Bugs ou crashs évidents.** Apple teste vraiment votre app. Si elle crashe au lancement sur leur device de test, c'est rejeté direct.
+- **Métadonnées incorrectes.** Screenshots qui ne correspondent pas, description trompeuse, mauvaise catégorie.
+- **Violation des guidelines.** Ça peut être subtil. Une fonctionnalité qui "contourne" un système Apple, un lien vers un paiement externe, une mention d'Android...
+- **Informations de login manquantes.** Si votre app nécessite un compte, vous devez fournir un compte de test à Apple. Oubliez ça, et c'est rejeté.
+
+On a déjà eu des rejets pour des raisons absurdes. Sur une app, Apple a rejeté parce qu'un bouton "Partager" menait vers une fonctionnalité pas encore implémentée (on affichait un message "Coming soon"). Pour eux, c'était une "expérience incomplète". Il a fallu retirer le bouton pour la review, puis le remettre dans une version ultérieure.
+
+### Gérer un rejet
+
+Un rejet, ce n'est pas la fin du monde. Vous avez deux options :
+
+1. **Corriger et resoumettre.** Le plus courant. Vous corrigez le problème, uploadez un nouveau build, et repassez en review.
+
+2. **Contester via Resolution Center.** Si vous pensez que le rejet est injustifié, vous pouvez argumenter. Ça marche parfois, surtout si le reviewer a mal compris votre app.
+
+Le piège à éviter : la review de resoumission n'est pas prioritaire. Si vous êtes pressé, soumettez une review accélérée (Expedited Review) en expliquant pourquoi c'est urgent. Apple l'accorde pour les bugs critiques ou les problèmes de sécurité.
+
+## Automatiser le process avec Fastlane
+
+Si vous faites des mises à jour régulières (et vous devriez), l'automatisation devient vite indispensable. **Fastlane** est l'outil standard de l'industrie.
+
+En quelques commandes, Fastlane peut :
+
+- Gérer vos certificats et provisioning profiles automatiquement
+- Compiler votre app en mode release
+- Uploader sur l'App Store ou le Google Play
+- Prendre des screenshots automatisés
+- Envoyer des notifications Slack quand c'est fait
+
+Concrètement, notre workflow chez Eurus ressemble à ça :
+
+```bash
+# Pour iOS
+fastlane ios release
+
+# Pour Android  
+fastlane android release
+```
+
+Derrière, Fastlane incrémente le build number, compile, signe, uploade, et nous ping sur Slack. Ce qui prenait 45 minutes manuellement prend maintenant 5 minutes d'attente passive.
+
+L'investissement initial pour configurer Fastlane, c'est une demi-journée à une journée. Mais sur une app avec des mises à jour régulières, ça se rentabilise en quelques semaines.
+
+## Les mises à jour silencieuses et le hot reload
+
+Une question qui revient souvent : peut-on mettre à jour une app sans passer par les stores ?
+
+La réponse courte : **ça dépend de ce que vous voulez mettre à jour**.
+
+### Ce que vous pouvez mettre à jour sans les stores
+
+- **Le contenu distant.** Textes, images, configurations stockées sur votre serveur. Ça, vous contrôlez à 100%.
+- **Les feature flags.** Activer ou désactiver des fonctionnalités côté serveur.
+- **Les WebViews.** Si une partie de votre app est en fait une page web embarquée, vous pouvez la modifier sans mise à jour.
+
+### Le cas CodePush et les solutions de hot reload
+
+Microsoft CodePush (pour React Native) et des solutions similaires permettent de pousser du code JavaScript sans passer par les stores. En théorie, c'est magique : vous corrigez un bug, vous pushez, les utilisateurs ont la correction en quelques minutes.
+
+En pratique, c'est plus nuancé :
+
+- **Apple n'aime pas ça.** Les guidelines sont claires : vous ne pouvez pas modifier "significativement" le comportement de l'app via du code distant. Un hotfix de bug, ça passe. Une nouvelle feature majeure, c'est risqué.
+- **La gestion des versions devient complexe.** Vous avez la version store ET la version CodePush. Si un utilisateur a des problèmes, quelle version a-t-il vraiment ?
+
+On utilise CodePush sur certains projets, mais uniquement pour des corrections urgentes. Pour les vraies mises à jour, on passe par les stores.
+
+## Communiquer sur les mises à jour
+
+Une mise à jour sans communication, c'est une mise à jour à moitié ratée. Vos utilisateurs doivent savoir que vous êtes actif, que l'app évolue.
+
+### Les notes de version
+
+C'est bête, mais beaucoup d'apps se contentent de "Corrections de bugs et améliorations de performances". Franchement, c'est du gâchis.
+
+Les notes de version, c'est un point de contact avec vos utilisateurs. Profitez-en :
+
+- Soyez spécifiques : "Correction du bug qui empêchait de sauvegarder les photos sur iPhone 15"
+- Mettez en avant les nouvelles features : "Nouveau : export PDF de vos données"
+- Ajoutez une touche humaine : "Merci pour vos retours sur le forum, on vous a écoutés !"
+
+### Les notifications in-app
+
+Pour les mises à jour importantes, prévenez vos utilisateurs directement dans l'app. Un petit message au lancement qui explique les nouveautés, ça fait la différence. Sur Youdy, on affiche une modal "Quoi de neuf ?" après une mise à jour majeure. L'engagement sur les nouvelles features est nettement meilleur quand les gens savent qu'elles existent.
+
+### Forcer la mise à jour ?
+
+Parfois, vous devez forcer les utilisateurs à mettre à jour. Bug de sécurité critique, changement d'API backend incompatible avec les anciennes versions... 
+
+La bonne pratique : vérifiez la version de l'app au lancement via un appel API. Si elle est trop ancienne, affichez un message bloquant qui renvoie vers le store. C'est agressif, mais parfois nécessaire.
+
+Attention cependant : abusez de ça, et vous allez frustrer vos utilisateurs. Réservez-le aux vraies urgences.
+
+## Les erreurs classiques à éviter
+
+En quelques années, on a vu (et fait) pas mal d'erreurs. Voici les plus courantes :
+
+**Publier un vendredi soir.** Si quelque chose casse, vous allez passer votre weekend à corriger. Publiez en début de semaine, quand l'équipe est disponible pour réagir.
+
+**Oublier les tests de régression.** Vous corrigez un bug, vous en créez deux autres. Avant chaque release, testez les parcours critiques de votre app, pas juste la nouvelle feature.
+
+**Ne pas monitorer après publication.** Une fois que c'est en prod, surveillez. Firebase Crashlytics, Sentry, les reviews utilisateurs... Les premiers jours après une mise à jour sont critiques.
+
+**Sous-estimer les edge cases.** Les utilisateurs ont des usages que vous n'imaginez pas. Sur DrMilou, on a découvert que certains vétérinaires utilisaient des tablettes avec des résolutions très spécifiques qu'on n'avait jamais testées. Résultat : une interface cassée pour eux pendant 3 jours.
+
+**Ignorer les utilisateurs sur d'anciennes versions d'OS.** Oui, iOS 13 a encore des utilisateurs. Peu, mais ils existent. Décidez consciemment quel est votre minimum supporté et annoncez-le clairement.
+
+## FAQ
+
+### Combien de temps dure la review sur l'App Store ?
+
+En moyenne 24 à 48 heures, mais ça peut aller jusqu'à une semaine en période chargée (rentrée, fêtes de fin d'année). Prévoyez toujours une marge.
+
+### Peut-on annuler une mise à jour en cours de déploiement ?
+
+Sur Google Play, oui facilement. Vous pouvez stopper un staged rollout à tout moment. Sur l'App Store, une fois approuvée, vous ne pouvez pas "retirer" une version. Vous devez soumettre une nouvelle version corrective.
+
+### Faut-il mettre à jour iOS et Android en même temps ?
+
+Pas obligatoirement, mais c'est plus simple pour la communication et le support. Si les features sont identiques, publiez en même temps. Si l'une des versions a du retard, publiez séparément mais soyez transparents avec les utilisateurs.
+
+### Comment gérer les mises à jour sur plusieurs pays ?
+
+L'App Store et le Google Play permettent de publier par pays. Vous pouvez faire un soft launch sur un pays test avant de déployer mondialement. C'est utile pour les grosses refontes.
+
+### À quelle fréquence mettre à jour son app ?
+
+Minimum tous les 2-3 mois pour rester "vivant" aux yeux des stores. Idéalement, une mise à jour mineure toutes les 2-4 semaines avec corrections et petites améliorations, et une mise à jour majeure tous les 2-3 mois avec de vraies nouveautés.
+
+---
+
+Mettre à jour une application, c'est un process qui demande de la rigueur. Mais c'est aussi ce qui fait la différence entre une app qui vit et une app qui meurt. Les stores récompensent les apps maintenues, les utilisateurs apprécient les évolutions, et votre base technique reste saine.
+
+**Vous avez une application à maintenir et vous cherchez un partenaire technique fiable ?** Chez Eurus, on accompagne des apps en production depuis des années. [Parlons de votre projet →](/contact)

@@ -1,13 +1,6 @@
 {
   "queue": [
     {
-      "slug": "mise-a-jour-application-stores",
-      "title": "Mettre à jour son application : guide iOS et Android",
-      "description": "Process de mise à jour sur l'App Store et Google Play. Versioning, review, déploiement.",
-      "tags": ["Mobile", "Stores", "Guide"],
-      "keyword": "mise à jour application"
-    },
-    {
       "slug": "tests-application-mobile",
       "title": "Tests application mobile : assurer la qualité",
       "description": "Stratégie de tests pour une app sans bugs. Tests unitaires, intégration, E2E, beta testing.",
@@ -214,7 +207,15 @@
       "tags": ["Technique", "Performance", "Mobile"],
       "keyword": "performance application mobile",
       "publishedDate": "2026-02-28"
+    },
+    {
+      "slug": "mise-a-jour-application-stores",
+      "title": "Mettre à jour son application : guide iOS et Android",
+      "description": "Process de mise à jour sur l'App Store et Google Play. Versioning, review, déploiement.",
+      "tags": ["Mobile", "Stores", "Guide"],
+      "keyword": "mise à jour application",
+      "publishedDate": "2026-03-01"
     }
   ],
-  "lastPublished": "2026-02-28"
+  "lastPublished": "2026-03-01"
 }
