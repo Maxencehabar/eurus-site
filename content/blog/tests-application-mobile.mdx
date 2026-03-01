@@ -1,0 +1,242 @@
+---
+title: "Tests application mobile : assurer la qualité"
+description: "Stratégie de tests pour une app sans bugs. Tests unitaires, intégration, E2E, beta testing et retours terrain."
+date: "2026-03-01"
+author: "Eurus"
+tags: ["Technique", "QA", "Tests"]
+---
+
+Personne n'aime les bugs. Ni vos utilisateurs, ni vous quand ils vous remontent le problème à 23h un vendredi soir. Pourtant, trop de projets négligent les tests jusqu'au moment où ça explose en production.
+
+Chez Eurus, on a appris cette leçon de la manière la plus désagréable possible. Un bug de timezone sur Youdy a fait que les utilisateurs au Canada recevaient leurs rappels à 3h du matin. Pendant deux semaines. On l'a découvert quand un utilisateur furieux nous a envoyé un mail en majuscules. La leçon ? Toujours stocker les dates en UTC, et surtout, **tester les edge cases avant que vos utilisateurs ne les découvrent pour vous**.
+
+Cet article, c'est tout ce qu'on a appris sur les tests mobile en plusieurs années de projets. Pas la théorie des manuels, mais ce qui marche vraiment quand on développe des apps pour de vrais utilisateurs.
+
+## Pourquoi tester une application mobile, c'est différent
+
+Tester une app mobile, ce n'est pas comme tester un site web. Et ça, beaucoup de développeurs web qui passent au mobile l'apprennent à leurs dépens.
+
+**La fragmentation des devices.** Sur Android, vous avez des milliers de combinaisons écran/processeur/version d'OS. Sur iOS, c'est plus homogène, mais vous avez quand même des iPhones de 2018 qui tournent encore. Votre app doit fonctionner sur tous ces appareils.
+
+**Les conditions réseau variables.** Vos utilisateurs ne sont pas tous en fibre optique dans leur salon. Ils sont dans le métro, en zone blanche, en 3G faiblarde. Et votre app doit gérer ça gracieusement.
+
+**Les interruptions constantes.** Un appel qui arrive, une notification, l'utilisateur qui passe en arrière-plan, le téléphone qui se met en veille... Autant de moments où votre app peut planter si elle n'est pas préparée.
+
+**La batterie et les ressources.** Sur mobile, les ressources sont limitées. Une fuite mémoire qui passerait inaperçue sur desktop peut tuer votre app en quelques minutes.
+
+Concrètement, ça veut dire quoi ? Ça veut dire qu'une stratégie de tests mobile doit couvrir beaucoup plus de terrain qu'une stratégie web classique.
+
+## Les différents types de tests : une pyramide à construire
+
+On parle souvent de la "pyramide des tests". L'idée est simple : beaucoup de tests rapides et peu coûteux à la base, moins de tests lents et coûteux au sommet.
+
+### Tests unitaires : la fondation
+
+Les tests unitaires vérifient que chaque fonction, chaque méthode, fait exactement ce qu'elle est censée faire. Isolément, sans dépendances externes.
+
+En pratique, sur mobile :
+- **Flutter** : on utilise le package `test` natif. Rapide, bien intégré.
+- **iOS/Swift** : XCTest, inclus dans Xcode.
+- **Android/Kotlin** : JUnit + Mockito pour les mocks.
+
+L'erreur classique ? Tester uniquement le "happy path". Genre, vous testez que votre fonction de calcul de prix fonctionne quand tout va bien. Mais que se passe-t-il si le prix est négatif ? Si la quantité est zéro ? Si le réseau renvoie une erreur ?
+
+Chez Eurus, on vise un coverage de **70-80% minimum** sur la logique métier. Pas 100%, parce que tester du code trivial (getters/setters) c'est une perte de temps. Mais tout ce qui calcule, transforme, ou prend des décisions doit être testé.
+
+### Tests d'intégration : les connexions
+
+Les tests d'intégration vérifient que les différentes parties de votre app fonctionnent ensemble. Votre service d'authentification communique-t-il correctement avec votre API ? Votre base de données locale se synchronise-t-elle bien avec le serveur ?
+
+C'est là que ça devient intéressant. Et coûteux en temps.
+
+Sur DrMilou, on a un test d'intégration critique : la synchronisation des dossiers patients entre l'app et le serveur. Les vétérinaires travaillent parfois sans connexion (les cabinets ont des contraintes qu'on n'imaginait pas : connexion internet instable, PC sous Windows XP, urgences qui arrivent pendant qu'on tape une ordonnance). Quand ils retrouvent le réseau, tout doit se synchroniser sans perte de données.
+
+Ce test-là, il tourne à chaque commit. Pas négociable.
+
+### Tests E2E (End-to-End) : le parcours complet
+
+Les tests E2E simulent un utilisateur réel qui utilise votre app du début à la fin. Ils lancent l'app, tapent sur les boutons, remplissent les formulaires, et vérifient que tout fonctionne.
+
+Les outils qu'on utilise :
+- **Flutter** : `integration_test` (natif) ou Patrol pour des tests plus avancés
+- **iOS** : XCUITest
+- **Android** : Espresso
+- **Cross-platform** : Appium, Detox, Maestro
+
+Le piège des tests E2E ? Ils sont lents et fragiles. Un bouton qui change de position, un texte qui change, et votre test échoue. Du coup, on les réserve aux **parcours critiques** : inscription, achat, fonctionnalités core.
+
+Sur Youdy, nos tests E2E couvrent : création de compte, connexion, création d'un événement, invitation d'amis, et suppression de compte. C'est tout. Mais ces 5 parcours, on sait qu'ils fonctionnent à chaque release.
+
+## Tester les conditions réelles : réseau, batterie, interruptions
+
+Les tests en conditions de laboratoire, c'est bien. Les tests en conditions réelles, c'est mieux.
+
+### Tester le réseau dégradé
+
+Votre app doit survivre à :
+- La 3G lente (latence 300ms+, débit <1Mbps)
+- Le mode avion activé en pleine requête
+- Les timeouts serveur
+- Les réponses malformées
+
+Sur iOS, Xcode propose le Network Link Conditioner pour simuler différentes conditions réseau. Sur Android, vous pouvez utiliser l'émulateur avec des paramètres de throttling.
+
+Mais honnêtement ? Le meilleur test, c'est de prendre votre téléphone, aller dans le métro, et utiliser votre app. On découvre des choses qu'aucun simulateur ne montre.
+
+Sur Getaway, le plus gros challenge c'était de gérer les photos offline quand les voyageurs sont dans des zones sans réseau. Les utilisateurs prennent des photos pendant leur trek, et ça doit se synchroniser automatiquement quand ils retrouvent du réseau, parfois des jours plus tard. On a dû créer une queue persistante de uploads qui survit aux redémarrages de l'app, aux mises à jour, à tout. Et ça, on l'a découvert uniquement en testant sur le terrain.
+
+### Tester les interruptions
+
+Votre app doit gérer proprement :
+- Un appel entrant
+- Une notification qui fait sortir de l'app
+- Le passage en arrière-plan
+- Le retour au premier plan après 30 minutes
+- Le kill de l'app par le système (manque de mémoire)
+
+Le test le plus fourbe ? Commencer une action (soumettre un formulaire), recevoir un appel, raccrocher 5 minutes plus tard. L'action a-t-elle abouti ? L'état est-il cohérent ?
+
+### Tester la batterie et les performances
+
+Utilisez les outils de profiling :
+- **Xcode Instruments** pour iOS (Time Profiler, Allocations, Energy Log)
+- **Android Profiler** dans Android Studio (CPU, Memory, Network, Energy)
+
+Ce qu'on cherche : les fuites mémoire, les opérations qui bloquent le thread principal, les animations qui consomment trop de CPU, les requêtes réseau inutiles.
+
+Une règle simple : si votre app fait chauffer le téléphone, il y a un problème.
+
+## Le beta testing : vos utilisateurs sont vos meilleurs testeurs
+
+Tous les tests automatisés du monde ne remplaceront jamais des vrais utilisateurs qui utilisent vraiment votre app.
+
+### TestFlight et Google Play Console
+
+Les deux plateformes offrent des outils de beta testing intégrés :
+- **TestFlight** (iOS) : jusqu'à 10 000 testeurs externes, feedback intégré, crash reports automatiques
+- **Google Play Console** (Android) : tracks internal, closed, et open pour différents niveaux de beta
+
+On utilise systématiquement une période de beta de **1-2 semaines** avant chaque release majeure. Pas pour trouver les bugs évidents (ça, nos tests automatisés s'en chargent), mais pour découvrir les problèmes d'usage qu'on n'avait pas anticipés.
+
+### Recruter les bons beta testeurs
+
+Évitez de prendre uniquement vos collègues développeurs. Ils utilisent l'app comme des développeurs, pas comme des utilisateurs normaux.
+
+Les meilleurs beta testeurs :
+- Sont représentatifs de votre cible (âge, niveau tech, usage)
+- Utilisent l'app dans des conditions réelles (pas juste "je teste 5 min au bureau")
+- Donnent du feedback constructif (pas juste "ça marche pas")
+- Sont assez nombreux (minimum 20-30 pour avoir des stats significatives)
+
+Sur DrMilou, nos beta testeurs sont des vétérinaires en exercice. Ils testent entre deux consultations, sur leur tablette parfois vieille de 5 ans, avec une connexion wifi de cabinet souvent capricieuse. C'est exactement ce dont on a besoin.
+
+### Collecter et analyser le feedback
+
+Le feedback de beta, ça se structure. Pas question de recevoir des mails en vrac et de les oublier.
+
+Notre process :
+1. Un formulaire standardisé (type de bug, gravité, étapes pour reproduire, screenshot)
+2. Intégration directe dans notre outil de tickets (Linear, Jira, peu importe)
+3. Triage quotidien pendant la période de beta
+4. Communication avec les testeurs sur les bugs résolus
+
+Le pire ? Demander du feedback et ne jamais répondre. Vos testeurs arrêteront de vous aider.
+
+## Les outils de monitoring en production
+
+Les tests avant release, c'est bien. Mais votre app va rencontrer des situations que vous n'avez pas testées. Il vous faut des outils pour détecter les problèmes en prod.
+
+### Crash reporting
+
+**Firebase Crashlytics** est devenu le standard. Gratuit, facile à intégrer, et surtout : il regroupe les crashs par cause, vous montre les stack traces, et vous alerte sur les nouvelles régressions.
+
+Ce qu'on surveille :
+- **Crash-free rate** : on vise >99.5%. En dessous, c'est une urgence.
+- **Nouvelles issues** : alertes immédiates sur les nouveaux types de crashs
+- **Impact** : combien d'utilisateurs touchés par chaque issue
+
+### Analytics et comportement utilisateur
+
+Les crashs, c'est visible. Mais les problèmes d'UX qui font que les utilisateurs abandonnent sans crash ? Ça nécessite des analytics.
+
+On track systématiquement :
+- Les parcours clés (funnel d'inscription, d'achat, etc.)
+- Les écrans où les utilisateurs passent du temps (trop = problème ?)
+- Les actions qui échouent sans crash (timeout, erreur API gérée)
+- Le temps de chargement perçu
+
+### Feature flags pour tester en production
+
+Parfois, le meilleur test c'est la production elle-même. Mais pas sur 100% des utilisateurs.
+
+Les feature flags permettent d'activer une fonctionnalité pour un pourcentage d'utilisateurs, de monitorer les métriques, et de rollback instantanément si problème.
+
+Outils : LaunchDarkly, Firebase Remote Config, ou même une solution custom simple.
+
+## Automatiser les tests : CI/CD mobile
+
+Lancer les tests à la main, ça marche pour un side project. Pour une app sérieuse, il faut automatiser.
+
+### Les pipelines qu'on utilise
+
+Notre setup standard :
+1. **À chaque commit** : tests unitaires, lint, build
+2. **À chaque PR** : + tests d'intégration
+3. **À chaque merge sur main** : + tests E2E, déploiement beta automatique
+4. **Release** : validation manuelle, puis déploiement production
+
+Outils : GitHub Actions, Bitrise, Codemagic, ou Fastlane orchestré par le CI de votre choix.
+
+### Le coût du CI mobile
+
+Attention : le CI mobile coûte cher. Les builds iOS nécessitent des machines macOS (plus chères). Les tests sur émulateurs prennent du temps.
+
+Nos conseils pour optimiser :
+- Paralléliser les tests autant que possible
+- Cacher les dépendances (CocoaPods, Gradle) entre builds
+- Ne pas lancer les tests E2E sur chaque commit (trop lent)
+- Utiliser des machines plus puissantes pour les builds critiques
+
+Budget typique : 50-200€/mois pour un projet actif. C'est un investissement, pas une dépense.
+
+## Les erreurs classiques à éviter
+
+Après des années de projets, voici les erreurs qu'on voit (et qu'on a faites) le plus souvent :
+
+**Tester uniquement le happy path.** Votre fonction marche quand tout va bien. Cool. Maintenant testez quand le réseau tombe, quand l'utilisateur entre des données invalides, quand le serveur répond n'importe quoi.
+
+**Tests trop couplés à l'implémentation.** Si vous changez un détail interne et que 50 tests cassent, vos tests testent l'implémentation, pas le comportement. Refactorez.
+
+**Pas de tests sur les vraies devices.** L'émulateur ment. Testez sur de vrais téléphones, idéalement de différentes gammes (haut de gamme récent, milieu de gamme 2 ans, entrée de gamme).
+
+**Ignorer les tests de performance.** "On optimisera plus tard." Plus tard n'arrive jamais. Intégrez des benchmarks dans vos tests dès le début.
+
+**Ne pas tester les migrations de données.** Vous changez le schéma de votre base locale ? Testez que les utilisateurs existants ne perdent pas leurs données après la mise à jour. On a failli perdre des dossiers vétérinaires comme ça sur DrMilou. Depuis, chaque migration a son test dédié.
+
+## FAQ
+
+### Combien de temps consacrer aux tests ?
+
+Règle empirique : prévoyez 20-30% du temps de développement pour les tests. Sur un sprint de 2 semaines, ça fait 2-3 jours. C'est un investissement qui se rentabilise en moins de bugs en production et moins de temps passé à débugger.
+
+### Faut-il tester sur émulateur ou sur vraies devices ?
+
+Les deux. L'émulateur pour les tests automatisés (plus rapide, plus stable). Les vraies devices pour les tests manuels et les tests de performance. Idéalement, ayez accès à 3-4 devices représentatifs de votre cible.
+
+### Quels tests écrire en premier sur un nouveau projet ?
+
+Commencez par les tests unitaires de votre logique métier critique. Ensuite, ajoutez des tests E2E pour les 2-3 parcours principaux. Le reste viendra naturellement au fur et à mesure que vous corrigez des bugs (chaque bug corrigé devrait avoir son test de non-régression).
+
+### Comment convaincre un client d'investir dans les tests ?
+
+Parlez coûts. Un bug en production coûte 10x plus cher à corriger qu'un bug détecté en développement. Montrez des exemples concrets : le temps passé à débugger le dernier incident, les mauvaises reviews sur les stores à cause de crashs, le churn utilisateur.
+
+### Les tests ralentissent-ils le développement ?
+
+À court terme, oui, légèrement. À moyen terme, ils l'accélèrent. Vous passez moins de temps à débugger, vous avez confiance pour refactorer, vous détectez les régressions avant vos utilisateurs. Sur un projet de plus de 3 mois, les tests sont rentables.
+
+---
+
+Tester une application mobile, c'est un investissement. Pas une option. Les apps qui durent sont celles qui ont une stratégie de tests solide, des outils de monitoring en place, et une culture de qualité dans l'équipe.
+
+**Vous voulez mettre en place une vraie stratégie de tests sur votre projet mobile ?** Chez Eurus, on accompagne des équipes sur la qualité depuis des années. [Parlons de votre projet →](/contact)

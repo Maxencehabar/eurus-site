@@ -1,13 +1,6 @@
 {
   "queue": [
     {
-      "slug": "tests-application-mobile",
-      "title": "Tests application mobile : assurer la qualité",
-      "description": "Stratégie de tests pour une app sans bugs. Tests unitaires, intégration, E2E, beta testing.",
-      "tags": ["Technique", "QA", "Tests"],
-      "keyword": "tests application mobile"
-    },
-    {
       "slug": "design-ux-application-mobile",
       "title": "Design UX application mobile : les fondamentaux",
       "description": "Principes de design UX pour créer une application intuitive et agréable à utiliser.",
@@ -214,6 +207,14 @@
       "description": "Process de mise à jour sur l'App Store et Google Play. Versioning, review, déploiement.",
       "tags": ["Mobile", "Stores", "Guide"],
       "keyword": "mise à jour application",
+      "publishedDate": "2026-03-01"
+    },
+    {
+      "slug": "tests-application-mobile",
+      "title": "Tests application mobile : assurer la qualité",
+      "description": "Stratégie de tests pour une app sans bugs. Tests unitaires, intégration, E2E, beta testing.",
+      "tags": ["Technique", "QA", "Tests"],
+      "keyword": "tests application mobile",
       "publishedDate": "2026-03-01"
     }
   ],
