@@ -1,13 +1,5 @@
 {
-  "queue": [
-    {
-      "slug": "design-ux-application-mobile",
-      "title": "Design UX application mobile : les fondamentaux",
-      "description": "Principes de design UX pour créer une application intuitive et agréable à utiliser.",
-      "tags": ["Design", "UX", "Mobile"],
-      "keyword": "design UX application mobile"
-    }
-  ],
+  "queue": [],
   "published": [
     {
       "slug": "freelance-ou-agence-developpement",
@@ -216,7 +208,15 @@
       "tags": ["Technique", "QA", "Tests"],
       "keyword": "tests application mobile",
       "publishedDate": "2026-03-01"
+    },
+    {
+      "slug": "design-ux-application-mobile",
+      "title": "Design UX application mobile : les fondamentaux",
+      "description": "Principes de design UX pour créer une application intuitive et agréable à utiliser.",
+      "tags": ["Design", "UX", "Mobile"],
+      "keyword": "design UX application mobile",
+      "publishedDate": "2026-03-02"
     }
   ],
-  "lastPublished": "2026-03-01"
+  "lastPublished": "2026-03-02"
 }
