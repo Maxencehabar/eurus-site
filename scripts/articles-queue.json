@@ -1,136 +1,201 @@
 {
   "queue": [
     {
-      "slug": "tarif-developpeur-freelance-2025",
-      "title": "Tarif développeur freelance 2025 : grille de prix",
-      "description": "Combien coûte un développeur freelance mobile ou web ? TJM par techno et niveau d'expérience.",
-      "tags": ["Budget", "Freelance", "Guide"],
-      "keyword": "tarif développeur freelance"
-    },
-    {
       "slug": "roi-application-mobile-entreprise",
       "title": "ROI d'une application mobile : comment le calculer",
       "description": "Méthode pour calculer le retour sur investissement de votre app. Métriques et cas concrets.",
-      "tags": ["Business", "ROI", "Mobile"],
+      "tags": [
+        "Business",
+        "ROI",
+        "Mobile"
+      ],
       "keyword": "ROI application mobile"
     },
     {
       "slug": "financer-developpement-application",
       "title": "Financer le développement de son application",
       "description": "Subventions, BPI, prêts, aides régionales : toutes les options pour financer votre projet d'app.",
-      "tags": ["Financement", "Startup", "Guide"],
+      "tags": [
+        "Financement",
+        "Startup",
+        "Guide"
+      ],
       "keyword": "financement application mobile"
     },
     {
       "slug": "react-native-vs-flutter-2025",
       "title": "React Native vs Flutter en 2025 : comparatif complet",
       "description": "Quel framework cross-platform choisir ? Performance, écosystème, courbe d'apprentissage.",
-      "tags": ["Technique", "Cross-platform", "Comparatif"],
+      "tags": [
+        "Technique",
+        "Cross-platform",
+        "Comparatif"
+      ],
       "keyword": "React Native vs Flutter"
     },
     {
       "slug": "backend-as-a-service-comparatif",
       "title": "BaaS : Firebase vs Supabase vs AWS Amplify",
       "description": "Comparatif des solutions Backend-as-a-Service. Prix, fonctionnalités, cas d'usage.",
-      "tags": ["Technique", "Backend", "Comparatif"],
+      "tags": [
+        "Technique",
+        "Backend",
+        "Comparatif"
+      ],
       "keyword": "Firebase Supabase Amplify comparatif"
     },
     {
       "slug": "notifications-push-guide-complet",
       "title": "Notifications push : guide complet d'implémentation",
       "description": "Stratégie et technique pour des notifications push efficaces. FCM, APNs, segmentation.",
-      "tags": ["Technique", "Mobile", "Engagement"],
+      "tags": [
+        "Technique",
+        "Mobile",
+        "Engagement"
+      ],
       "keyword": "notifications push application"
     },
     {
       "slug": "authentification-application-mobile",
       "title": "Authentification application mobile : OAuth, SSO, biométrie",
       "description": "Implémenter une authentification sécurisée. Social login, 2FA, Face ID, empreinte digitale.",
-      "tags": ["Sécurité", "Technique", "Mobile"],
+      "tags": [
+        "Sécurité",
+        "Technique",
+        "Mobile"
+      ],
       "keyword": "authentification application mobile"
     },
     {
       "slug": "offline-first-application-mobile",
       "title": "Application offline-first : fonctionner sans réseau",
       "description": "Concevoir une app qui marche sans connexion. Sync, cache, gestion des conflits.",
-      "tags": ["Technique", "Mobile", "UX"],
+      "tags": [
+        "Technique",
+        "Mobile",
+        "UX"
+      ],
       "keyword": "application offline first"
     },
     {
       "slug": "ci-cd-application-mobile",
       "title": "CI/CD application mobile : automatiser les déploiements",
       "description": "Pipeline CI/CD pour iOS et Android. GitHub Actions, Fastlane, Bitrise, Codemagic.",
-      "tags": ["Technique", "DevOps", "Mobile"],
+      "tags": [
+        "Technique",
+        "DevOps",
+        "Mobile"
+      ],
       "keyword": "CI CD application mobile"
     },
     {
       "slug": "paiement-in-app-integration",
       "title": "Paiement in-app : intégrer Stripe, Apple Pay, Google Pay",
       "description": "Guide d'intégration des solutions de paiement mobile. Commissions, UX, conformité.",
-      "tags": ["Technique", "Paiement", "Mobile"],
+      "tags": [
+        "Technique",
+        "Paiement",
+        "Mobile"
+      ],
       "keyword": "paiement in-app intégration"
     },
     {
       "slug": "chat-temps-reel-application",
       "title": "Chat temps réel : intégrer une messagerie dans votre app",
       "description": "WebSocket, Firebase, solutions clé en main. Implémenter un chat performant.",
-      "tags": ["Technique", "Fonctionnalité", "Mobile"],
+      "tags": [
+        "Technique",
+        "Fonctionnalité",
+        "Mobile"
+      ],
       "keyword": "chat temps réel application"
     },
     {
       "slug": "geolocalisation-application-mobile",
       "title": "Géolocalisation application mobile : GPS et maps",
       "description": "Intégrer la géolocalisation dans votre app. Google Maps, Mapbox, tracking, privacy.",
-      "tags": ["Technique", "Fonctionnalité", "Mobile"],
+      "tags": [
+        "Technique",
+        "Fonctionnalité",
+        "Mobile"
+      ],
       "keyword": "géolocalisation application mobile"
     },
     {
       "slug": "camera-qr-code-application",
       "title": "Caméra et QR code : scanner depuis votre application",
       "description": "Intégrer la caméra, scanner des QR codes, réalité augmentée basique.",
-      "tags": ["Technique", "Fonctionnalité", "Mobile"],
+      "tags": [
+        "Technique",
+        "Fonctionnalité",
+        "Mobile"
+      ],
       "keyword": "scanner QR code application"
     },
     {
       "slug": "lancer-application-mobile-marketing",
       "title": "Lancer son application mobile : stratégie marketing",
       "description": "Plan de lancement pour votre app. Pré-launch, jour J, acquisition des premiers utilisateurs.",
-      "tags": ["Marketing", "Lancement", "Mobile"],
+      "tags": [
+        "Marketing",
+        "Lancement",
+        "Mobile"
+      ],
       "keyword": "lancement application mobile marketing"
     },
     {
       "slug": "feedback-utilisateurs-application",
       "title": "Feedback utilisateurs : collecter et exploiter les retours",
       "description": "Outils et méthodes pour recueillir les avis utilisateurs et améliorer votre app.",
-      "tags": ["UX", "Feedback", "Mobile"],
+      "tags": [
+        "UX",
+        "Feedback",
+        "Mobile"
+      ],
       "keyword": "feedback utilisateurs application"
     },
     {
       "slug": "scalabilite-application-mobile",
       "title": "Scalabilité application mobile : préparer la croissance",
       "description": "Architecture et infrastructure pour une app qui scale. De 1000 à 1 million d'utilisateurs.",
-      "tags": ["Technique", "Scalabilité", "Mobile"],
+      "tags": [
+        "Technique",
+        "Scalabilité",
+        "Mobile"
+      ],
       "keyword": "scalabilité application mobile"
     },
     {
       "slug": "application-mobile-b2b-vs-b2c",
       "title": "Application B2B vs B2C : différences de conception",
       "description": "Spécificités du développement d'apps B2B et B2C. UX, fonctionnalités, monétisation.",
-      "tags": ["Business", "B2B", "B2C"],
+      "tags": [
+        "Business",
+        "B2B",
+        "B2C"
+      ],
       "keyword": "application B2B B2C"
     },
     {
       "slug": "accessibilite-application-mobile",
       "title": "Accessibilité application mobile : guide de conformité",
       "description": "Rendre votre app accessible à tous. WCAG, VoiceOver, TalkBack, bonnes pratiques.",
-      "tags": ["Accessibilité", "UX", "Mobile"],
+      "tags": [
+        "Accessibilité",
+        "UX",
+        "Mobile"
+      ],
       "keyword": "accessibilité application mobile"
     },
     {
       "slug": "intelligence-artificielle-application-mobile",
       "title": "IA dans les applications mobiles : cas d'usage et intégration",
       "description": "Intégrer l'intelligence artificielle dans votre app. Chatbots, ML, vision, recommandations.",
-      "tags": ["IA", "Technique", "Tendances"],
+      "tags": [
+        "IA",
+        "Technique",
+        "Tendances"
+      ],
       "keyword": "intelligence artificielle application mobile"
     }
   ],
@@ -139,7 +204,11 @@
       "slug": "freelance-ou-agence-developpement",
       "title": "Freelance ou agence pour développer mon application ?",
       "description": "Comparatif objectif entre freelance et agence de développement pour votre projet d'application mobile ou web.",
-      "tags": ["Guide", "Budget", "Conseil"],
+      "tags": [
+        "Guide",
+        "Budget",
+        "Conseil"
+      ],
       "keyword": "freelance vs agence développement",
       "publishedDate": "2025-02-17"
     },
@@ -147,7 +216,11 @@
       "slug": "cahier-des-charges-application-mobile",
       "title": "Cahier des charges application mobile : template et guide complet",
       "description": "Comment rédiger un cahier des charges efficace pour votre application mobile. Template gratuit inclus.",
-      "tags": ["Guide", "Mobile", "Gestion de projet"],
+      "tags": [
+        "Guide",
+        "Mobile",
+        "Gestion de projet"
+      ],
       "keyword": "cahier des charges application mobile",
       "publishedDate": "2026-02-17"
     },
@@ -155,7 +228,11 @@
       "slug": "combien-temps-developper-application",
       "title": "Combien de temps pour développer une application mobile ?",
       "description": "Estimez le délai de développement de votre application selon sa complexité. Planning type et facteurs d'influence.",
-      "tags": ["Mobile", "Guide", "Planning"],
+      "tags": [
+        "Mobile",
+        "Guide",
+        "Planning"
+      ],
       "keyword": "temps développement application",
       "publishedDate": "2026-02-18"
     },
@@ -163,7 +240,11 @@
       "slug": "creer-application-mobile-guide",
       "title": "Créer une application mobile : le guide complet pour démarrer",
       "description": "Toutes les étapes pour créer votre application mobile, de l'idée au lancement sur les stores.",
-      "tags": ["Mobile", "Guide", "Débutant"],
+      "tags": [
+        "Mobile",
+        "Guide",
+        "Débutant"
+      ],
       "keyword": "créer application mobile",
       "publishedDate": "2026-02-18"
     },
@@ -171,7 +252,11 @@
       "slug": "application-mobile-startup-guide",
       "title": "Application mobile pour startup : guide complet 2025",
       "description": "Comment développer une application mobile pour votre startup. MVP, budget, timeline et conseils pratiques.",
-      "tags": ["Startup", "Mobile", "Guide"],
+      "tags": [
+        "Startup",
+        "Mobile",
+        "Guide"
+      ],
       "keyword": "application mobile startup",
       "publishedDate": "2026-02-19"
     },
@@ -179,7 +264,11 @@
       "slug": "budget-application-mobile-startup",
       "title": "Budget application mobile startup : combien prévoir ?",
       "description": "Quel budget prévoir pour développer l'application de votre startup ? Fourchettes de prix et conseils d'optimisation.",
-      "tags": ["Startup", "Budget", "Mobile"],
+      "tags": [
+        "Startup",
+        "Budget",
+        "Mobile"
+      ],
       "keyword": "budget application startup",
       "publishedDate": "2026-02-19"
     },
@@ -187,7 +276,11 @@
       "slug": "digitaliser-entreprise-application",
       "title": "Digitaliser son entreprise : créer une application sur mesure",
       "description": "Comment une application sur mesure peut transformer et digitaliser les process de votre PME.",
-      "tags": ["PME", "Digital", "Guide"],
+      "tags": [
+        "PME",
+        "Digital",
+        "Guide"
+      ],
       "keyword": "digitalisation entreprise",
       "publishedDate": "2026-02-20"
     },
@@ -195,7 +288,11 @@
       "slug": "application-interne-entreprise",
       "title": "Application interne entreprise : automatiser vos process",
       "description": "Développer une application métier interne pour optimiser la productivité de vos équipes.",
-      "tags": ["PME", "Productivité", "Mobile"],
+      "tags": [
+        "PME",
+        "Productivité",
+        "Mobile"
+      ],
       "keyword": "application interne entreprise",
       "publishedDate": "2026-02-20"
     },
@@ -203,7 +300,11 @@
       "slug": "pwa-vs-application-native",
       "title": "PWA vs Application native : que choisir en 2025 ?",
       "description": "Progressive Web App ou application native ? Comparatif détaillé pour faire le bon choix.",
-      "tags": ["Technique", "Mobile", "Web"],
+      "tags": [
+        "Technique",
+        "Mobile",
+        "Web"
+      ],
       "keyword": "PWA vs native",
       "publishedDate": "2026-02-21"
     },
@@ -211,7 +312,11 @@
       "slug": "firebase-vs-backend-personnalise",
       "title": "Firebase vs Backend personnalisé : quel choix pour votre app ?",
       "description": "Comparez Firebase et un backend sur mesure. Avantages, limites et cas d'usage de chaque solution.",
-      "tags": ["Technique", "Backend", "Guide"],
+      "tags": [
+        "Technique",
+        "Backend",
+        "Guide"
+      ],
       "keyword": "Firebase vs backend custom",
       "publishedDate": "2026-02-21"
     },
@@ -219,7 +324,11 @@
       "slug": "api-integrations-application",
       "title": "API et intégrations : connecter votre app à vos outils",
       "description": "Comment intégrer des API tierces dans votre application. CRM, paiement, analytics et plus.",
-      "tags": ["Technique", "API", "Intégration"],
+      "tags": [
+        "Technique",
+        "API",
+        "Intégration"
+      ],
       "keyword": "intégration API application",
       "publishedDate": "2026-02-22"
     },
@@ -227,7 +336,11 @@
       "slug": "securite-application-mobile",
       "title": "Sécurité application mobile : les bonnes pratiques",
       "description": "Protégez votre application mobile et les données de vos utilisateurs. Guide des bonnes pratiques sécurité.",
-      "tags": ["Sécurité", "Mobile", "Guide"],
+      "tags": [
+        "Sécurité",
+        "Mobile",
+        "Guide"
+      ],
       "keyword": "sécurité application mobile",
       "publishedDate": "2026-02-22"
     },
@@ -235,7 +348,11 @@
       "slug": "maintenance-application-mobile-couts",
       "title": "Maintenance application mobile : les coûts à prévoir",
       "description": "Budget maintenance d'une app mobile : mises à jour, hébergement, support. Tout ce qu'il faut anticiper.",
-      "tags": ["Budget", "Maintenance", "Mobile"],
+      "tags": [
+        "Budget",
+        "Maintenance",
+        "Mobile"
+      ],
       "keyword": "maintenance application mobile coût",
       "publishedDate": "2026-02-23"
     },
@@ -243,7 +360,11 @@
       "slug": "refonte-application-mobile",
       "title": "Refonte d'application mobile : quand et comment la faire ?",
       "description": "Signes qu'il est temps de refondre votre app et méthodologie pour réussir la refonte.",
-      "tags": ["Mobile", "Refonte", "Guide"],
+      "tags": [
+        "Mobile",
+        "Refonte",
+        "Guide"
+      ],
       "keyword": "refonte application mobile",
       "publishedDate": "2026-02-23"
     },
@@ -251,7 +372,11 @@
       "slug": "monetiser-application-mobile",
       "title": "Monétiser son application mobile : les modèles qui marchent",
       "description": "Freemium, abonnement, publicité, achat in-app... Quel modèle de monétisation pour votre app ?",
-      "tags": ["Business", "Monétisation", "Mobile"],
+      "tags": [
+        "Business",
+        "Monétisation",
+        "Mobile"
+      ],
       "keyword": "monétisation application mobile",
       "publishedDate": "2026-02-24"
     },
@@ -259,7 +384,11 @@
       "slug": "rgpd-application-mobile",
       "title": "Application mobile et RGPD : guide de conformité",
       "description": "Rendez votre application conforme au RGPD. Checklist et bonnes pratiques pour la protection des données.",
-      "tags": ["RGPD", "Légal", "Mobile"],
+      "tags": [
+        "RGPD",
+        "Légal",
+        "Mobile"
+      ],
       "keyword": "RGPD application mobile",
       "publishedDate": "2026-02-24"
     },
@@ -267,7 +396,11 @@
       "slug": "aso-referencement-app-store",
       "title": "ASO : référencer son application sur les stores",
       "description": "Optimisez la visibilité de votre app sur l'App Store et Google Play. Guide ASO complet.",
-      "tags": ["ASO", "Marketing", "Mobile"],
+      "tags": [
+        "ASO",
+        "Marketing",
+        "Mobile"
+      ],
       "keyword": "ASO référencement app store",
       "publishedDate": "2026-02-25"
     },
@@ -275,7 +408,11 @@
       "slug": "kotlin-vs-swift-2025",
       "title": "Kotlin vs Swift : développement natif en 2025",
       "description": "Comparatif Kotlin (Android) vs Swift (iOS) pour le développement natif. Performances, syntaxe, écosystème.",
-      "tags": ["Technique", "Natif", "Comparatif"],
+      "tags": [
+        "Technique",
+        "Natif",
+        "Comparatif"
+      ],
       "keyword": "Kotlin vs Swift",
       "publishedDate": "2026-02-25"
     },
@@ -283,7 +420,11 @@
       "slug": "no-code-vs-developpement-custom",
       "title": "No-code vs développement custom : avantages et limites",
       "description": "Bubble, Adalo, Glide vs développement sur mesure. Quand utiliser le no-code et quand passer au custom ?",
-      "tags": ["No-code", "Comparatif", "Guide"],
+      "tags": [
+        "No-code",
+        "Comparatif",
+        "Guide"
+      ],
       "keyword": "no-code vs développement",
       "publishedDate": "2026-02-26"
     },
@@ -291,7 +432,11 @@
       "slug": "application-vs-site-responsive",
       "title": "Application mobile vs site responsive : que choisir ?",
       "description": "Avez-vous vraiment besoin d'une app ou un site responsive suffit ? Critères de décision.",
-      "tags": ["Mobile", "Web", "Comparatif"],
+      "tags": [
+        "Mobile",
+        "Web",
+        "Comparatif"
+      ],
       "keyword": "application vs site responsive",
       "publishedDate": "2026-02-26"
     },
@@ -299,7 +444,11 @@
       "slug": "meilleures-technologies-app-mobile-2025",
       "title": "Les meilleures technologies pour une app mobile en 2025",
       "description": "Flutter, React Native, Swift, Kotlin... Panorama des technologies mobile en 2025.",
-      "tags": ["Technique", "Mobile", "Tendances"],
+      "tags": [
+        "Technique",
+        "Mobile",
+        "Tendances"
+      ],
       "keyword": "technologie application mobile 2025",
       "publishedDate": "2026-02-27"
     },
@@ -307,7 +456,11 @@
       "slug": "mvp-levee-de-fonds",
       "title": "Lever des fonds avec un MVP : ce qu'attendent les investisseurs",
       "description": "Comment présenter votre MVP aux investisseurs. Métriques clés et erreurs à éviter.",
-      "tags": ["Startup", "MVP", "Investissement"],
+      "tags": [
+        "Startup",
+        "MVP",
+        "Investissement"
+      ],
       "keyword": "MVP levée de fonds",
       "publishedDate": "2026-02-27"
     },
@@ -315,7 +468,11 @@
       "slug": "analytics-application-mobile",
       "title": "Analytics application mobile : mesurer le succès de votre app",
       "description": "KPIs essentiels et outils d'analytics pour piloter la croissance de votre application.",
-      "tags": ["Analytics", "Mobile", "KPIs"],
+      "tags": [
+        "Analytics",
+        "Mobile",
+        "KPIs"
+      ],
       "keyword": "analytics application mobile",
       "publishedDate": "2026-02-28"
     },
@@ -323,7 +480,11 @@
       "slug": "performance-application-mobile",
       "title": "Performance application mobile : optimiser la vitesse",
       "description": "Techniques d'optimisation pour une app rapide et fluide. Temps de chargement, mémoire, batterie.",
-      "tags": ["Technique", "Performance", "Mobile"],
+      "tags": [
+        "Technique",
+        "Performance",
+        "Mobile"
+      ],
       "keyword": "performance application mobile",
       "publishedDate": "2026-02-28"
     },
@@ -331,7 +492,11 @@
       "slug": "mise-a-jour-application-stores",
       "title": "Mettre à jour son application : guide iOS et Android",
       "description": "Process de mise à jour sur l'App Store et Google Play. Versioning, review, déploiement.",
-      "tags": ["Mobile", "Stores", "Guide"],
+      "tags": [
+        "Mobile",
+        "Stores",
+        "Guide"
+      ],
       "keyword": "mise à jour application",
       "publishedDate": "2026-03-01"
     },
@@ -339,7 +504,11 @@
       "slug": "tests-application-mobile",
       "title": "Tests application mobile : assurer la qualité",
       "description": "Stratégie de tests pour une app sans bugs. Tests unitaires, intégration, E2E, beta testing.",
-      "tags": ["Technique", "QA", "Tests"],
+      "tags": [
+        "Technique",
+        "QA",
+        "Tests"
+      ],
       "keyword": "tests application mobile",
       "publishedDate": "2026-03-01"
     },
@@ -347,7 +516,11 @@
       "slug": "design-ux-application-mobile",
       "title": "Design UX application mobile : les fondamentaux",
       "description": "Principes de design UX pour créer une application intuitive et agréable à utiliser.",
-      "tags": ["Design", "UX", "Mobile"],
+      "tags": [
+        "Design",
+        "UX",
+        "Mobile"
+      ],
       "keyword": "design UX application mobile",
       "publishedDate": "2026-03-02"
     },
@@ -355,8 +528,24 @@
       "slug": "cout-maintenance-annuelle-application",
       "title": "Coût de maintenance annuelle d'une application mobile",
       "description": "Budget annuel pour maintenir votre app : serveurs, mises à jour, support. Chiffres et optimisations.",
-      "tags": ["Budget", "Maintenance", "Mobile"],
+      "tags": [
+        "Budget",
+        "Maintenance",
+        "Mobile"
+      ],
       "keyword": "coût maintenance application annuel",
+      "publishedDate": "2026-03-03"
+    },
+    {
+      "slug": "tarif-developpeur-freelance-2025",
+      "title": "Tarif développeur freelance 2025 : grille de prix",
+      "description": "Combien coûte un développeur freelance mobile ou web ? TJM par techno et niveau d'expérience.",
+      "tags": [
+        "Budget",
+        "Freelance",
+        "Guide"
+      ],
+      "keyword": "tarif développeur freelance",
       "publishedDate": "2026-03-03"
     }
   ],
