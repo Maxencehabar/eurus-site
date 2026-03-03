@@ -1,5 +1,139 @@
 {
-  "queue": [],
+  "queue": [
+    {
+      "slug": "tarif-developpeur-freelance-2025",
+      "title": "Tarif développeur freelance 2025 : grille de prix",
+      "description": "Combien coûte un développeur freelance mobile ou web ? TJM par techno et niveau d'expérience.",
+      "tags": ["Budget", "Freelance", "Guide"],
+      "keyword": "tarif développeur freelance"
+    },
+    {
+      "slug": "roi-application-mobile-entreprise",
+      "title": "ROI d'une application mobile : comment le calculer",
+      "description": "Méthode pour calculer le retour sur investissement de votre app. Métriques et cas concrets.",
+      "tags": ["Business", "ROI", "Mobile"],
+      "keyword": "ROI application mobile"
+    },
+    {
+      "slug": "financer-developpement-application",
+      "title": "Financer le développement de son application",
+      "description": "Subventions, BPI, prêts, aides régionales : toutes les options pour financer votre projet d'app.",
+      "tags": ["Financement", "Startup", "Guide"],
+      "keyword": "financement application mobile"
+    },
+    {
+      "slug": "react-native-vs-flutter-2025",
+      "title": "React Native vs Flutter en 2025 : comparatif complet",
+      "description": "Quel framework cross-platform choisir ? Performance, écosystème, courbe d'apprentissage.",
+      "tags": ["Technique", "Cross-platform", "Comparatif"],
+      "keyword": "React Native vs Flutter"
+    },
+    {
+      "slug": "backend-as-a-service-comparatif",
+      "title": "BaaS : Firebase vs Supabase vs AWS Amplify",
+      "description": "Comparatif des solutions Backend-as-a-Service. Prix, fonctionnalités, cas d'usage.",
+      "tags": ["Technique", "Backend", "Comparatif"],
+      "keyword": "Firebase Supabase Amplify comparatif"
+    },
+    {
+      "slug": "notifications-push-guide-complet",
+      "title": "Notifications push : guide complet d'implémentation",
+      "description": "Stratégie et technique pour des notifications push efficaces. FCM, APNs, segmentation.",
+      "tags": ["Technique", "Mobile", "Engagement"],
+      "keyword": "notifications push application"
+    },
+    {
+      "slug": "authentification-application-mobile",
+      "title": "Authentification application mobile : OAuth, SSO, biométrie",
+      "description": "Implémenter une authentification sécurisée. Social login, 2FA, Face ID, empreinte digitale.",
+      "tags": ["Sécurité", "Technique", "Mobile"],
+      "keyword": "authentification application mobile"
+    },
+    {
+      "slug": "offline-first-application-mobile",
+      "title": "Application offline-first : fonctionner sans réseau",
+      "description": "Concevoir une app qui marche sans connexion. Sync, cache, gestion des conflits.",
+      "tags": ["Technique", "Mobile", "UX"],
+      "keyword": "application offline first"
+    },
+    {
+      "slug": "ci-cd-application-mobile",
+      "title": "CI/CD application mobile : automatiser les déploiements",
+      "description": "Pipeline CI/CD pour iOS et Android. GitHub Actions, Fastlane, Bitrise, Codemagic.",
+      "tags": ["Technique", "DevOps", "Mobile"],
+      "keyword": "CI CD application mobile"
+    },
+    {
+      "slug": "paiement-in-app-integration",
+      "title": "Paiement in-app : intégrer Stripe, Apple Pay, Google Pay",
+      "description": "Guide d'intégration des solutions de paiement mobile. Commissions, UX, conformité.",
+      "tags": ["Technique", "Paiement", "Mobile"],
+      "keyword": "paiement in-app intégration"
+    },
+    {
+      "slug": "chat-temps-reel-application",
+      "title": "Chat temps réel : intégrer une messagerie dans votre app",
+      "description": "WebSocket, Firebase, solutions clé en main. Implémenter un chat performant.",
+      "tags": ["Technique", "Fonctionnalité", "Mobile"],
+      "keyword": "chat temps réel application"
+    },
+    {
+      "slug": "geolocalisation-application-mobile",
+      "title": "Géolocalisation application mobile : GPS et maps",
+      "description": "Intégrer la géolocalisation dans votre app. Google Maps, Mapbox, tracking, privacy.",
+      "tags": ["Technique", "Fonctionnalité", "Mobile"],
+      "keyword": "géolocalisation application mobile"
+    },
+    {
+      "slug": "camera-qr-code-application",
+      "title": "Caméra et QR code : scanner depuis votre application",
+      "description": "Intégrer la caméra, scanner des QR codes, réalité augmentée basique.",
+      "tags": ["Technique", "Fonctionnalité", "Mobile"],
+      "keyword": "scanner QR code application"
+    },
+    {
+      "slug": "lancer-application-mobile-marketing",
+      "title": "Lancer son application mobile : stratégie marketing",
+      "description": "Plan de lancement pour votre app. Pré-launch, jour J, acquisition des premiers utilisateurs.",
+      "tags": ["Marketing", "Lancement", "Mobile"],
+      "keyword": "lancement application mobile marketing"
+    },
+    {
+      "slug": "feedback-utilisateurs-application",
+      "title": "Feedback utilisateurs : collecter et exploiter les retours",
+      "description": "Outils et méthodes pour recueillir les avis utilisateurs et améliorer votre app.",
+      "tags": ["UX", "Feedback", "Mobile"],
+      "keyword": "feedback utilisateurs application"
+    },
+    {
+      "slug": "scalabilite-application-mobile",
+      "title": "Scalabilité application mobile : préparer la croissance",
+      "description": "Architecture et infrastructure pour une app qui scale. De 1000 à 1 million d'utilisateurs.",
+      "tags": ["Technique", "Scalabilité", "Mobile"],
+      "keyword": "scalabilité application mobile"
+    },
+    {
+      "slug": "application-mobile-b2b-vs-b2c",
+      "title": "Application B2B vs B2C : différences de conception",
+      "description": "Spécificités du développement d'apps B2B et B2C. UX, fonctionnalités, monétisation.",
+      "tags": ["Business", "B2B", "B2C"],
+      "keyword": "application B2B B2C"
+    },
+    {
+      "slug": "accessibilite-application-mobile",
+      "title": "Accessibilité application mobile : guide de conformité",
+      "description": "Rendre votre app accessible à tous. WCAG, VoiceOver, TalkBack, bonnes pratiques.",
+      "tags": ["Accessibilité", "UX", "Mobile"],
+      "keyword": "accessibilité application mobile"
+    },
+    {
+      "slug": "intelligence-artificielle-application-mobile",
+      "title": "IA dans les applications mobiles : cas d'usage et intégration",
+      "description": "Intégrer l'intelligence artificielle dans votre app. Chatbots, ML, vision, recommandations.",
+      "tags": ["IA", "Technique", "Tendances"],
+      "keyword": "intelligence artificielle application mobile"
+    }
+  ],
   "published": [
     {
       "slug": "freelance-ou-agence-developpement",
@@ -216,7 +350,15 @@
       "tags": ["Design", "UX", "Mobile"],
       "keyword": "design UX application mobile",
       "publishedDate": "2026-03-02"
+    },
+    {
+      "slug": "cout-maintenance-annuelle-application",
+      "title": "Coût de maintenance annuelle d'une application mobile",
+      "description": "Budget annuel pour maintenir votre app : serveurs, mises à jour, support. Chiffres et optimisations.",
+      "tags": ["Budget", "Maintenance", "Mobile"],
+      "keyword": "coût maintenance application annuel",
+      "publishedDate": "2026-03-03"
     }
   ],
-  "lastPublished": "2026-03-02"
+  "lastPublished": "2026-03-03"
 }
