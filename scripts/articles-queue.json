@@ -1,17 +1,6 @@
 {
   "queue": [
     {
-      "slug": "roi-application-mobile-entreprise",
-      "title": "ROI d'une application mobile : comment le calculer",
-      "description": "Méthode pour calculer le retour sur investissement de votre app. Métriques et cas concrets.",
-      "tags": [
-        "Business",
-        "ROI",
-        "Mobile"
-      ],
-      "keyword": "ROI application mobile"
-    },
-    {
       "slug": "financer-developpement-application",
       "title": "Financer le développement de son application",
       "description": "Subventions, BPI, prêts, aides régionales : toutes les options pour financer votre projet d'app.",
@@ -547,7 +536,19 @@
       ],
       "keyword": "tarif développeur freelance",
       "publishedDate": "2026-03-03"
+    },
+    {
+      "slug": "roi-application-mobile-entreprise",
+      "title": "ROI d'une application mobile : comment le calculer",
+      "description": "Méthode pour calculer le retour sur investissement de votre app. Métriques et cas concrets.",
+      "tags": [
+        "Business",
+        "ROI",
+        "Mobile"
+      ],
+      "keyword": "ROI application mobile",
+      "publishedDate": "2026-03-04"
     }
   ],
-  "lastPublished": "2026-03-03"
+  "lastPublished": "2026-03-04"
 }
