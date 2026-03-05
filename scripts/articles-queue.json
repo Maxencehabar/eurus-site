@@ -1,17 +1,6 @@
 {
   "queue": [
     {
-      "slug": "react-native-vs-flutter-2025",
-      "title": "React Native vs Flutter en 2025 : comparatif complet",
-      "description": "Quel framework cross-platform choisir ? Performance, écosystème, courbe d'apprentissage.",
-      "tags": [
-        "Technique",
-        "Cross-platform",
-        "Comparatif"
-      ],
-      "keyword": "React Native vs Flutter"
-    },
-    {
       "slug": "backend-as-a-service-comparatif",
       "title": "BaaS : Firebase vs Supabase vs AWS Amplify",
       "description": "Comparatif des solutions Backend-as-a-Service. Prix, fonctionnalités, cas d'usage.",
@@ -549,7 +538,19 @@
       ],
       "keyword": "financement application mobile",
       "publishedDate": "2026-03-04"
+    },
+    {
+      "slug": "react-native-vs-flutter-2025",
+      "title": "React Native vs Flutter en 2025 : comparatif complet",
+      "description": "Quel framework cross-platform choisir ? Performance, écosystème, courbe d'apprentissage.",
+      "tags": [
+        "Technique",
+        "Cross-platform",
+        "Comparatif"
+      ],
+      "keyword": "React Native vs Flutter",
+      "publishedDate": "2026-03-05"
     }
   ],
-  "lastPublished": "2026-03-04"
+  "lastPublished": "2026-03-05"
 }
