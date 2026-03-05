@@ -1,0 +1,215 @@
+---
+title: "BaaS : Firebase vs Supabase vs AWS Amplify"
+description: "Comparatif des solutions Backend-as-a-Service. Prix, fonctionnalités, cas d'usage. Notre retour d'expérience après plusieurs projets en production."
+date: "2026-03-05"
+author: "Eurus"
+tags: ["Technique", "Backend", "Comparatif"]
+---
+
+Quand on lance un projet d'application, la question du backend arrive très vite. Faut-il construire une API from scratch ? Utiliser un Backend-as-a-Service ? Et si oui, lequel ?
+
+En 3 ans chez Eurus, j'ai vu des projets échouer non pas à cause du code, mais parce que personne n'avait vraiment compris le besoin métier. Le choix du backend, c'est pareil : ce n'est pas une décision technique pure. C'est une décision business qui impacte vos coûts, votre vélocité de développement, et votre capacité à pivoter.
+
+Firebase, Supabase, AWS Amplify — ces trois solutions dominent le marché du BaaS en 2025. On les a toutes utilisées sur des projets en production. Voici notre retour d'expérience sans langue de bois.
+
+## Qu'est-ce qu'un Backend-as-a-Service exactement ?
+
+Un BaaS, c'est une plateforme qui vous fournit les briques essentielles d'un backend sans que vous ayez à les construire vous-même. Authentification, base de données, stockage de fichiers, fonctions serverless, notifications push — tout est prêt à l'emploi.
+
+L'idée, c'est de vous permettre de vous concentrer sur ce qui différencie votre produit plutôt que de réinventer la roue. Pourquoi passer trois semaines à coder un système d'authentification quand Firebase peut vous le fournir en quelques heures ?
+
+Mais attention. Un BaaS n'est pas une solution magique. Il y a des compromis. Vous gagnez en vitesse de développement, mais vous perdez en contrôle. Vous réduisez vos coûts initiaux, mais vous créez une dépendance à un fournisseur. Et surtout, tous les BaaS ne se valent pas selon votre cas d'usage.
+
+## Firebase : le vétéran de Google
+
+Firebase existe depuis 2011 et appartient à Google depuis 2014. C'est probablement la solution la plus connue et la plus utilisée. Des millions d'applications tournent dessus, de la petite startup au géant comme Alibaba.
+
+### Ce qui fait la force de Firebase
+
+L'écosystème est impressionnant. Authentification, Firestore (base de données NoSQL), Realtime Database, Cloud Storage, Cloud Functions, Analytics, Crashlytics, Remote Config, A/B Testing, Cloud Messaging... La liste est longue. Vous avez pratiquement tout ce qu'il faut pour construire une application complète sans jamais quitter l'écosystème Google.
+
+L'intégration avec les autres services Google est fluide. Si vous utilisez déjà Google Analytics, BigQuery ou Google Ads, tout communique naturellement. Pour le marketing et l'analyse de données, c'est un avantage considérable.
+
+La documentation est excellente. Firebase Labs propose des tutoriels vidéo, des codelabs interactifs, et la communauté est massive. Quand vous avez un problème, il y a de fortes chances que quelqu'un l'ait déjà résolu sur Stack Overflow.
+
+Sur Youdy, on a dû refaire 3 fois le système de notifications push avant de trouver le bon équilibre entre engagement et spam. Firebase Cloud Messaging nous a permis d'itérer rapidement. La console permet de segmenter les utilisateurs, de programmer des envois, de tester différents messages. Sans cette flexibilité, on aurait mis beaucoup plus de temps à trouver la bonne formule.
+
+### Les limites qu'on a rencontrées
+
+Firestore est puissant mais contraignant. C'est une base NoSQL orientée documents. Si votre modèle de données est relationnel avec beaucoup de jointures, vous allez souffrir. On se retrouve souvent à dénormaliser les données ou à faire plusieurs requêtes là où une seule suffirait avec du SQL.
+
+Les coûts peuvent exploser. Firebase facture à la lecture, à l'écriture et au stockage. Sur une application avec beaucoup de trafic, la facture peut vite devenir salée. On a vu des projets passer de 50€ à 500€ par mois en quelques semaines après un pic de croissance.
+
+Le vendor lock-in est réel. Migrer hors de Firebase, c'est un projet à part entière. Votre code est étroitement couplé aux SDK Firebase. Vos données sont dans un format spécifique. Vos Cloud Functions utilisent des triggers Firebase. Tout reconstruire prend des mois.
+
+### Tarification Firebase
+
+Firebase propose un plan gratuit généreux pour démarrer : 50 000 lectures Firestore par jour, 20 000 écritures, 1 Go de stockage, 10 Go de bande passante. C'est suffisant pour un MVP ou une application avec quelques centaines d'utilisateurs actifs.
+
+Au-delà, vous passez au plan Blaze (pay-as-you-go). Comptez environ 0.06$ pour 100 000 lectures Firestore et 0.18$ pour 100 000 écritures. Les Cloud Functions coûtent 0.40$ par million d'invocations plus le temps de calcul.
+
+## Supabase : l'alternative open source
+
+Supabase se présente comme "l'alternative open source à Firebase". Lancé en 2020, le projet a explosé en popularité ces dernières années. La promesse ? Offrir les mêmes fonctionnalités que Firebase mais avec PostgreSQL comme base de données.
+
+### Pourquoi Supabase séduit de plus en plus
+
+PostgreSQL change la donne. Si vous venez du monde SQL, vous êtes en terrain connu. Les jointures fonctionnent. Les transactions ACID aussi. Vous pouvez utiliser des extensions comme PostGIS pour la géolocalisation ou pgvector pour l'IA. Toute la puissance de PostgreSQL est à votre disposition.
+
+L'open source rassure. Le code de Supabase est sur GitHub. Vous pouvez l'auto-héberger si vous le souhaitez. Pas de vendor lock-in absolu. Si Supabase ferme demain, vous pouvez récupérer vos données et votre logique métier.
+
+L'API REST est générée automatiquement à partir de votre schéma de base de données. Vous créez une table, vous avez immédiatement une API pour la lire et l'écrire. C'est bluffant de rapidité pour prototyper.
+
+Les realtime subscriptions fonctionnent bien. Vous pouvez écouter les changements sur une table et mettre à jour votre interface en temps réel, comme avec Firebase. La syntaxe est même plus intuitive pour ceux qui connaissent déjà PostgreSQL.
+
+Chez Eurus, on apprécie particulièrement Supabase pour les projets où le modèle de données est complexe. Les cabinets vétérinaires ont des contraintes qu'on n'imaginait pas : connexion internet instable, PC sous Windows XP, urgences qui arrivent pendant qu'on tape une ordonnance. Avoir une vraie base relationnelle permet de modéliser correctement les relations entre patients, propriétaires, rendez-vous et traitements.
+
+### Les points de friction
+
+La maturité n'est pas encore au niveau de Firebase. Supabase évolue vite, parfois trop. Des breaking changes surviennent encore entre les versions. La documentation, bien qu'en amélioration constante, reste moins fournie que celle de Firebase.
+
+L'écosystème est plus limité. Pas d'équivalent natif à Firebase Analytics ou Crashlytics. Pour ces fonctionnalités, il faut intégrer des services tiers comme Mixpanel ou Sentry. Ça fonctionne, mais ça ajoute de la complexité.
+
+Les Cloud Functions ne sont pas aussi matures. Supabase propose des Edge Functions basées sur Deno, mais l'expérience développeur n'est pas encore au niveau des Cloud Functions Firebase. Le debugging est plus compliqué, les logs moins accessibles.
+
+### Tarification Supabase
+
+Le plan gratuit offre 500 Mo de base de données, 1 Go de stockage fichiers, 2 Go de bande passante et 50 000 requêtes API par mois. C'est correct pour un prototype.
+
+Le plan Pro à 25$/mois par projet débloque 8 Go de base de données, 100 Go de stockage et supprime les limites de requêtes API. Pour la plupart des applications en production, c'est le plan de référence.
+
+## AWS Amplify : la puissance d'Amazon
+
+AWS Amplify est la réponse d'Amazon aux BaaS. C'est un ensemble d'outils et de services qui s'appuient sur l'infrastructure AWS pour fournir un backend complet.
+
+### Les atouts d'Amplify
+
+La scalabilité est quasi illimitée. Vous êtes sur l'infrastructure AWS. Quand votre application explose, AWS suit. Des millions d'utilisateurs ? Pas de problème. C'est le même socle technique que Netflix ou Airbnb.
+
+GraphQL est au cœur du système. Amplify utilise AWS AppSync pour fournir une API GraphQL automatiquement. Si vous aimez GraphQL, vous serez aux anges. Les subscriptions temps réel sont natives, les requêtes sont typées, l'expérience développeur est excellente.
+
+L'intégration avec les autres services AWS est totale. Besoin de machine learning ? Amazon SageMaker. De recherche ? Amazon OpenSearch. De queues de messages ? SQS. L'écosystème AWS est gigantesque et tout est accessible.
+
+Le hosting d'applications web est inclus. Amplify Hosting permet de déployer votre frontend React, Vue ou Next.js avec CI/CD intégré. Les previews de pull requests sont automatiques. C'est très pratique pour les équipes qui veulent tout centraliser.
+
+### Les inconvénients majeurs
+
+La complexité est le prix à payer. AWS, c'est puissant mais intimidant. La console est un labyrinthe. Les concepts sont nombreux : Cognito pour l'auth, DynamoDB pour la base, S3 pour le stockage, Lambda pour les fonctions... Chaque service a sa propre logique, sa propre tarification, sa propre documentation.
+
+La courbe d'apprentissage est raide. Un développeur qui découvre Amplify va mettre plusieurs semaines avant d'être vraiment productif. Firebase ou Supabase permettent de démarrer en quelques heures.
+
+Les coûts sont opaques. Avec AWS, vous payez pour chaque service individuellement. DynamoDB facture les lectures et écritures. Lambda facture le temps d'exécution. S3 facture le stockage et les requêtes. Prévoir un budget précis relève de l'exercice de divination.
+
+Notre règle d'or : un MVP en 6 semaines max. Au-delà, on perd le feedback terrain. AWS Amplify rend cette contrainte plus difficile à tenir. On le réserve aux projets où la scalabilité est un enjeu dès le départ, pas aux MVPs.
+
+### Tarification Amplify
+
+AWS Amplify Hosting est gratuit jusqu'à 5 Go de stockage et 15 Go de bande passante par mois. Au-delà, comptez 0.023$ par Go stocké et 0.15$ par Go servi.
+
+Pour le backend (AppSync, Cognito, DynamoDB), chaque service a sa propre grille tarifaire. Un projet typique avec quelques milliers d'utilisateurs actifs coûte entre 30$ et 100$ par mois. Mais les surprises sont fréquentes.
+
+## Comparatif technique détaillé
+
+Mettons les trois solutions face à face sur les critères qui comptent au quotidien.
+
+### Base de données
+
+Firebase utilise Firestore, une base NoSQL orientée documents. Parfait pour les données hiérarchiques et les applications temps réel. Frustrant pour les requêtes complexes et les relations.
+
+Supabase utilise PostgreSQL. C'est une vraie base relationnelle avec tout ce que ça implique : jointures, transactions, contraintes d'intégrité, extensions. Le choix évident si votre modèle de données est relationnel.
+
+AWS Amplify utilise DynamoDB par défaut, une autre base NoSQL mais avec un modèle différent (clé-valeur). Extrêmement performant sur les patterns d'accès prévus, mais peu flexible pour les requêtes ad-hoc.
+
+### Authentification
+
+Les trois solutions proposent l'authentification email/password, les providers sociaux (Google, Facebook, Apple), et la vérification par téléphone.
+
+Firebase Auth est le plus mature. La gestion des sessions, les tokens, les refresh automatiques — tout fonctionne out of the box. Le SDK gère les edge cases que vous n'auriez même pas imaginés.
+
+Supabase Auth est solide et s'améliore constamment. L'intégration avec PostgreSQL permet des choses intéressantes comme stocker des métadonnées utilisateur directement dans une table.
+
+AWS Cognito est puissant mais complexe. Les User Pools, Identity Pools, les rôles IAM... La configuration demande du temps. En échange, vous avez un contrôle très fin sur les permissions.
+
+### Fonctions serverless
+
+Firebase Cloud Functions tournent sur Google Cloud. Le déploiement est simple, les triggers (Firestore, Auth, Storage) sont nombreux. Le cold start peut être un problème sur les fonctions peu appelées.
+
+Supabase Edge Functions utilisent Deno et tournent sur Fly.io. Les cold starts sont quasi inexistants grâce au edge computing. Par contre, l'écosystème Deno est moins riche que Node.js.
+
+AWS Lambda, c'est la référence du serverless. Tous les langages sont supportés, les triggers sont illimités, la scalabilité est automatique. Mais la configuration des permissions IAM peut rendre fou.
+
+### Temps réel
+
+Firebase excelle sur ce point. Les listeners Firestore sont simples à utiliser et performants. C'est probablement la meilleure expérience développeur pour le temps réel.
+
+Supabase Realtime fonctionne bien mais demande de configurer explicitement les tables à écouter. La syntaxe est moins intuitive que Firebase.
+
+AWS AppSync avec les subscriptions GraphQL est très puissant. Mais la mise en place demande plus de configuration.
+
+## Notre grille de décision
+
+Après des dizaines de projets, voici comment on choisit chez Eurus.
+
+### Choisissez Firebase si...
+
+Vous avez besoin d'un temps réel performant. Pour un chat, un système de collaboration, ou toute application où les données changent fréquemment et doivent être synchronisées instantanément, Firebase reste la référence.
+
+Votre équipe connaît déjà l'écosystème Google. Si vos développeurs ont de l'expérience avec Firebase, capitaliser dessus a du sens. La productivité sera immédiate.
+
+Vous voulez un maximum de fonctionnalités intégrées. Analytics, crash reporting, A/B testing, remote config... Tout est là, prêt à l'emploi.
+
+Un bug de timezone sur Youdy a fait que les utilisateurs au Canada recevaient leurs rappels à 3h du mat. Leçon : toujours stocker en UTC. Firebase nous a permis de déployer le fix en quelques minutes grâce aux Cloud Functions et au Remote Config pour ajuster le comportement sans nouvelle release.
+
+### Choisissez Supabase si...
+
+Votre modèle de données est relationnel. Des utilisateurs qui ont des commandes, qui contiennent des produits, qui ont des catégories... Si vous pensez en tables et en relations, PostgreSQL sera votre allié.
+
+Vous voulez éviter le vendor lock-in. L'open source et la possibilité d'auto-héberger sont des garanties d'indépendance. Vos données restent vos données.
+
+Votre équipe maîtrise SQL. La courbe d'apprentissage sera beaucoup plus douce qu'avec une base NoSQL.
+
+DrMilou gère des milliers de dossiers animaux. La plus grosse leçon ? Les vétérinaires ont besoin d'accéder aux infos critiques en 2 clics max, pas 5. Avec Supabase et PostgreSQL, on a pu créer des vues et des requêtes optimisées pour servir exactement les données nécessaires, sans les limitations du NoSQL.
+
+### Choisissez AWS Amplify si...
+
+La scalabilité est critique dès le départ. Si vous savez que votre application va devoir supporter des millions d'utilisateurs rapidement, commencer sur AWS évite une migration douloureuse plus tard.
+
+Vous êtes déjà dans l'écosystème AWS. Si votre infrastructure tourne déjà sur AWS, Amplify s'intègre naturellement. Les IAM roles, les VPC, les logs CloudWatch... tout est cohérent.
+
+Vous avez des besoins spécifiques que seul AWS peut satisfaire. Machine learning, IoT, services de queuing avancés... L'écosystème AWS est incomparable en termes de profondeur.
+
+## Questions fréquentes
+
+### Peut-on migrer d'un BaaS à un autre ?
+
+Techniquement oui, mais c'est coûteux. Comptez plusieurs semaines de travail pour une application moyenne. Les données doivent être exportées et transformées, le code refactoré, les tests réécrits. Mieux vaut bien choisir dès le départ.
+
+### Un BaaS convient-il pour une application B2B ?
+
+Absolument. Le critère n'est pas B2B vs B2C, mais la complexité de vos besoins. Une application B2B simple peut très bien tourner sur Firebase. Une application B2C complexe peut nécessiter du custom.
+
+### Les BaaS sont-ils sécurisés ?
+
+Firebase, Supabase et AWS respectent les standards de sécurité les plus stricts (SOC 2, RGPD, etc.). La vraie question est : savez-vous configurer correctement les règles de sécurité ? Les failles viennent souvent d'une mauvaise configuration, pas de la plateforme elle-même.
+
+### Quel est le coût mensuel typique ?
+
+Pour une application avec 10 000 utilisateurs actifs mensuels, comptez entre 25$ et 100$ par mois selon votre consommation. Au-delà de 100 000 utilisateurs, les coûts augmentent significativement et il devient pertinent de comparer avec une infrastructure custom.
+
+### Faut-il un DevOps avec un BaaS ?
+
+Non, c'est justement l'intérêt. Un développeur fullstack peut gérer l'ensemble de l'infrastructure. Pour une startup ou une PME, c'est un avantage majeur en termes de coûts et de simplicité.
+
+## Conclusion
+
+Il n'y a pas de meilleur BaaS dans l'absolu. Il y a le meilleur BaaS pour votre projet, votre équipe, et vos contraintes.
+
+Firebase reste le choix le plus sûr pour démarrer rapidement avec un écosystème complet. Supabase est idéal si vous avez besoin de la puissance de PostgreSQL et que l'open source vous importe. AWS Amplify convient aux projets ambitieux qui anticipent une forte scalabilité.
+
+J'ai appris à mes dépens qu'un client qui dit "c'est urgent" et un client qui paie pour l'urgence, c'est pas pareil. Avec les BaaS, c'est similaire : un projet qui "va scaler" et un projet qui scale vraiment, ce n'est pas le même choix technique. Soyez honnête sur vos besoins réels à court terme, pas sur vos rêves à long terme.
+
+---
+
+Vous hésitez sur le choix de votre backend ? Chez Eurus, on peut analyser votre projet et vous recommander la solution la plus adaptée à vos contraintes techniques et budgétaires.
+
+[Discutons de votre projet →](/contact)

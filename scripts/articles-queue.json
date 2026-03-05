@@ -1,17 +1,6 @@
 {
   "queue": [
     {
-      "slug": "backend-as-a-service-comparatif",
-      "title": "BaaS : Firebase vs Supabase vs AWS Amplify",
-      "description": "Comparatif des solutions Backend-as-a-Service. Prix, fonctionnalités, cas d'usage.",
-      "tags": [
-        "Technique",
-        "Backend",
-        "Comparatif"
-      ],
-      "keyword": "Firebase Supabase Amplify comparatif"
-    },
-    {
       "slug": "notifications-push-guide-complet",
       "title": "Notifications push : guide complet d'implémentation",
       "description": "Stratégie et technique pour des notifications push efficaces. FCM, APNs, segmentation.",
@@ -549,6 +538,18 @@
         "Comparatif"
       ],
       "keyword": "React Native vs Flutter",
+      "publishedDate": "2026-03-05"
+    },
+    {
+      "slug": "backend-as-a-service-comparatif",
+      "title": "BaaS : Firebase vs Supabase vs AWS Amplify",
+      "description": "Comparatif des solutions Backend-as-a-Service. Prix, fonctionnalités, cas d'usage.",
+      "tags": [
+        "Technique",
+        "Backend",
+        "Comparatif"
+      ],
+      "keyword": "Firebase Supabase Amplify comparatif",
       "publishedDate": "2026-03-05"
     }
   ],
