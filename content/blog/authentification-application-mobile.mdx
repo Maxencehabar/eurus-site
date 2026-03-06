@@ -1,0 +1,255 @@
+---
+title: "Authentification application mobile : OAuth, SSO, biométrie"
+description: "Implémenter une authentification sécurisée. Social login, 2FA, Face ID, empreinte digitale. Guide complet pour développeurs et décideurs."
+date: "2026-03-06"
+author: "Eurus"
+tags: ["Sécurité", "Technique", "Mobile"]
+---
+
+L'authentification, c'est le premier contact entre votre utilisateur et votre app. Et comme dans la vraie vie, les premières impressions comptent. Trop compliqué ? L'utilisateur abandonne. Pas assez sécurisé ? Vous risquez gros.
+
+Les cabinets vétérinaires avec lesquels on travaille sur DrMilou nous ont appris quelque chose d'important : ils ont des contraintes qu'on n'imaginait pas. Connexion internet instable, PC sous Windows XP parfois, urgences qui arrivent pendant qu'on tape une ordonnance. Du coup, leur système d'authentification doit être rapide, fiable, et fonctionner même quand le réseau fait des siennes.
+
+Cette réalité terrain a complètement changé notre façon de penser l'authentification. Ce n'est pas qu'une question de sécurité technique. C'est une question d'expérience utilisateur dans des conditions réelles, pas dans un labo.
+
+## Les fondamentaux de l'authentification mobile
+
+Avant de plonger dans les solutions, clarifions les concepts. L'authentification répond à une question simple : "Est-ce bien toi ?"
+
+Pour y répondre, on utilise traditionnellement trois types de facteurs :
+
+**Ce que vous savez** : un mot de passe, un code PIN, une question secrète. C'est le plus ancien et le plus répandu. C'est aussi le plus vulnérable — les gens réutilisent leurs mots de passe, les oublient, les notent sur des post-its.
+
+**Ce que vous avez** : un téléphone qui reçoit un SMS, une clé physique, une app d'authentification. Plus sécurisé car il faut posséder physiquement l'objet.
+
+**Ce que vous êtes** : empreinte digitale, reconnaissance faciale, iris. La biométrie. Difficile à falsifier, impossible à oublier.
+
+Une authentification solide combine au moins deux de ces facteurs. C'est ce qu'on appelle le 2FA (Two-Factor Authentication) ou MFA (Multi-Factor Authentication).
+
+## OAuth 2.0 et le social login
+
+Si vous avez déjà cliqué sur "Se connecter avec Google" ou "Continuer avec Apple", vous avez utilisé OAuth. C'est devenu tellement standard que beaucoup d'utilisateurs s'attendent à le trouver.
+
+### Comment ça marche concrètement
+
+OAuth 2.0 est un protocole de délégation d'autorisation. En gros, au lieu de créer un compte chez vous avec email et mot de passe, l'utilisateur dit : "Je fais confiance à Google pour confirmer mon identité."
+
+Le flux simplifié :
+
+1. L'utilisateur clique sur "Se connecter avec Google"
+2. Votre app redirige vers Google
+3. L'utilisateur se connecte à son compte Google (s'il ne l'est pas déjà)
+4. Google demande : "Voulez-vous autoriser [Votre App] à accéder à votre email et votre nom ?"
+5. L'utilisateur accepte
+6. Google renvoie un token à votre app
+7. Votre app utilise ce token pour récupérer les infos de l'utilisateur
+
+L'avantage ? L'utilisateur n'a pas à créer un énième mot de passe. Vous n'avez pas à gérer le stockage sécurisé de ces mots de passe. Google (ou Apple, ou Facebook) s'occupe de la partie sensible.
+
+### Les providers les plus courants
+
+**Google Sign-In** : le plus répandu. Quasiment tout le monde a un compte Google. L'intégration est bien documentée, les SDK sont matures.
+
+**Sign in with Apple** : obligatoire sur l'App Store si vous proposez d'autres options de social login. Apple a fait du "privacy by design" son argument principal — ils permettent même de masquer l'email réel de l'utilisateur.
+
+**Facebook Login** : toujours pertinent pour les apps sociales ou grand public, même si la réputation de Facebook en matière de données a pris un coup.
+
+**Microsoft** : incontournable pour les apps B2B, surtout si vos clients utilisent Office 365.
+
+### Le piège du "tout social login"
+
+Chez Eurus, on évite de proposer uniquement le social login. Pourquoi ? Parce que certains utilisateurs ne veulent pas lier leur compte Google ou Apple à votre service. Par principe, par méfiance, ou simplement parce qu'ils utilisent un email professionnel qui n'est pas chez ces providers.
+
+Notre recommandation : proposez 2-3 options de social login ET un classique email/mot de passe. Ça couvre 99% des cas.
+
+## SSO : le Single Sign-On pour les pros
+
+Le SSO, c'est le graal des environnements entreprise. Un employé se connecte une fois le matin à son système d'entreprise, et il a accès à toutes les applications sans se reconnecter.
+
+### SAML vs OpenID Connect
+
+Deux standards dominent le monde du SSO :
+
+**SAML 2.0** (Security Assertion Markup Language) : le vétéran. Basé sur XML, utilisé depuis 20 ans dans les grandes entreprises. Robuste mais verbeux. Si votre client utilise des solutions comme Okta, OneLogin, ou Azure AD, ils supportent SAML.
+
+**OpenID Connect (OIDC)** : le petit nouveau (enfin, 2014 quand même). C'est une couche d'identité construite sur OAuth 2.0. Plus léger, basé sur JSON, plus adapté aux apps modernes. C'est ce qu'utilisent Google et Apple pour leurs social logins.
+
+Pour une app mobile en 2025, OIDC est généralement le meilleur choix. Plus simple à implémenter, mieux adapté aux architectures REST/JSON qu'on utilise partout.
+
+### Implémenter le SSO : les défis
+
+Le SSO côté mobile a ses particularités. Contrairement au web où on peut facilement rediriger vers une page de login, sur mobile il faut ouvrir un navigateur in-app ou rediriger vers Safari/Chrome, puis revenir dans l'app.
+
+Ce flow de redirection peut être source de friction. L'utilisateur quitte l'app, voit un écran de login qui peut sembler louche ("Pourquoi je vois une page web alors que je suis dans une app ?"), puis doit revenir.
+
+La solution : les "custom tabs" sur Android et "ASWebAuthenticationSession" sur iOS. Ces composants permettent d'afficher une page web authentifiée sans quitter visuellement l'app, tout en gardant les cookies et l'état de connexion du navigateur système.
+
+## La biométrie : Face ID, Touch ID, et empreintes Android
+
+La biométrie a révolutionné l'authentification mobile. Plus besoin de taper un mot de passe, un regard ou un doigt suffit.
+
+### Face ID et Touch ID sur iOS
+
+Apple a fait un travail remarquable pour rendre la biométrie accessible aux développeurs tout en protégeant les données biométriques. Les empreintes et les données faciales ne quittent jamais l'appareil — elles sont stockées dans la "Secure Enclave", une puce dédiée.
+
+Côté développeur, l'API LocalAuthentication est simple à utiliser. Vous demandez une authentification biométrique, iOS gère tout : affichage du prompt, vérification, fallback vers le code PIN si la biométrie échoue plusieurs fois.
+
+Un point important : la biométrie sur iOS n'est pas une authentification au sens réseau du terme. Elle déverrouille l'accès à quelque chose stocké localement — typiquement un token d'authentification que vous avez enregistré dans le Keychain après une première connexion classique.
+
+### Biométrie sur Android
+
+Android supporte les empreintes digitales depuis la version 6.0 (2015) et la reconnaissance faciale depuis Android 10. L'API BiometricPrompt unifie tout ça.
+
+La fragmentation Android rend les choses plus complexes qu'sur iOS. Tous les capteurs d'empreintes ne se valent pas. La reconnaissance faciale sur certains appareils Android n'est pas aussi sécurisée que Face ID — elle peut parfois être trompée par une photo.
+
+Android classe les méthodes biométriques en trois niveaux de sécurité : Class 1 (faible), Class 2 (moyen), Class 3 (fort). Pour une app bancaire ou médicale, vous voudrez exiger Class 3. Pour une app de notes, Class 2 peut suffire.
+
+### Quand utiliser la biométrie
+
+La biométrie est parfaite pour :
+
+- Déverrouiller l'app après une première connexion
+- Confirmer des actions sensibles (paiement, suppression de compte)
+- Accéder à des données confidentielles
+
+Elle ne remplace pas une vraie authentification initiale. Au premier lancement, l'utilisateur doit prouver son identité par un autre moyen (email/mot de passe, social login). Ensuite seulement, vous pouvez proposer d'activer la biométrie pour les connexions suivantes.
+
+## Le 2FA : doubler la sécurité
+
+Le Two-Factor Authentication ajoute une couche de sécurité en demandant deux preuves d'identité au lieu d'une.
+
+### SMS OTP : simple mais imparfait
+
+Le plus répandu : vous entrez votre mot de passe, puis recevez un code par SMS à saisir. Simple à implémenter, compris par tout le monde.
+
+Mais le SMS a des failles. Le SIM swapping (un attaquant convainc l'opérateur de transférer votre numéro sur sa SIM) est un vrai risque pour les cibles de valeur. Les SMS peuvent être interceptés. Et ils dépendent du réseau mobile — pas idéal quand on voyage.
+
+Pour la plupart des apps grand public, le SMS reste acceptable. Pour une app bancaire ou crypto, il faut aller plus loin.
+
+### TOTP : les apps d'authentification
+
+TOTP (Time-based One-Time Password) est le standard derrière Google Authenticator, Authy, et consorts. L'utilisateur scanne un QR code une fois, et l'app génère ensuite des codes à 6 chiffres qui changent toutes les 30 secondes.
+
+C'est plus sécurisé que le SMS car le secret est stocké sur l'appareil, pas transmis par le réseau. Mais ça ajoute une friction — l'utilisateur doit avoir installé une app d'authentification et la consulter à chaque connexion.
+
+### Les passkeys : le futur sans mot de passe
+
+Les passkeys sont la grande nouveauté. Supportées par Apple, Google et Microsoft, elles promettent un monde sans mot de passe.
+
+Le principe : une paire de clés cryptographiques est générée. La clé privée reste sur votre appareil (protégée par biométrie), la clé publique est envoyée au serveur. Pour vous connecter, votre appareil prouve qu'il possède la clé privée sans jamais la révéler.
+
+C'est plus sécurisé que n'importe quel mot de passe et plus simple pour l'utilisateur. Le déploiement est en cours, mais l'adoption prendra du temps. Gardez un œil dessus.
+
+## Architecture d'authentification : les tokens
+
+Une fois l'utilisateur authentifié, comment maintenir sa session ? C'est là qu'interviennent les tokens.
+
+### JWT : le standard de facto
+
+JSON Web Tokens (JWT) sont partout. Un JWT est une chaîne de caractères encodée qui contient des informations sur l'utilisateur (claims) et une signature qui garantit son intégrité.
+
+Structure d'un JWT :
+- **Header** : type de token et algorithme de signature
+- **Payload** : les données (user ID, email, expiration, etc.)
+- **Signature** : garantit que le token n'a pas été modifié
+
+L'avantage du JWT : il est auto-portant. Le serveur peut vérifier sa validité sans interroger une base de données. C'est parfait pour les architectures microservices.
+
+Le piège : un JWT volé donne accès au compte jusqu'à son expiration. D'où l'importance de tokens à courte durée de vie (15 minutes à 1 heure) combinés à un refresh token.
+
+### Access token vs Refresh token
+
+**Access token** : courte durée (minutes à heures), utilisé pour chaque requête API. S'il est compromis, les dégâts sont limités dans le temps.
+
+**Refresh token** : longue durée (jours à semaines), stocké de façon sécurisée (Keychain iOS, Keystore Android). Utilisé uniquement pour obtenir un nouvel access token quand l'ancien expire.
+
+Ce système permet de garder l'utilisateur connecté longtemps tout en limitant les risques.
+
+### Stockage sécurisé sur mobile
+
+Où stocker ces tokens ? Surtout pas en clair dans les préférences de l'app ou dans un fichier.
+
+**Sur iOS** : le Keychain. C'est un conteneur chiffré géré par le système. Les données sont protégées même si l'appareil est jailbreaké (enfin, en théorie).
+
+**Sur Android** : le Keystore système pour les clés cryptographiques, ou EncryptedSharedPreferences pour les données. Attention aux appareils rootés qui peuvent contourner certaines protections.
+
+En 3 ans chez Eurus, j'ai vu des projets échouer non pas à cause du code, mais parce que personne n'avait vraiment compris le besoin métier. L'authentification en fait partie. Ce n'est pas juste "stocker un token quelque part", c'est comprendre le niveau de risque acceptable pour votre cas d'usage.
+
+## Gestion des sessions et déconnexion
+
+Un aspect souvent négligé : comment gérer proprement la fin de session ?
+
+### Déconnexion locale vs serveur
+
+Quand l'utilisateur clique sur "Déconnexion", deux choses doivent se passer :
+
+1. **Côté client** : supprimer les tokens stockés, vider le cache, réinitialiser l'état de l'app
+2. **Côté serveur** : invalider le refresh token pour qu'il ne puisse plus être utilisé
+
+Beaucoup d'apps ne font que la partie client. Résultat : si quelqu'un a copié le refresh token, il peut continuer à l'utiliser.
+
+### Sessions multiples
+
+Un utilisateur peut être connecté sur plusieurs appareils. Comment gérer ça ?
+
+Plusieurs approches :
+- **Laisser faire** : chaque appareil a sa session indépendante
+- **Limiter** : maximum 3 appareils connectés, le 4ème déconnecte le plus ancien
+- **Notifier** : prévenir l'utilisateur quand une nouvelle connexion est détectée
+- **Tout révoquer** : bouton "Déconnecter tous les appareils" dans les paramètres
+
+Le choix dépend de votre contexte. Une app de streaming limitera les sessions pour éviter le partage de compte. Une app de messagerie voudra au contraire permettre d'être connecté partout.
+
+## Les erreurs classiques à éviter
+
+### Stocker le mot de passe en clair
+
+Ça paraît évident, mais on le voit encore. Le mot de passe ne doit jamais être stocké tel quel, ni côté serveur (on stocke un hash), ni côté client (on ne le stocke pas du tout après l'envoi).
+
+### Tokens qui n'expirent jamais
+
+Un token sans expiration, c'est un risque permanent. Si ce token est compromis dans 6 mois, il sera toujours valide. Mettez des expirations raisonnables.
+
+### Pas de rate limiting sur le login
+
+Sans protection, un attaquant peut tester des milliers de combinaisons email/mot de passe par minute. Implémentez un rate limiting : après 5 tentatives échouées, bloquez temporairement ou demandez un captcha.
+
+### Ignorer le logout côté serveur
+
+On en a parlé. La déconnexion doit invalider les tokens côté serveur, pas seulement côté client.
+
+### Messages d'erreur trop explicites
+
+"Ce mot de passe est incorrect" vs "L'email ou le mot de passe est incorrect". La première formulation confirme que l'email existe dans votre base. La seconde ne révèle rien. Préférez la seconde.
+
+## FAQ : vos questions sur l'authentification mobile
+
+### Dois-je implémenter mon propre système d'authentification ?
+
+Pour la plupart des projets, non. Des services comme Firebase Auth, Auth0, ou AWS Cognito gèrent tout : inscription, connexion, réinitialisation de mot de passe, social login, 2FA. Vous gagnez des semaines de développement et vous bénéficiez de leur expertise sécurité.
+
+### Le social login est-il vraiment sécurisé ?
+
+Oui, souvent plus que votre propre système. Google et Apple investissent des millions dans la sécurité de leurs systèmes d'authentification. Ils détectent les connexions suspectes, proposent le 2FA, et gèrent les mots de passe compromis. Difficile de faire mieux en interne.
+
+### Comment gérer la récupération de mot de passe ?
+
+Le classique : envoyer un email avec un lien de réinitialisation. Ce lien doit expirer rapidement (1 heure max), n'être utilisable qu'une fois, et rediriger vers une page HTTPS. Évitez d'envoyer un mot de passe temporaire par email — c'est une mauvaise pratique.
+
+### La biométrie peut-elle remplacer le mot de passe complètement ?
+
+Pour la première connexion, non. La biométrie ne prouve pas l'identité initiale — elle prouve que c'est la même personne que celle qui a enregistré son empreinte. Il faut d'abord établir cette identité par un autre moyen.
+
+### Comment tester la sécurité de mon authentification ?
+
+Faites appel à un pentest (test d'intrusion) avant la mise en production. En attendant, vérifiez les basics : HTTPS partout, tokens qui expirent, rate limiting, pas de données sensibles dans les logs, stockage sécurisé.
+
+### Quelle solution d'authentification choisir pour un MVP ?
+
+Firebase Auth. C'est gratuit jusqu'à 50 000 utilisateurs actifs mensuels, ça s'intègre en quelques heures, et ça couvre tous les cas courants : email/mot de passe, Google, Apple, Facebook, téléphone. Vous pourrez toujours migrer vers une solution custom plus tard si nécessaire.
+
+---
+
+L'authentification, c'est un équilibre permanent entre sécurité et expérience utilisateur. Trop de friction et vos utilisateurs fuient. Pas assez de protection et vous risquez une fuite de données.
+
+Si vous lancez une app et que vous voulez une authentification qui fait les choses bien — sécurisée sans être pénible — [discutons-en](/contact). Chez Eurus, on a implémenté des dizaines de systèmes d'auth, du simple social login aux architectures SSO complexes pour des clients enterprise.

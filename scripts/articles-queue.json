@@ -1,17 +1,6 @@
 {
   "queue": [
     {
-      "slug": "authentification-application-mobile",
-      "title": "Authentification application mobile : OAuth, SSO, biométrie",
-      "description": "Implémenter une authentification sécurisée. Social login, 2FA, Face ID, empreinte digitale.",
-      "tags": [
-        "Sécurité",
-        "Technique",
-        "Mobile"
-      ],
-      "keyword": "authentification application mobile"
-    },
-    {
       "slug": "offline-first-application-mobile",
       "title": "Application offline-first : fonctionner sans réseau",
       "description": "Concevoir une app qui marche sans connexion. Sync, cache, gestion des conflits.",
@@ -551,6 +540,18 @@
         "Engagement"
       ],
       "keyword": "notifications push application",
+      "publishedDate": "2026-03-06"
+    },
+    {
+      "slug": "authentification-application-mobile",
+      "title": "Authentification application mobile : OAuth, SSO, biométrie",
+      "description": "Implémenter une authentification sécurisée. Social login, 2FA, Face ID, empreinte digitale.",
+      "tags": [
+        "Sécurité",
+        "Technique",
+        "Mobile"
+      ],
+      "keyword": "authentification application mobile",
       "publishedDate": "2026-03-06"
     }
   ],
