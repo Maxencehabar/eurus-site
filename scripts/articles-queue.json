@@ -1,17 +1,6 @@
 {
   "queue": [
     {
-      "slug": "notifications-push-guide-complet",
-      "title": "Notifications push : guide complet d'implémentation",
-      "description": "Stratégie et technique pour des notifications push efficaces. FCM, APNs, segmentation.",
-      "tags": [
-        "Technique",
-        "Mobile",
-        "Engagement"
-      ],
-      "keyword": "notifications push application"
-    },
-    {
       "slug": "authentification-application-mobile",
       "title": "Authentification application mobile : OAuth, SSO, biométrie",
       "description": "Implémenter une authentification sécurisée. Social login, 2FA, Face ID, empreinte digitale.",
@@ -551,7 +540,19 @@
       ],
       "keyword": "Firebase Supabase Amplify comparatif",
       "publishedDate": "2026-03-05"
+    },
+    {
+      "slug": "notifications-push-guide-complet",
+      "title": "Notifications push : guide complet d'implémentation",
+      "description": "Stratégie et technique pour des notifications push efficaces. FCM, APNs, segmentation.",
+      "tags": [
+        "Technique",
+        "Mobile",
+        "Engagement"
+      ],
+      "keyword": "notifications push application",
+      "publishedDate": "2026-03-06"
     }
   ],
-  "lastPublished": "2026-03-05"
+  "lastPublished": "2026-03-06"
 }
