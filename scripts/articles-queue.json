@@ -1,17 +1,6 @@
 {
   "queue": [
     {
-      "slug": "ci-cd-application-mobile",
-      "title": "CI/CD application mobile : automatiser les déploiements",
-      "description": "Pipeline CI/CD pour iOS et Android. GitHub Actions, Fastlane, Bitrise, Codemagic.",
-      "tags": [
-        "Technique",
-        "DevOps",
-        "Mobile"
-      ],
-      "keyword": "CI CD application mobile"
-    },
-    {
       "slug": "paiement-in-app-integration",
       "title": "Paiement in-app : intégrer Stripe, Apple Pay, Google Pay",
       "description": "Guide d'intégration des solutions de paiement mobile. Commissions, UX, conformité.",
@@ -553,6 +542,18 @@
         "UX"
       ],
       "keyword": "application offline first",
+      "publishedDate": "2026-03-07"
+    },
+    {
+      "slug": "ci-cd-application-mobile",
+      "title": "CI/CD application mobile : automatiser les déploiements",
+      "description": "Pipeline CI/CD pour iOS et Android. GitHub Actions, Fastlane, Bitrise, Codemagic.",
+      "tags": [
+        "Technique",
+        "DevOps",
+        "Mobile"
+      ],
+      "keyword": "CI CD application mobile",
       "publishedDate": "2026-03-07"
     }
   ],

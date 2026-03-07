@@ -1,0 +1,345 @@
+---
+title: "CI/CD application mobile : automatiser les déploiements"
+description: "Pipeline CI/CD pour iOS et Android. GitHub Actions, Fastlane, Bitrise, Codemagic."
+date: "2026-03-07"
+author: "Eurus"
+tags: ["Technique", "DevOps", "Mobile"]
+---
+
+Vendredi soir, 18h. Vous venez de merger une feature critique. Le client attend la mise à jour pour lundi. Et là, commence le calvaire : build iOS sur votre Mac, signature des certificats, upload sur App Store Connect, attente du processing, puis on recommence pour Android avec le keystore, la Google Play Console, les tracks de test...
+
+Deux heures plus tard, vous êtes toujours là. Et vous n'avez même pas encore soumis pour review.
+
+Ce scénario, on l'a vécu trop de fois chez Eurus. Jusqu'à ce qu'on mette en place des pipelines CI/CD qui font tout ça automatiquement. Aujourd'hui, un push sur `main` déclenche le build, les tests, la signature, et le déploiement. On rentre chez nous pendant que les robots travaillent.
+
+## Pourquoi automatiser les déploiements mobile ?
+
+Le développement mobile a une particularité que le web n'a pas : les stores. Chaque release passe par Apple ou Google. Certificats, profils de provisioning, keystores, metadata, screenshots... La liste est longue et les erreurs sont faciles.
+
+Automatiser, c'est d'abord réduire les erreurs humaines. Combien de fois j'ai vu un développeur oublier d'incrémenter le numéro de version, ou utiliser le mauvais certificat, ou pusher une build de debug en prod ? Avec un pipeline bien configuré, ces erreurs disparaissent.
+
+C'est aussi gagner du temps. Un déploiement manuel prend facilement une à deux heures. Un pipeline automatisé, c'est cinq minutes de configuration du commit, puis vous passez à autre chose.
+
+Et surtout, c'est permettre des releases fréquentes. Quand déployer coûte cher en temps et en énergie, on accumule les features et on fait des grosses releases risquées. Quand c'est automatique, on peut shipper plusieurs fois par semaine sans stress.
+
+Sur Getaway, on a choisi de mettre en place un pipeline CI/CD complet dès le début du projet. C'était un investissement de quelques jours, mais sur la durée du projet, on a économisé des semaines. Et surtout, on a pu itérer rapidement avec les beta-testeurs.
+
+## Les briques d'un pipeline mobile
+
+Un pipeline CI/CD mobile complet comprend plusieurs étapes. Pas besoin de tout implémenter d'un coup, mais c'est bien de connaître la cible.
+
+### L'intégration continue (CI)
+
+À chaque push ou pull request, le pipeline se déclenche :
+
+**Linting et analyse statique** — Le code respecte-t-il les conventions ? Y a-t-il des erreurs potentielles ? Des failles de sécurité connues ? Des outils comme ESLint, SwiftLint, Detekt (Kotlin) ou l'analyzer Dart détectent les problèmes avant même de compiler.
+
+**Tests unitaires** — Les fonctions font-elles ce qu'elles sont censées faire ? On exécute la suite de tests automatiquement. Si un test échoue, le pipeline s'arrête et notifie l'équipe.
+
+**Tests d'intégration** — Les composants fonctionnent-ils ensemble ? Plus longs que les tests unitaires, ils valident les interactions entre modules.
+
+**Build** — Le projet compile-t-il ? C'est basique mais essentiel. Un build cassé ne doit jamais atteindre la branche principale.
+
+### Le déploiement continu (CD)
+
+Une fois le code validé, on passe au déploiement :
+
+**Signature** — Les apps mobiles doivent être signées. Certificats Apple, keystore Android. Le pipeline gère ça automatiquement avec les credentials stockés de façon sécurisée.
+
+**Build de release** — On génère l'IPA (iOS) et l'APK/AAB (Android) en mode release, optimisé pour la production.
+
+**Upload vers les stores** — Le pipeline pousse directement vers App Store Connect et Google Play Console. Pas besoin d'ouvrir un navigateur.
+
+**Distribution beta** — Avant la prod, on peut distribuer aux testeurs via TestFlight, Firebase App Distribution, ou les tracks de test Google Play.
+
+**Notifications** — L'équipe est notifiée du succès ou de l'échec. Slack, email, whatever works.
+
+## Les outils du marché
+
+Plusieurs solutions existent. Chacune a ses forces.
+
+### Fastlane : l'incontournable
+
+Fastlane, c'est un peu le couteau suisse du déploiement mobile. Open source, gratuit, extrêmement puissant. Il gère tout : certificats, builds, screenshots, metadata, upload.
+
+Concrètement, vous écrivez des "lanes" en Ruby qui décrivent vos workflows. Une lane pour les tests, une pour le déploiement beta, une pour la prod.
+
+```ruby
+lane :beta do
+  increment_build_number
+  build_app(scheme: "MyApp")
+  upload_to_testflight
+  slack(message: "Nouvelle beta disponible!")
+end
+```
+
+Le gros avantage de Fastlane : il tourne n'importe où. Sur votre Mac, sur GitHub Actions, sur n'importe quel CI. Vous gardez le contrôle.
+
+L'inconvénient : la courbe d'apprentissage. Ruby peut dérouter si vous n'y êtes pas habitué. Et la gestion des certificats iOS (match) demande une configuration initiale un peu complexe.
+
+Chez Eurus, on utilise Fastlane sur quasiment tous nos projets. Sur Getaway, finir de setup Fastlane a pris quelques jours, mais maintenant un déploiement complet iOS + Android se fait en une commande.
+
+### GitHub Actions : l'intégré
+
+Si votre code est sur GitHub, Actions est le choix naturel. Intégré à la plateforme, gratuit pour les repos publics, généreux en minutes pour les repos privés.
+
+Le principe : des fichiers YAML dans `.github/workflows/` décrivent vos pipelines. GitHub fournit des runners macOS pour les builds iOS (obligatoire, Apple oblige).
+
+```yaml
+name: Deploy to TestFlight
+on:
+  push:
+    branches: [main]
+jobs:
+  deploy:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@v1
+      - name: Install Fastlane
+        run: bundle install
+      - name: Deploy
+        run: bundle exec fastlane beta
+        env:
+          APP_STORE_CONNECT_API_KEY: ${{ secrets.ASC_KEY }}
+```
+
+L'avantage : tout est au même endroit. Code, issues, CI/CD. Pas de compte supplémentaire à gérer.
+
+L'inconvénient : les runners macOS coûtent 10x plus cher en minutes que Linux. Un build iOS de 15 minutes consomme 150 minutes de quota. Ça peut vite grimper sur des projets actifs.
+
+### Bitrise : le spécialiste mobile
+
+Bitrise est pensé exclusivement pour le mobile. L'interface est visuelle, les intégrations nombreuses, et tout est optimisé pour iOS et Android.
+
+Vous construisez vos workflows en assemblant des "steps" comme des Legos. Step pour cloner le repo, step pour installer les dépendances, step pour builder, step pour uploader. Chaque step est configurable via l'interface ou en YAML.
+
+L'avantage : la simplicité. En quelques clics, vous avez un pipeline fonctionnel. Pas besoin de maîtriser Fastlane ou les subtilités de la signature iOS.
+
+L'inconvénient : le coût. Bitrise est gratuit pour les petits projets, mais les prix montent vite pour les équipes. Et vous dépendez d'une plateforme externe.
+
+### Codemagic : le challenger Flutter
+
+Codemagic cible particulièrement Flutter, même s'il supporte aussi le natif et React Native. L'intégration Flutter est excellente, avec des templates prêts à l'emploi.
+
+Pour les projets Flutter, c'est souvent le choix le plus rapide à mettre en place. La configuration par interface est intuitive, et le support du code signing est bien pensé.
+
+L'inconvénient : moins flexible que les solutions génériques si vous avez des besoins custom.
+
+### GitLab CI, CircleCI, Azure DevOps...
+
+D'autres options existent. GitLab CI si votre code est sur GitLab. CircleCI pour sa rapidité et sa flexibilité. Azure DevOps si vous êtes dans l'écosystème Microsoft.
+
+Le choix dépend souvent de votre stack existante. Pas la peine de multiplier les outils si vous avez déjà un CI en place.
+
+## La gestion des secrets : le point critique
+
+Les pipelines CI/CD manipulent des données sensibles. Clés API, certificats de signature, tokens d'accès aux stores. Mal gérés, ces secrets peuvent fuiter et compromettre votre app.
+
+### Ne jamais commiter les secrets
+
+Règle numéro un : aucun secret dans le repo. Pas de certificat `.p12` commité. Pas de keystore dans le code. Pas de fichier `.env` avec les clés de prod.
+
+Utilisez les secrets de votre CI. GitHub Actions, Bitrise, Codemagic — tous permettent de stocker des variables secrètes chiffrées, injectées au runtime.
+
+### La gestion des certificats iOS
+
+iOS est particulièrement pénible côté certificats. Vous avez besoin d'un certificat de distribution, d'un profil de provisioning, et ils expirent régulièrement.
+
+Fastlane Match résout ce problème en stockant les certificats dans un repo Git privé, chiffrés. Tous les développeurs et le CI partagent les mêmes certificats. Plus de "ça marche sur ma machine".
+
+```ruby
+lane :setup_signing do
+  match(type: "appstore", readonly: true)
+end
+```
+
+Le setup initial demande un peu de travail, mais ensuite c'est transparent.
+
+### Le keystore Android
+
+Côté Android, c'est plus simple mais il y a un piège. Le keystore qui signe votre app en prod ne doit JAMAIS être perdu. Si vous le perdez, vous ne pouvez plus mettre à jour votre app. Il faut la republier sous un nouveau package.
+
+Stockez le keystore dans un endroit sûr (gestionnaire de secrets, backup chiffré). Injectez-le dans le CI via une variable secrète encodée en base64.
+
+```yaml
+- name: Decode keystore
+  run: echo ${{ secrets.KEYSTORE_BASE64 }} | base64 -d > android/app/release.keystore
+```
+
+## Stratégies de déploiement
+
+Automatiser c'est bien, mais encore faut-il définir quand et quoi déployer.
+
+### Trunk-based development
+
+L'approche moderne : une seule branche principale (`main`), des feature branches courtes, des merges fréquents. Chaque merge sur `main` déclenche potentiellement un déploiement.
+
+C'est ce qu'on pratique chez Eurus. Pas de branches `develop`, `staging`, `release`. Juste `main` et des features branches qui vivent quelques jours max.
+
+### Les environnements
+
+Même avec une seule branche, vous voulez plusieurs environnements :
+
+**Dev/Feature** — Chaque PR peut générer une build de test. Pratique pour les reviews.
+
+**Beta/Staging** — Chaque merge sur `main` déploie automatiquement vers TestFlight et le track interne Google Play. Les testeurs ont toujours la dernière version.
+
+**Production** — Le déploiement prod reste manuel ou semi-automatique. Un tag `v1.2.3` déclenche le déploiement, mais vous contrôlez quand créer ce tag.
+
+### Feature flags
+
+Déployer souvent ne veut pas dire tout activer d'un coup. Les feature flags permettent de déployer du code désactivé, puis de l'activer progressivement.
+
+Vous pouvez ainsi :
+- Tester en prod avec un petit pourcentage d'utilisateurs
+- Désactiver une feature buggée sans redéployer
+- Faire du A/B testing
+
+Firebase Remote Config, LaunchDarkly, ou même une solution maison — les options sont nombreuses.
+
+## Les pièges à éviter
+
+En trois ans à mettre en place des pipelines CI/CD, on a fait toutes les erreurs possibles. Voici celles qui reviennent le plus.
+
+### Le pipeline trop lent
+
+Un pipeline de 45 minutes, c'est un pipeline qu'on contourne. Les développeurs commencent à pusher sans attendre les résultats, à merger sans que le CI soit passé.
+
+Visez moins de 15 minutes pour le feedback loop complet. Parallélisez les jobs (tests iOS et Android en même temps). Cachez les dépendances. Skip les étapes inutiles sur les PR.
+
+### Le pipeline trop fragile
+
+Des tests flaky qui échouent aléatoirement. Des timeouts sur les étapes de build. Des erreurs réseau avec les stores. Un pipeline qui échoue souvent pour des raisons non liées au code, c'est un pipeline qu'on ignore.
+
+Investissez dans la stabilité. Retry automatique sur les erreurs transitoires. Tests déterministes. Alertes sur les échecs inhabituels.
+
+### Ignorer les échecs
+
+"C'est bon, c'est juste le CI qui bug." Cette phrase est le début des problèmes. Si le pipeline échoue, on investigue. Toujours.
+
+Une culture où les échecs CI sont acceptés, c'est une culture où le CI ne sert à rien.
+
+### Ne pas monitorer
+
+Votre pipeline tourne, mais savez-vous s'il est performant ? Combien de temps prend chaque étape ? Quel est le taux d'échec ? Quelles sont les erreurs les plus fréquentes ?
+
+Les plateformes CI fournissent des métriques. Utilisez-les. Identifiez les goulots d'étranglement. Améliorez continuellement.
+
+## Un exemple concret : pipeline Flutter
+
+Pour illustrer, voici le pipeline qu'on utilise sur Getaway (Flutter, GitHub Actions, Fastlane) :
+
+### Sur chaque PR
+
+```yaml
+name: PR Checks
+on: [pull_request]
+jobs:
+  analyze:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: subosito/flutter-action@v2
+      - run: flutter pub get
+      - run: flutter analyze
+      - run: flutter test
+```
+
+Rapide, tourne sur Linux (pas cher), donne du feedback en quelques minutes.
+
+### Sur merge vers main
+
+```yaml
+name: Deploy Beta
+on:
+  push:
+    branches: [main]
+jobs:
+  deploy-ios:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: subosito/flutter-action@v2
+      - uses: ruby/setup-ruby@v1
+      - run: bundle install
+      - run: flutter build ipa --release
+      - run: bundle exec fastlane ios beta
+        env:
+          MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
+          ASC_KEY: ${{ secrets.ASC_KEY }}
+          
+  deploy-android:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: subosito/flutter-action@v2
+      - run: flutter build appbundle --release
+      - uses: r0adkll/upload-google-play@v1
+        with:
+          serviceAccountJsonPlainText: ${{ secrets.PLAY_SERVICE_ACCOUNT }}
+          packageName: com.eurus.getaway
+          releaseFiles: build/app/outputs/bundle/release/app-release.aab
+          track: internal
+```
+
+iOS et Android en parallèle. En 20 minutes, la beta est disponible sur les deux plateformes.
+
+### Sur tag de release
+
+Un workflow similaire mais qui pousse vers les tracks de production. Déclenché manuellement via un tag `v*`.
+
+## Par où commencer ?
+
+Si vous partez de zéro, voici un plan d'action réaliste :
+
+**Semaine 1** — Mettez en place les tests automatisés sur chaque PR. C'est le minimum vital. Utilisez GitHub Actions ou votre CI existant.
+
+**Semaine 2** — Ajoutez le build automatique. Vérifiez que le projet compile sur chaque PR. Détectez les problèmes de build avant le merge.
+
+**Semaine 3** — Configurez Fastlane pour la signature et le déploiement. Commencez par une seule plateforme (Android est plus simple). Déployez manuellement avec Fastlane depuis votre machine.
+
+**Semaine 4** — Automatisez le déploiement beta. Chaque merge sur `main` déclenche un déploiement vers les testeurs.
+
+**Ensuite** — Affinez. Ajoutez le déploiement prod. Optimisez les temps de build. Ajoutez des notifications. Itérez.
+
+## FAQ
+
+### Combien coûte un pipeline CI/CD mobile ?
+
+Pour un petit projet, c'est souvent gratuit. GitHub Actions offre 2000 minutes/mois pour les repos privés (200 minutes macOS). Bitrise et Codemagic ont des tiers gratuits.
+
+Pour une équipe active avec des builds fréquents, comptez 50 à 200€/mois selon la plateforme et l'usage.
+
+### Peut-on builder iOS sans Mac ?
+
+Non. Apple exige un environnement macOS pour compiler les apps iOS. Toutes les plateformes CI proposent des runners macOS, mais c'est plus cher que Linux.
+
+Il existe des services comme MacStadium qui louent des Mac dans le cloud si vous préférez gérer votre propre infra.
+
+### Combien de temps pour mettre en place un pipeline complet ?
+
+Pour quelqu'un qui découvre : comptez une à deux semaines à temps partiel. La signature iOS est souvent le point bloquant.
+
+Pour quelqu'un d'expérimenté avec des templates existants : quelques heures.
+
+### Faut-il des tests pour avoir un CI/CD ?
+
+Le CI sans tests, c'est juste un build automatique. C'est mieux que rien, mais vous passez à côté de l'essentiel. Le vrai gain vient de la détection automatique des régressions.
+
+Même une petite suite de tests (quelques tests unitaires sur la logique métier) apporte de la valeur.
+
+### Comment gérer les apps avec du code natif custom ?
+
+Si votre app Flutter ou React Native inclut du code natif (plugins custom, modules spécifiques), le pipeline doit gérer les deux environnements. C'est plus complexe mais tout à fait faisable.
+
+La clé : des jobs séparés pour iOS et Android, avec les dépendances natives (CocoaPods, Gradle) correctement configurées.
+
+---
+
+Un pipeline CI/CD bien configuré, c'est un investissement qui se rentabilise en quelques mois. Moins de stress, moins d'erreurs, plus de temps pour coder des features plutôt que de gérer des déploiements.
+
+Chez Eurus, on ne lance plus un projet sans CI/CD. C'est devenu aussi naturel que d'initialiser un repo Git.
+
+**Vous voulez mettre en place un pipeline CI/CD pour votre application mobile ?** [Contactez-nous](/contact). On peut vous accompagner sur la mise en place ou former votre équipe.
