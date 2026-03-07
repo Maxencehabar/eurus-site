@@ -1,17 +1,6 @@
 {
   "queue": [
     {
-      "slug": "offline-first-application-mobile",
-      "title": "Application offline-first : fonctionner sans réseau",
-      "description": "Concevoir une app qui marche sans connexion. Sync, cache, gestion des conflits.",
-      "tags": [
-        "Technique",
-        "Mobile",
-        "UX"
-      ],
-      "keyword": "application offline first"
-    },
-    {
       "slug": "ci-cd-application-mobile",
       "title": "CI/CD application mobile : automatiser les déploiements",
       "description": "Pipeline CI/CD pour iOS et Android. GitHub Actions, Fastlane, Bitrise, Codemagic.",
@@ -553,7 +542,19 @@
       ],
       "keyword": "authentification application mobile",
       "publishedDate": "2026-03-06"
+    },
+    {
+      "slug": "offline-first-application-mobile",
+      "title": "Application offline-first : fonctionner sans réseau",
+      "description": "Concevoir une app qui marche sans connexion. Sync, cache, gestion des conflits.",
+      "tags": [
+        "Technique",
+        "Mobile",
+        "UX"
+      ],
+      "keyword": "application offline first",
+      "publishedDate": "2026-03-07"
     }
   ],
-  "lastPublished": "2026-03-06"
+  "lastPublished": "2026-03-07"
 }

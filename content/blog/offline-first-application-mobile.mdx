@@ -1,0 +1,248 @@
+---
+title: "Application offline-first : fonctionner sans réseau"
+description: "Concevoir une app qui marche sans connexion. Sync, cache, gestion des conflits."
+date: "2026-03-07"
+author: "Eurus"
+tags: ["Technique", "Mobile", "UX"]
+---
+
+Votre utilisateur est dans le métro. Pas de réseau. Il ouvre votre app... et là, écran blanc. Spinner infini. Frustration maximale. Il ferme, il désinstalle. Game over.
+
+C'est un scénario qu'on voit beaucoup trop souvent. Et pourtant, la solution existe : concevoir son application en mode **offline-first**. Autrement dit, partir du principe que le réseau n'est pas là, et traiter la connectivité comme un bonus plutôt qu'une dépendance.
+
+Chez Eurus, on a appris cette leçon à la dure. Sur Getaway, notre app de voyage en Flutter, le plus gros challenge n'était pas le design ou les fonctionnalités — c'était de gérer les photos offline quand les voyageurs sont dans des zones sans réseau. Une plage isolée en Thaïlande, un trek dans les Andes, une randonnée en montagne... Vos utilisateurs ne sont pas toujours devant une box fibre.
+
+## Pourquoi penser offline-first dès le départ ?
+
+La plupart des développeurs pensent "réseau d'abord". On code une requête API, on récupère les données, on les affiche. Simple. Sauf que cette approche crée une dépendance technique qui devient vite un problème UX.
+
+Regardez les chiffres : en France, 15% du temps mobile se passe en zone de couverture dégradée ou inexistante. Métro, ascenseur, zones rurales, avions, frontières... Le réseau n'est jamais garanti à 100%.
+
+En pensant offline-first, vous inversez la logique. Les données locales deviennent la source de vérité. Le serveur est là pour synchroniser, pas pour tout gérer. Concrètement, ça change tout pour l'expérience utilisateur.
+
+### Les bénéfices immédiats
+
+**Rapidité perçue** — Une app qui charge depuis le cache local répond en millisecondes. Pas de latence réseau, pas d'attente. L'utilisateur a l'impression que tout est instantané.
+
+**Fiabilité** — Votre app fonctionne toujours. Réseau ou pas. L'utilisateur peut consulter ses données, créer du contenu, interagir. Il ne se retrouve jamais face à un mur.
+
+**Économie de data** — Moins de requêtes réseau, moins de consommation data. Sur des marchés émergents où le Go coûte cher, c'est un argument de poids.
+
+**Meilleure rétention** — Une app qui plante quand il n'y a pas de réseau, c'est une app qu'on désinstalle. Une app qui marche tout le temps, c'est une app qu'on garde.
+
+## L'architecture d'une app offline-first
+
+Avant de plonger dans le code, il faut comprendre l'architecture. Une app offline-first repose sur trois piliers : le stockage local, la synchronisation différée, et la gestion des conflits.
+
+### Le stockage local comme source de vérité
+
+Oubliez le réflexe "je fetch l'API puis j'affiche". Ici, le flow devient : "je lis le cache local, j'affiche immédiatement, puis je sync en arrière-plan si possible".
+
+Plusieurs options de stockage selon votre stack :
+
+**SQLite** — La base de données relationnelle embarquée par excellence. Puissante, éprouvée, supporte les requêtes complexes. C'est ce qu'on utilise chez Eurus pour la plupart des projets data-heavy.
+
+**Realm** — Alternative NoSQL orientée objet. Plus simple à prendre en main, synchronisation native avec MongoDB Atlas. Bonne option pour les apps qui n'ont pas besoin de SQL.
+
+**Hive** (Flutter) — Base de données légère, rapide, écrite en Dart. Parfaite pour les apps Flutter qui ont besoin de performances.
+
+**AsyncStorage / SharedPreferences** — Pour les données simples et les préférences. Ne pas utiliser pour stocker des datasets importants.
+
+Le choix dépend de votre cas. Mais la règle reste la même : toute donnée critique doit être disponible localement.
+
+### La synchronisation différée
+
+C'est là que ça devient intéressant. Quand l'utilisateur crée ou modifie des données offline, ces changements doivent être stockés puis synchronisés dès que le réseau revient.
+
+Le pattern classique, c'est la **queue de synchronisation**. Chaque action offline est enregistrée dans une file d'attente avec un timestamp. Dès qu'on détecte une connexion, on dépile et on envoie au serveur.
+
+```
+1. Utilisateur crée une note (offline)
+2. Note stockée localement + ajoutée à la sync queue
+3. Réseau détecté
+4. Background sync envoie la note au serveur
+5. Serveur confirme → on retire de la queue
+6. Échec → on réessaie avec backoff exponentiel
+```
+
+En fait, c'est un peu comme un buffer. Vous accumulez les changements localement, puis vous videz le buffer quand c'est possible.
+
+### La gestion des conflits
+
+Et si deux personnes modifient la même donnée en même temps ? L'une est offline, l'autre est online. Quand la première se reconnecte, on a un conflit.
+
+C'est le point le plus délicat de l'offline-first. Plusieurs stratégies existent :
+
+**Last-write-wins** — Le dernier à synchroniser gagne. Simple mais brutal. Des données peuvent être perdues.
+
+**First-write-wins** — Le premier arrivé gagne, les autres sont rejetés. L'utilisateur doit refaire son action.
+
+**Merge automatique** — On fusionne les changements quand c'est possible. Complexe à implémenter mais meilleure UX.
+
+**Résolution manuelle** — On présente le conflit à l'utilisateur et on le laisse choisir. Transparent mais interrompt le flow.
+
+Chez Eurus, on préfère généralement le merge automatique pour les données simples, et la résolution manuelle pour les cas critiques. Un exemple concret : sur DrMilou, quand deux vétérinaires modifient le dossier d'un animal en même temps, on fusionne les champs différents mais on demande une validation si le même champ a été modifié des deux côtés.
+
+## Implémenter le cache intelligemment
+
+Le cache, ce n'est pas juste "je stocke tout". Un bon cache est stratégique. Il faut décider quoi cacher, quand invalider, et comment gérer l'espace.
+
+### Quoi mettre en cache ?
+
+Pas tout. Seulement ce qui a du sens.
+
+**À cacher systématiquement** — Les données fréquemment consultées, les données critiques pour le fonctionnement, les assets statiques (images, fonts).
+
+**À cacher avec expiration** — Les données qui changent régulièrement mais tolèrent un léger décalage. Un feed social, des statistiques, des prix.
+
+**À ne pas cacher** — Les données temps réel (position GPS d'un livreur), les données sensibles qui ne doivent pas persister, les données volumineuses rarement consultées.
+
+### Stratégies d'invalidation
+
+Le cache qui ne s'invalide jamais, c'est dangereux. L'utilisateur voit des données obsolètes et perd confiance.
+
+**TTL (Time-To-Live)** — Chaque entrée a une durée de vie. Simple et efficace. Après X minutes, on considère la donnée périmée.
+
+**Invalidation par événement** — Le serveur notifie les clients quand une donnée change (push, WebSocket). Plus réactif mais plus complexe.
+
+**Validation conditionnelle** — On demande au serveur si notre version est à jour (ETags, Last-Modified). On ne retélécharge que si nécessaire.
+
+En pratique, on combine souvent ces approches. TTL pour les données peu critiques, invalidation par événement pour les données partagées.
+
+## Le offline-first pour les assets et médias
+
+Les images, vidéos et fichiers posent un défi particulier. Ils sont volumineux, longs à télécharger, et consomment de l'espace.
+
+### Téléchargement progressif
+
+Plutôt que tout charger d'un coup, on télécharge à la demande. L'utilisateur consulte une image, on la cache. La prochaine fois, elle est disponible offline.
+
+Pour les apps de contenu (news, réseaux sociaux), on peut pré-télécharger en WiFi. L'utilisateur connecte son téléphone le soir, l'app télécharge les articles du lendemain en arrière-plan.
+
+### Gestion de l'espace
+
+Le stockage mobile n'est pas infini. Il faut une stratégie de nettoyage.
+
+**LRU (Least Recently Used)** — On supprime d'abord les données les moins consultées. Classique et efficace.
+
+**Quota par type** — On alloue un espace max par catégorie. 500 Mo pour les photos, 100 Mo pour les documents, etc.
+
+**Nettoyage proactif** — Quand le stockage est plein, on notifie l'utilisateur et on lui propose de libérer de l'espace.
+
+Sur Getaway, on a implémenté un système hybride. Les photos des 30 derniers jours restent en cache. Au-delà, on garde les miniatures mais on supprime les originaux. L'utilisateur peut toujours voir son historique, et on retélécharge à la demande s'il veut l'image en haute résolution.
+
+## Tester son app offline
+
+Développer offline-first, c'est bien. Mais comment s'assurer que ça marche vraiment ?
+
+### Simuler les conditions réseau
+
+Les outils existent pour tester différents scénarios :
+
+**iOS Simulator** — Network Link Conditioner permet de simuler 3G, Edge, perte de paquets, latence élevée.
+
+**Android Emulator** — Settings réseau intégrés pour throttle et simulation de déconnexion.
+
+**Chrome DevTools** — Pour les PWA, on peut simuler offline et différents profils réseau.
+
+**Charles Proxy / Proxyman** — Pour intercepter et manipuler les requêtes, simuler des timeouts, des erreurs 5xx.
+
+### Les scénarios à couvrir
+
+Ne vous contentez pas du "happy path". Testez les cas limites :
+
+- L'app démarre sans réseau → Doit afficher les données cachées
+- L'utilisateur perd le réseau en pleine action → L'action doit être sauvegardée
+- Le réseau revient → La sync doit se déclencher automatiquement
+- Le serveur est down mais le réseau est là → L'app doit gérer l'erreur gracieusement
+- Conflits de sync → La résolution doit fonctionner comme prévu
+
+Chez Eurus, on a des tests automatisés pour tous ces scénarios. C'est du temps investi au départ, mais ça évite les régressions.
+
+## Les erreurs classiques à éviter
+
+En fait, tout le monde fait les mêmes erreurs quand il découvre l'offline-first. Voici les pièges qu'on a rencontrés.
+
+### Ne pas informer l'utilisateur
+
+L'utilisateur doit savoir s'il est offline. Un petit indicateur discret dans la barre de status, un message quand une action sera synchronisée plus tard. La transparence évite la confusion.
+
+### Tout synchroniser d'un coup
+
+Quand le réseau revient après une longue période offline, ne pas tout envoyer en bloc. Ça bloque l'UI, ça consomme la batterie, ça peut rater si le réseau est instable. Mieux vaut synchroniser en batches, avec des pauses.
+
+### Ignorer les erreurs de sync
+
+Une synchronisation qui échoue silencieusement, c'est de la donnée perdue. Il faut des retries, des alertes, et en dernier recours, une notification à l'utilisateur.
+
+### Oublier la migration de données
+
+Quand vous mettez à jour votre schéma de base locale, les utilisateurs existants ont des données dans l'ancien format. Prévoir des migrations, comme pour une base serveur.
+
+## Offline-first et temps réel, c'est compatible ?
+
+Question qu'on nous pose souvent. Et la réponse est oui, mais ça demande de la nuance.
+
+Le temps réel (WebSocket, Firebase Realtime, etc.) reste pertinent pour les données qui changent fréquemment et où la fraîcheur compte. Un chat, une position GPS, un tableau de bord live.
+
+L'approche hybride fonctionne bien : le cache local pour la base, le temps réel pour les mises à jour. L'utilisateur voit immédiatement les données cachées, puis elles se mettent à jour en live quand c'est possible.
+
+Sur Youdy, on a dû refaire 3 fois le système de notifications push avant de trouver le bon équilibre entre engagement et spam. Mais on a aussi appris que les utilisateurs préfèrent des réponses imparfaites mais rapides plutôt que parfaites mais lentes. Le cache local qui répond en 50ms bat toujours l'API qui répond en 500ms, même si les données sont légèrement décalées.
+
+## Les outils et frameworks qui simplifient la vie
+
+Pas besoin de tout réinventer. Des solutions existent pour accélérer le développement.
+
+**WatermelonDB** — Base de données pour React Native optimisée pour l'offline-first. Sync lazy, observable, performante sur gros datasets.
+
+**PouchDB / CouchDB** — Sync bidirectionnelle native entre le client et le serveur. Parfait si vous pouvez utiliser CouchDB côté backend.
+
+**Apollo Client (GraphQL)** — Cache normalisé avec politiques de fetch configurables. network-only, cache-first, cache-and-network...
+
+**Realm Sync** — Si vous utilisez MongoDB Atlas, la sync est intégrée et gère les conflits automatiquement.
+
+**Workbox** — Pour les PWA, gère le service worker et les stratégies de cache.
+
+Le choix dépend de votre stack existante. Mais ces outils font gagner des semaines de développement.
+
+## Faut-il toujours faire du offline-first ?
+
+Non. Soyons honnêtes : l'offline-first a un coût. Plus de complexité, plus de code, plus de tests. Pour certaines apps, ça ne vaut pas le coup.
+
+**Offline-first pertinent** — Apps de productivité, prise de notes, voyage, logistique terrain, santé, e-commerce (catalogue).
+
+**Offline-first optionnel** — Réseaux sociaux (feed peut être dégradé), médias (streaming nécessite le réseau de toute façon).
+
+**Offline-first superflu** — Apps de visioconférence, streaming live, trading temps réel.
+
+La question à se poser : que peut faire mon utilisateur sans réseau, et est-ce que ça a de la valeur ? Si la réponse est "rien" ou "pas vraiment", l'investissement n'est peut-être pas justifié.
+
+## FAQ
+
+### Combien de temps ajoute l'offline-first au développement ?
+
+Comptez 20 à 30% de temps supplémentaire pour une implémentation robuste. Plus si vous avez des cas de sync complexes. Mais ce temps est récupéré en maintenance et en rétention utilisateur.
+
+### Peut-on ajouter l'offline-first à une app existante ?
+
+Oui, mais c'est plus complexe que de le prévoir dès le départ. Il faut refactorer la couche data, ajouter le stockage local, gérer la migration des données existantes. Prévoir 2 à 4 semaines selon la taille de l'app.
+
+### Quelle taille de cache est raisonnable ?
+
+Ça dépend de votre app. Pour du texte et des données structurées, quelques dizaines de Mo suffisent. Si vous cachez des médias, montez à quelques centaines de Mo avec une stratégie de nettoyage. Au-delà du Go, l'utilisateur risque de se plaindre.
+
+### Comment gérer l'authentification offline ?
+
+Le token d'authentification est stocké localement (Keychain iOS, Keystore Android). L'utilisateur reste connecté offline. À la reconnexion, si le token a expiré, on refresh silencieusement ou on redemande le login.
+
+### L'offline-first fonctionne-t-il pour les PWA ?
+
+Absolument. Les Service Workers permettent d'intercepter les requêtes et de servir du cache. Workbox simplifie grandement l'implémentation. C'est même devenu un critère pour être "installable" sur mobile.
+
+---
+
+L'offline-first n'est plus une option de luxe. C'est une attente utilisateur. Dans un monde où la connectivité reste imprévisible, les apps qui fonctionnent sans réseau ont un avantage compétitif évident.
+
+Chez Eurus, on intègre cette réflexion dès le cadrage de chaque projet. Parce qu'on sait que vos utilisateurs ne seront pas toujours en 5G.
+
+**Vous avez un projet d'application qui doit fonctionner en conditions difficiles ?** [Parlons-en](/contact). On saura vous conseiller sur l'architecture adaptée à vos contraintes.
