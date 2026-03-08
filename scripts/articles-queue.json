@@ -1,17 +1,6 @@
 {
   "queue": [
     {
-      "slug": "chat-temps-reel-application",
-      "title": "Chat temps réel : intégrer une messagerie dans votre app",
-      "description": "WebSocket, Firebase, solutions clé en main. Implémenter un chat performant.",
-      "tags": [
-        "Technique",
-        "Fonctionnalité",
-        "Mobile"
-      ],
-      "keyword": "chat temps réel application"
-    },
-    {
       "slug": "geolocalisation-application-mobile",
       "title": "Géolocalisation application mobile : GPS et maps",
       "description": "Intégrer la géolocalisation dans votre app. Google Maps, Mapbox, tracking, privacy.",
@@ -555,6 +544,18 @@
         "Mobile"
       ],
       "keyword": "paiement in-app intégration",
+      "publishedDate": "2026-03-08"
+    },
+    {
+      "slug": "chat-temps-reel-application",
+      "title": "Chat temps réel : intégrer une messagerie dans votre app",
+      "description": "WebSocket, Firebase, solutions clé en main. Implémenter un chat performant.",
+      "tags": [
+        "Technique",
+        "Fonctionnalité",
+        "Mobile"
+      ],
+      "keyword": "chat temps réel application",
       "publishedDate": "2026-03-08"
     }
   ],
