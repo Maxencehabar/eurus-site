@@ -1,17 +1,6 @@
 {
   "queue": [
     {
-      "slug": "paiement-in-app-integration",
-      "title": "Paiement in-app : intégrer Stripe, Apple Pay, Google Pay",
-      "description": "Guide d'intégration des solutions de paiement mobile. Commissions, UX, conformité.",
-      "tags": [
-        "Technique",
-        "Paiement",
-        "Mobile"
-      ],
-      "keyword": "paiement in-app intégration"
-    },
-    {
       "slug": "chat-temps-reel-application",
       "title": "Chat temps réel : intégrer une messagerie dans votre app",
       "description": "WebSocket, Firebase, solutions clé en main. Implémenter un chat performant.",
@@ -555,7 +544,19 @@
       ],
       "keyword": "CI CD application mobile",
       "publishedDate": "2026-03-07"
+    },
+    {
+      "slug": "paiement-in-app-integration",
+      "title": "Paiement in-app : intégrer Stripe, Apple Pay, Google Pay",
+      "description": "Guide d'intégration des solutions de paiement mobile. Commissions, UX, conformité.",
+      "tags": [
+        "Technique",
+        "Paiement",
+        "Mobile"
+      ],
+      "keyword": "paiement in-app intégration",
+      "publishedDate": "2026-03-08"
     }
   ],
-  "lastPublished": "2026-03-07"
+  "lastPublished": "2026-03-08"
 }

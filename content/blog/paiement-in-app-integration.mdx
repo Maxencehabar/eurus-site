@@ -1,0 +1,242 @@
+---
+title: "Paiement in-app : intégrer Stripe, Apple Pay, Google Pay"
+description: "Guide d'intégration des solutions de paiement mobile. Commissions, UX, conformité."
+date: "2026-03-08"
+author: "Eurus"
+tags: ["Technique", "Paiement", "Mobile"]
+---
+
+Le paiement dans une application mobile, c'est le moment de vérité. L'utilisateur a scrollé, comparé, hésité, ajouté au panier... et maintenant il doit sortir sa carte. Si cette étape dure plus de 30 secondes ou demande de remplir 15 champs, vous le perdez. J'ai vu des projets avec une UX parfaite s'effondrer au checkout.
+
+Chez Eurus, on a intégré des systèmes de paiement sur plusieurs applications — des abonnements récurrents aux achats one-shot, en passant par les dons. Chaque projet nous a appris quelque chose. Et la principale leçon ? Le paiement, c'est autant une question technique qu'une question de confiance.
+
+## Pourquoi le paiement mobile est différent
+
+Sur desktop, les utilisateurs sont habitués à remplir des formulaires. Ils ont leur carte sous la main, un grand écran, et le temps de vérifier deux fois avant de cliquer. Sur mobile, tout change.
+
+Le pouce est impatient. L'écran est petit. Et franchement, taper un numéro de carte à 16 chiffres sur un clavier virtuel, c'est l'enfer. J'ai personnellement abandonné des achats parce que l'app me demandait de re-saisir ma carte alors que je l'avais déjà enregistrée.
+
+C'est pour ça que les solutions comme Apple Pay et Google Pay ont explosé. Un scan du visage ou une empreinte, et c'est fait. Pas de numéro à taper. Pas de date d'expiration à chercher. L'utilisateur valide en 2 secondes ce qui prenait 2 minutes avant.
+
+Mais voilà le piège : ces solutions "magiques" ne sont pas toujours la bonne réponse. Tout dépend de votre contexte.
+
+## Les trois grandes familles de paiement in-app
+
+Avant de choisir une solution, il faut comprendre qu'il existe trois scénarios bien distincts. Et Apple comme Google ont des règles très strictes sur lesquels vous pouvez utiliser.
+
+### Les achats digitaux (In-App Purchases)
+
+Si vous vendez du contenu digital consommé dans l'app — abonnements premium, vies supplémentaires dans un jeu, filtres photo, fonctionnalités débloquées — vous êtes obligé de passer par les systèmes natifs. Apple prend 30% (ou 15% si vous faites moins d'1 million de CA), Google pareil.
+
+Pas de négociation possible. C'est la règle du store.
+
+Concrètement, ça veut dire utiliser StoreKit 2 sur iOS et Google Play Billing sur Android. Les deux ont leurs particularités. StoreKit 2 est franchement bien pensé avec son API async/await en Swift. La version Android est... disons qu'elle demande plus de patience.
+
+Sur Youdy, on a implémenté un système d'abonnement premium. Le plus gros défi n'était pas technique — c'était de gérer les edge cases. Que se passe-t-il quand un utilisateur s'abonne sur iOS, puis se connecte sur Android ? Comment synchroniser l'état de l'abonnement côté serveur ? Comment gérer un utilisateur qui demande un remboursement à Apple sans passer par vous ?
+
+Ces questions, on ne se les pose pas au début. Et pourtant, elles représentent 80% du travail.
+
+### Les achats physiques ou services (Stripe, Apple Pay direct)
+
+Si vous vendez des produits physiques livrés chez le client, des billets d'avion, des réservations d'hôtel, ou des services rendus hors de l'app — là vous pouvez utiliser vos propres solutions de paiement. Stripe devient votre meilleur ami.
+
+Apple Pay et Google Pay restent disponibles, mais cette fois comme méthodes de paiement intégrées à votre propre checkout, pas comme systèmes d'achat imposés par les stores.
+
+La différence ? Vous gardez le contrôle. Et surtout, vous ne payez que 2-3% de commission à Stripe au lieu de 30% à Apple.
+
+### Le modèle hybride
+
+Et puis il y a les apps qui font les deux. Un marketplace qui vend des produits physiques mais propose aussi un abonnement premium pour les vendeurs, par exemple. Là, vous devez jongler entre les deux systèmes.
+
+Notre conseil : simplifiez au maximum. Si vous pouvez éviter le hybride, évitez-le. Sinon, documentez très précisément quel flux utilise quel système. Un audit Apple qui trouve que vous contournez l'IAP pour des achats digitaux, c'est un rejet immédiat de l'app.
+
+## Stripe : le couteau suisse du paiement
+
+Si je devais recommander une seule solution pour les paiements hors IAP, ce serait Stripe. Pas parce que c'est parfait — aucune solution ne l'est — mais parce que c'est le meilleur compromis entre puissance et facilité d'intégration.
+
+### Ce qui rend Stripe différent
+
+La documentation est exceptionnelle. Vraiment. Quand on compare avec les docs de certaines banques françaises... c'est le jour et la nuit. Chaque endpoint est documenté avec des exemples dans 8 langages. Les erreurs sont claires. Et leur mode test permet de simuler tous les scénarios possibles.
+
+Sur DrMilou, on a migré d'une solution de paiement bancaire classique vers Stripe. L'ancienne solution demandait des semaines d'intégration, des formulaires en PDF à renvoyer par courrier (oui, en 2024), et un support technique joignable uniquement par fax. Je caricature à peine.
+
+Avec Stripe, on était en production en 3 jours. Et les temps de réponse ont été divisés par 4 parce qu'on pouvait enfin utiliser des webhooks modernes au lieu de polling.
+
+### Payment Element vs Custom Integration
+
+Stripe propose deux approches. Le Payment Element est un composant pré-construit qui gère tout : saisie de carte, Apple Pay, Google Pay, gestion des erreurs, conformité PCI. Vous l'intégrez, vous le stylisez un peu, et c'est fait.
+
+L'intégration custom vous donne plus de contrôle mais demande plus de travail. Vous construisez votre propre UI et utilisez l'API Stripe pour tokeniser les cartes.
+
+Mon avis ? Commencez toujours par le Payment Element. Sauf si vous avez des besoins UX très spécifiques, c'est la meilleure option. Il est régulièrement mis à jour avec les nouvelles méthodes de paiement, les évolutions réglementaires, et les optimisations de conversion.
+
+### Les webhooks, ou comment dormir tranquille
+
+Un paiement peut échouer après avoir été initié. La carte peut être refusée par la banque après validation 3D Secure. L'utilisateur peut fermer l'app pendant le traitement. Stripe peut avoir un micro-incident.
+
+Si vous ne gérez pas ces cas, vous allez avoir des utilisateurs qui ont payé mais pas reçu leur achat. Ou pire, des utilisateurs qui n'ont pas payé mais ont quand même accès au contenu.
+
+La solution : les webhooks. Stripe vous notifie de chaque événement — paiement réussi, échoué, remboursé, contesté. Votre backend écoute ces notifications et met à jour l'état de la commande en conséquence.
+
+C'est critique. J'ai vu des projets où le paiement était considéré comme réussi dès que l'utilisateur cliquait sur "Payer", sans attendre la confirmation du webhook. Résultat : 5% de transactions fantômes qui n'avaient jamais abouti.
+
+## Apple Pay : la friction zéro sur iOS
+
+Apple Pay est redoutablement efficace. Un tap, Face ID, c'est payé. Les taux de conversion sur les flows Apple Pay sont systématiquement supérieurs aux flows classiques avec saisie de carte.
+
+### L'intégration technique
+
+Sur iOS natif, vous utilisez PassKit. Le flow est relativement simple :
+1. Vérifier que l'appareil supporte Apple Pay
+2. Vérifier qu'une carte est enregistrée
+3. Créer un PKPaymentRequest avec le montant et les détails
+4. Présenter le sheet Apple Pay
+5. Recevoir le token de paiement
+6. Envoyer ce token à votre backend qui le transmet à Stripe
+
+La partie subtile, c'est la gestion des cas limites. Que faire si l'utilisateur n'a pas de carte enregistrée ? Vous affichez un bouton "Ajouter une carte à Apple Pay" ? Vous basculez sur le flow Stripe classique ? 
+
+Chez Eurus, on propose toujours les deux options. Apple Pay en premier (plus visible, plus gros), et "Payer par carte" en dessous. Comme ça, personne n'est bloqué.
+
+### Les contraintes côté marchand
+
+Pour accepter Apple Pay, vous devez :
+- Avoir un compte développeur Apple (99$/an)
+- Configurer un Merchant ID dans le portail Apple
+- Générer un certificat de paiement
+- L'uploader dans Stripe (ou votre PSP)
+
+Ce n'est pas compliqué, mais c'est une étape qu'on oublie souvent dans les estimations de temps. Comptez une demi-journée la première fois.
+
+## Google Pay : l'équivalent Android
+
+Google Pay fonctionne sur le même principe qu'Apple Pay. Token de paiement, validation biométrique ou par PIN, intégration avec Stripe.
+
+La différence principale ? L'écosystème Android est plus fragmenté. Certains téléphones n'ont pas de NFC. Certains utilisateurs n'ont jamais configuré Google Pay. La pénétration est moins forte qu'Apple Pay sur iOS.
+
+Du coup, sur Android, le flow "carte classique" reste souvent le flow principal, avec Google Pay en option bonus.
+
+### Un point technique important
+
+Google Pay génère un token différent d'Apple Pay. Si votre backend traite les deux de la même manière, vous allez avoir des surprises. Assurez-vous de bien identifier le type de token reçu et de le router vers le bon handler côté Stripe.
+
+## Les commissions : ce qu'on ne vous dit pas
+
+Parlons argent. Voici la réalité des coûts selon les configurations :
+
+**Achat digital via App Store (StoreKit)** : Apple prend 30% (ou 15% si < 1M$/an). Vous ne voyez jamais la transaction côté paiement, Apple gère tout.
+
+**Achat physique via Stripe + Apple Pay** : Stripe prend ~2.9% + 0.30€. Apple Pay ne prend rien en plus — c'est juste un moyen de paiement.
+
+**Achat physique via Stripe + carte classique** : Même chose, ~2.9% + 0.30€.
+
+La confusion vient du fait qu'Apple Pay le moyen de paiement (gratuit) est différent de l'In-App Purchase le système d'achat d'Apple (30%).
+
+J'ai eu des clients qui voulaient "éviter les 30% d'Apple" en utilisant Apple Pay. Ça ne marche pas comme ça. Si votre produit est digital et consommé dans l'app, vous passez par l'IAP, point final.
+
+## La conformité PCI-DSS : pourquoi c'est critique
+
+Dès que vous touchez à des données de carte bancaire, vous entrez dans le monde PCI-DSS. C'est un ensemble de normes de sécurité imposées par les réseaux Visa/Mastercard.
+
+La bonne nouvelle : en utilisant Stripe, Apple Pay ou Google Pay, vous ne manipulez jamais les données de carte en clair. Vous recevez des tokens, et c'est Stripe qui gère le stockage sécurisé. Votre niveau de conformité requis (SAQ-A) est minimal.
+
+La mauvaise nouvelle : si vous décidez de construire votre propre formulaire de carte et de stocker les numéros vous-même, vous passez en SAQ-D. Audits annuels, infrastructure sécurisée, logs de tout, tests de pénétration... Le coût explose.
+
+Notre règle chez Eurus : ne jamais stocker de données de carte. Toujours utiliser des tokens. Ça simplifie tout.
+
+## Les erreurs qu'on a vues (et faites)
+
+Soyons honnêtes, on a aussi fait des erreurs. Voici les plus fréquentes.
+
+### Ignorer les fuseaux horaires
+
+Un bug de timezone sur Youdy a fait que les utilisateurs au Canada recevaient leurs confirmations de paiement à 3h du matin. Pas grave en soi, mais ça crée de la méfiance. "Pourquoi cette app me réveille à 3h ?" Leçon : toujours stocker les dates en UTC, afficher en local.
+
+### Ne pas tester les cartes étrangères
+
+Stripe en mode test propose des cartes de différents pays. Utilisez-les. Une carte américaine, une carte britannique, une carte avec 3D Secure obligatoire. Les comportements diffèrent selon les banques émettrices.
+
+### Oublier les remboursements
+
+Votre utilisateur veut un remboursement. Vous faites quoi ? Si vous n'avez pas prévu le flow, vous allez devoir le faire manuellement dans le dashboard Stripe. C'est faisable, mais ça ne scale pas.
+
+Prévoyez une interface admin dès le début, même basique. Un bouton "Rembourser" qui appelle l'API Stripe, met à jour la commande en base, et envoie un email de confirmation.
+
+### Sous-estimer le support client
+
+Les paiements génèrent des questions. "J'ai été débité deux fois." "Mon achat n'apparaît pas." "Je veux annuler mon abonnement." 
+
+Construisez des outils pour votre équipe support dès le départ. Un dashboard qui montre l'historique des paiements d'un utilisateur, le statut de ses abonnements, les webhooks reçus. Ça vous fera gagner des heures.
+
+## Le flow idéal en 2026
+
+Voici ce qu'on recommande aujourd'hui pour une app e-commerce ou service :
+
+1. **Afficher Apple Pay / Google Pay en premier** si disponible sur l'appareil
+2. **Proposer "Payer par carte" en dessous** avec Stripe Payment Element
+3. **Enregistrer la carte pour les prochains achats** (avec consentement explicite)
+4. **Envoyer la confirmation par email ET notification push**
+5. **Écouter les webhooks Stripe** pour tout changement de statut
+
+Pour les abonnements, ajoutez :
+- Page de gestion de l'abonnement (changer de plan, annuler)
+- Emails de rappel avant renouvellement
+- Gestion des cartes expirées (Stripe envoie un webhook `customer.source.expiring`)
+
+## Combien ça coûte à développer ?
+
+En termes de temps de développement, voici des ordres de grandeur réalistes :
+
+**Achat one-shot simple (Stripe + Apple Pay)** : 3-5 jours pour un développeur senior. Inclut le backend, le frontend, les webhooks, et les tests.
+
+**Système d'abonnement (StoreKit + Google Play Billing + sync serveur)** : 2-3 semaines. C'est beaucoup plus complexe à cause de la synchronisation cross-platform.
+
+**Place de marché avec paiements split (Stripe Connect)** : 3-4 semaines minimum. La gestion des sous-comptes vendeurs, des commissions variables, et de la conformité KYC ajoute de la complexité.
+
+Ces estimations supposent une équipe qui connaît déjà les outils. Pour une première intégration, multipliez par 1.5.
+
+## Et après le lancement ?
+
+Le paiement, ça se monitore. Mettez en place des alertes sur :
+- Taux de conversion du checkout
+- Taux d'échec des paiements
+- Temps moyen de complétion
+- Nombre de litiges (chargebacks)
+
+Un pic soudain d'échecs peut indiquer un bug. Un taux de litige qui monte peut signaler un problème de communication sur ce que l'utilisateur achète. Surveillez ces métriques comme vous surveillez vos autres KPIs business.
+
+## Conclusion : simplicité d'abord
+
+Intégrer le paiement dans une app, ce n'est pas sorcier. Mais c'est un domaine où les détails comptent énormément. Un formulaire de carte mal conçu, un webhook ignoré, une erreur 3D Secure mal gérée — et vous perdez des ventes.
+
+Notre philosophie chez Eurus : commencer simple, itérer vite. Stripe + Apple Pay + Google Pay couvrent 95% des besoins. Ne réinventez pas la roue.
+
+Et si vous avez un projet d'app avec paiement intégré, qu'il s'agisse d'un abonnement SaaS, d'une marketplace, ou d'une app de services, on peut en discuter. C'est exactement le genre de sujets qu'on aime creuser.
+
+---
+
+## FAQ : Questions fréquentes sur le paiement in-app
+
+### Apple Pay est-il obligatoire pour vendre sur l'App Store ?
+
+Non. Apple Pay le moyen de paiement est optionnel. En revanche, si vous vendez du contenu digital, vous devez utiliser le système d'In-App Purchase d'Apple. Ce sont deux choses différentes.
+
+### Peut-on éviter les 30% de commission Apple/Google ?
+
+Pour les achats digitaux consommés dans l'app, non. Pour les produits physiques ou services rendus hors app, vous utilisez votre propre solution de paiement (Stripe par exemple) et vous ne payez que ~3%.
+
+### Stripe fonctionne-t-il dans tous les pays ?
+
+Stripe est disponible dans 47+ pays. Vérifiez la liste sur leur site. Pour les pays non couverts, des alternatives comme Adyen ou des solutions locales existent.
+
+### Comment gérer les abonnements cross-platform ?
+
+Le plus fiable : un système de compte utilisateur côté serveur. L'utilisateur s'abonne sur iOS, vous enregistrez l'état sur votre serveur, et il peut se connecter sur Android avec le même accès premium. Ça demande de synchroniser les webhooks StoreKit et Google Play Billing.
+
+### Que faire en cas de litige (chargeback) ?
+
+Stripe vous notifie. Vous avez quelques jours pour fournir des preuves (confirmation de commande, livraison, etc.). Construisez ces preuves dès le départ — logs de connexion, emails envoyés, historique d'utilisation.
+
+---
+
+*Vous avez un projet d'application avec paiement intégré ? [Contactez-nous](/contact) pour en discuter. On vous aide à choisir la bonne architecture et à l'implémenter proprement.*
