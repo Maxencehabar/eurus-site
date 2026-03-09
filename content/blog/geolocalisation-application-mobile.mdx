@@ -1,0 +1,203 @@
+---
+title: "Géolocalisation application mobile : GPS et maps"
+description: "Intégrer la géolocalisation dans votre app. Google Maps, Mapbox, tracking, privacy."
+date: "2026-03-09"
+author: "Eurus"
+tags: ["Technique", "Fonctionnalité", "Mobile"]
+---
+
+Vous voulez que votre app sache où se trouve l'utilisateur. Ça a l'air simple dit comme ça. Mais entre le GPS qui rame à l'intérieur des bâtiments, les permissions iOS qui changent tous les six mois, et les utilisateurs qui désactivent leur localisation par réflexe, vous allez vite comprendre que la géolocalisation, c'est un monde à part.
+
+Chez Eurus, on intègre la géolocalisation dans à peu près un projet sur trois. Applications de livraison, services de proximité, apps de voyage, outils métier avec tournées... Les cas d'usage sont partout. Et à chaque fois, les mêmes questions reviennent : quelle précision ? Quel SDK de cartes ? Comment gérer la batterie ? Est-ce qu'on respecte le RGPD ?
+
+Cet article, c'est tout ce qu'on a appris en intégrant la géolocalisation dans des dizaines d'apps. Pas de blabla théorique, juste du concret.
+
+## Comment fonctionne la géolocalisation sur mobile
+
+Avant de coder, il faut comprendre ce qui se passe sous le capot. Votre téléphone a plusieurs façons de savoir où il se trouve, et elles ne sont pas équivalentes.
+
+### Le GPS : précis mais gourmand
+
+Le GPS (Global Positioning System), c'est le système de satellites que tout le monde connaît. Votre téléphone capte les signaux d'au moins quatre satellites et calcule sa position par triangulation. Précision : entre 3 et 15 mètres en extérieur.
+
+Le problème ? Le GPS consomme énormément de batterie. Genre, vraiment beaucoup. Si vous laissez le GPS actif en permanence, vous allez vider la batterie en quelques heures. Et à l'intérieur des bâtiments ou dans les rues étroites, le signal passe mal voire pas du tout.
+
+### Le réseau cellulaire et le WiFi
+
+Votre téléphone peut aussi utiliser les antennes cellulaires et les bornes WiFi environnantes pour estimer sa position. C'est moins précis (de 20 à plusieurs centaines de mètres), mais ça consomme beaucoup moins d'énergie et ça marche en intérieur.
+
+En pratique, les systèmes modernes combinent tout ça. iOS et Android fusionnent automatiquement les données GPS, cellulaires et WiFi pour donner la meilleure position possible au moindre coût énergétique. C'est ce qu'on appelle le "Fused Location Provider" sur Android.
+
+### La différence entre iOS et Android
+
+Sur Android, vous avez un contrôle assez fin sur le provider de localisation. Vous pouvez demander explicitement du GPS haute précision ou vous contenter du réseau. Sur iOS, c'est plus opaque : vous demandez une précision (kCLLocationAccuracyBest, kCLLocationAccuracyKilometer, etc.) et le système se débrouille.
+
+Concrètement, ça veut dire que votre code sera différent sur les deux plateformes. Si vous utilisez Flutter ou React Native, les plugins abstraient une partie de cette complexité, mais pas tout.
+
+## Choisir son SDK de cartes : Google Maps, Mapbox ou autre chose ?
+
+Afficher une carte avec la position de l'utilisateur, c'est souvent le premier besoin. Mais quel SDK choisir ?
+
+### Google Maps : le standard de fait
+
+Google Maps, c'est la solution par défaut. Tout le monde connaît l'interface, les données sont excellentes (surtout en France), et l'intégration est bien documentée. Le SDK existe pour iOS, Android, Flutter et React Native.
+
+Le hic ? Le prix. Google Maps est gratuit jusqu'à un certain volume (28 000 chargements de carte par mois), puis ça devient payant. Et les tarifs peuvent grimper vite si vous avez beaucoup d'utilisateurs actifs. On a vu des clients se retrouver avec des factures de plusieurs milliers d'euros par mois sans s'y attendre.
+
+Notre conseil : si vous débutez et que votre volume est modéré, Google Maps reste le choix le plus simple. Mais gardez un œil sur votre consommation.
+
+### Mapbox : l'alternative flexible
+
+Mapbox, c'est ce qu'utilisent beaucoup de grosses apps (Uber, Strava, etc.). Les avantages : des cartes personnalisables à l'infini, une tarification souvent plus avantageuse à fort volume, et un SDK très complet pour la navigation turn-by-turn.
+
+En contrepartie, la courbe d'apprentissage est plus raide. La documentation est bonne mais dense, et vous aurez plus de configuration à faire. Pour des cas d'usage avancés (cartes stylisées, offline, navigation), Mapbox vaut vraiment le coup. Pour afficher un simple point sur une carte, c'est peut-être overkill.
+
+### OpenStreetMap et Leaflet
+
+Si votre budget est serré ou que vous voulez éviter la dépendance à Google/Mapbox, il y a l'option OpenStreetMap. Les données sont libres, vous pouvez héberger vos propres tuiles de carte. Avec Leaflet (web) ou des wrappers natifs, ça fonctionne très bien.
+
+Le compromis ? La qualité des données est variable selon les régions. En France métropolitaine, c'est excellent. Dans certains pays ou zones rurales, c'est plus aléatoire. Et vous perdez des fonctionnalités comme la recherche d'adresses intégrée (il faut utiliser un service tiers comme Nominatim ou Photon).
+
+### Notre recommandation
+
+Pour 80% des projets qu'on accompagne, Google Maps fait le job. Le ratio simplicité/fonctionnalités est imbattable. On passe à Mapbox quand le client a des besoins spécifiques : cartes offline, style personnalisé, navigation avancée, ou simplement un volume qui rend Google trop cher.
+
+## Gérer les permissions : le cauchemar des développeurs
+
+Les permissions de localisation, c'est probablement la partie la plus pénible de l'intégration. iOS et Android ont des approches différentes, et les deux évoluent constamment vers plus de restrictions.
+
+### Sur iOS : trois niveaux de permission
+
+Depuis iOS 14, Apple a introduit la localisation "approximative". L'utilisateur peut choisir entre :
+- **Précise** : vous obtenez les vraies coordonnées GPS
+- **Approximative** : vous obtenez une zone de plusieurs kilomètres
+- **Refusée** : vous n'obtenez rien
+
+En plus de ça, il y a la question du "quand" :
+- **Uniquement pendant l'utilisation** : vous n'avez la localisation que quand l'app est au premier plan
+- **Toujours** : vous pouvez avoir la localisation en arrière-plan
+
+Pour obtenir "Toujours", vous devez d'abord demander "Pendant l'utilisation", puis plus tard demander une mise à niveau vers "Toujours". Et Apple peut refuser votre app si vous demandez "Toujours" sans justification solide dans les métadonnées du Store.
+
+### Sur Android : un système similaire mais différent
+
+Android a aussi introduit la localisation approximative (Android 12+) et distingue le foreground du background. Mais la mécanique est légèrement différente : vous demandez les permissions une par une, et l'utilisateur peut révoquer plus facilement.
+
+Le piège classique : sur Android 10+, la permission de localisation en arrière-plan est une permission séparée (ACCESS_BACKGROUND_LOCATION) qu'il faut demander explicitement. Beaucoup de développeurs l'oublient et se retrouvent avec une app qui fonctionne en foreground mais perd la localisation dès qu'elle passe en arrière-plan.
+
+### Nos conseils pour les permissions
+
+**Demandez au bon moment.** Ne demandez pas la localisation au lancement de l'app. Attendez que l'utilisateur fasse une action qui justifie la demande (rechercher un lieu, activer le suivi, etc.). Les taux d'acceptation sont bien meilleurs.
+
+**Expliquez pourquoi.** iOS vous oblige à fournir un texte explicatif (les clés NSLocationWhenInUseUsageDescription et consorts dans le Info.plist). Soignez ce texte. Un message clair et honnête augmente les taux d'acceptation de 20 à 30% selon notre expérience.
+
+**Gérez le refus gracieusement.** L'utilisateur a refusé ? Prévoyez un fallback. Peut-être qu'il peut entrer son adresse manuellement. Peut-être que certaines fonctionnalités sont simplement désactivées. Ne faites pas crasher l'app ou n'affichez pas un message d'erreur cryptique.
+
+## Le tracking en arrière-plan : quand c'est vraiment nécessaire
+
+Certaines apps ont besoin de suivre la position même quand elles ne sont pas actives. Applications de running, suivi de livraison, apps de sécurité... C'est techniquement possible, mais c'est le parcours du combattant.
+
+### Pourquoi c'est compliqué
+
+Les systèmes d'exploitation mobiles sont conçus pour économiser la batterie. Une app qui demande la position en permanence en arrière-plan, c'est exactement ce qu'ils veulent empêcher. iOS et Android utilisent toutes sortes de mécanismes pour limiter ça : ils tuent les apps inactives, réduisent la fréquence des mises à jour de position, etc.
+
+Chez Eurus, on a bossé sur Getaway, une app de voyage où les utilisateurs veulent tracer leurs itinéraires même dans des zones sans réseau. Le plus gros challenge ? Gérer la localisation offline quand les voyageurs sont dans des endroits reculés. On a dû implémenter un système de cache local qui stocke les points GPS et les synchronise plus tard. Et même là, on a découvert que certains téléphones Android agressifs (coucou Xiaomi et Huawei) tuent l'app après quelques minutes d'inactivité.
+
+### Les solutions techniques
+
+**Sur iOS**, utilisez les "significant location changes" plutôt que le tracking continu. Le système vous réveille uniquement quand l'utilisateur s'est déplacé significativement (500m environ). C'est moins précis mais beaucoup plus économe en batterie, et Apple ne vous fera pas de problèmes.
+
+**Sur Android**, les WorkManager et les foreground services sont vos amis. Un foreground service avec une notification persistante est le seul moyen fiable de maintenir un tracking en arrière-plan. Oui, ça veut dire une notification visible en permanence. C'est moche, mais c'est la règle du jeu.
+
+**Testez sur des vrais appareils.** Les émulateurs ne reproduisent pas les comportements d'économie de batterie. Testez sur des Samsung, des Xiaomi, des Huawei. Chaque constructeur a ses propres optimisations agressives.
+
+## Stocker et afficher des coordonnées : les pièges classiques
+
+Une fois que vous avez la position, il faut la stocker et l'afficher. Simple ? Pas tant que ça.
+
+### Le format des coordonnées
+
+Une coordonnée GPS, c'est deux nombres : latitude et longitude. Mais attention à l'ordre. Certains systèmes (Google Maps) utilisent (lat, lng), d'autres (GeoJSON, MongoDB) utilisent (lng, lat). On a perdu des heures à débugger des points qui s'affichaient au milieu de l'océan parce que lat et lng étaient inversés.
+
+Notre convention chez Eurus : on stocke toujours en (latitude, longitude) dans la base de données, et on adapte au moment de l'affichage selon le SDK utilisé.
+
+### La précision à stocker
+
+Un nombre à virgule flottante, ça peut avoir beaucoup de décimales. Mais en avez-vous besoin ? Six décimales donnent une précision d'environ 10 cm. C'est largement suffisant pour 99% des cas. Stocker plus de décimales, c'est gaspiller de l'espace sans bénéfice.
+
+### Les timezones (notre cauchemar préféré)
+
+Sur Youdy, on a eu un bug mémorable : les utilisateurs au Canada recevaient leurs rappels à 3h du matin. Le problème ? On stockait les heures en heure locale au lieu d'UTC. Quand le serveur (en France) calculait "demain 9h", il envoyait à 9h heure française, soit 3h du matin à Montréal.
+
+La leçon : **stockez toujours vos timestamps en UTC**. Convertissez en heure locale uniquement au moment de l'affichage, côté client. Ça vaut pour les coordonnées horodatées aussi. Si vous trackez un parcours, chaque point doit avoir un timestamp UTC.
+
+## RGPD et vie privée : ce que vous devez savoir
+
+La géolocalisation, c'est une donnée personnelle sensible au sens du RGPD. Vous ne pouvez pas la collecter n'importe comment.
+
+### Le consentement
+
+Techniquement, la permission système (iOS/Android) vaut consentement. Mais pour être vraiment en règle, vous devez aussi :
+- Informer l'utilisateur dans vos CGU/politique de confidentialité
+- Expliquer pourquoi vous collectez cette donnée et ce que vous en faites
+- Permettre à l'utilisateur de supprimer ses données de localisation
+
+### La minimisation des données
+
+Le RGPD impose de ne collecter que les données strictement nécessaires. Si vous n'avez besoin que de la ville de l'utilisateur, ne stockez pas ses coordonnées GPS précises. Si vous avez besoin d'un historique sur 7 jours, ne gardez pas les données indéfiniment.
+
+### Le partage avec des tiers
+
+Si vous utilisez Google Maps ou Mapbox, les requêtes passent par leurs serveurs. Ils reçoivent donc des informations sur la position de vos utilisateurs. Mentionnez-le dans votre politique de confidentialité. Et si vous partagez des données de localisation avec d'autres partenaires (analytics, publicité), c'est encore plus sensible.
+
+## Optimiser la batterie : l'équilibre précision/consommation
+
+Une app qui vide la batterie, c'est une app qui se fait désinstaller. La géolocalisation est l'un des plus gros consommateurs d'énergie sur mobile. Voici comment limiter les dégâts.
+
+### Adaptez la précision au besoin
+
+Vous affichez une carte de la France avec des points d'intérêt ? Vous n'avez pas besoin du GPS haute précision. Demandez une précision de quelques centaines de mètres, ça suffira et ça consommera dix fois moins.
+
+Vous guidez l'utilisateur vers une adresse précise à pied ? Là, il vous faut la précision maximale, mais uniquement pendant la navigation active.
+
+### Utilisez le geofencing plutôt que le polling
+
+Si vous voulez savoir quand l'utilisateur entre ou sort d'une zone (notification quand il arrive près d'un magasin, par exemple), n'utilisez pas un timer qui vérifie la position toutes les minutes. Utilisez le geofencing natif : vous définissez une zone, et le système vous prévient quand l'utilisateur y entre ou en sort. C'est beaucoup plus économe.
+
+### Arrêtez le tracking quand c'est inutile
+
+Ça paraît évident, mais on voit beaucoup d'apps qui continuent à tracker même quand ce n'est plus nécessaire. L'utilisateur a terminé sa course ? Arrêtez le tracking. Il a quitté l'écran de carte ? Passez en mode basse consommation.
+
+## FAQ : les questions qu'on nous pose le plus
+
+### Quelle est la précision réelle du GPS sur mobile ?
+
+En extérieur avec un ciel dégagé, comptez 3 à 5 mètres. En ville entre les immeubles, plutôt 10 à 20 mètres. En intérieur, le GPS ne fonctionne souvent pas du tout et le téléphone se rabat sur le WiFi/cellulaire (précision de 20 à 100+ mètres).
+
+### Peut-on géolocaliser un utilisateur sans son consentement ?
+
+Non. Sur iOS et Android, la permission est obligatoire. Il n'y a pas de contournement. Et même côté serveur, vous ne pouvez pas géolocaliser une IP avec précision (au mieux, vous aurez la ville).
+
+### Combien coûte l'intégration de Google Maps ?
+
+Le SDK est gratuit. Vous payez les requêtes API : chargements de carte, recherches d'adresses, calculs d'itinéraires. Les 28 500 premiers chargements de carte par mois sont gratuits. Au-delà, c'est environ 7€ pour 1 000 chargements. Pour une app à 10 000 utilisateurs actifs par jour, comptez quelques centaines d'euros par mois.
+
+### Mapbox ou Google Maps pour une app de livraison ?
+
+Pour de la livraison avec suivi en temps réel et navigation, Mapbox est souvent plus adapté. L'API de navigation est plus complète, et le pricing est plus prévisible à fort volume. Mais si vous partez de zéro et que votre volume est modéré, Google Maps reste plus simple à intégrer.
+
+### Comment tester la géolocalisation en développement ?
+
+Les émulateurs permettent de simuler une position. Sur Android Studio, vous pouvez même simuler un parcours GPX. Mais pour les tests de batterie et de tracking en arrière-plan, rien ne remplace un vrai téléphone. On vous conseille de tester sur au moins 3-4 modèles différents (Samsung, Xiaomi, et un iPhone).
+
+### La géolocalisation fonctionne-t-elle en mode avion ?
+
+Le GPS fonctionne en mode avion (il reçoit les signaux satellites sans émettre). Mais sans données cellulaires, vous n'aurez pas les aides à la localisation (A-GPS) ni les cartes (sauf si elles sont en cache). Pour une app outdoor, prévoyez un mode offline avec des cartes téléchargeables.
+
+## Un projet avec de la géolocalisation ?
+
+La géolocalisation, ça peut être simple ou très complexe selon vos besoins. Afficher un point sur une carte, ça prend une journée. Implémenter un tracking fiable en arrière-plan sur tous les appareils du marché, c'est plusieurs semaines de travail.
+
+Chez Eurus, on a intégré la géolocalisation dans des contextes très variés : apps grand public, outils métier, applications B2B avec des contraintes de sécurité. On sait ce qui marche, ce qui coûte cher, et ce qui va vous créer des problèmes.
+
+Vous avez un projet qui implique de la localisation ? [Discutons-en](/contact). On peut vous aider à choisir la bonne approche et éviter les pièges classiques.

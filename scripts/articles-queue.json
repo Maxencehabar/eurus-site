@@ -1,17 +1,6 @@
 {
   "queue": [
     {
-      "slug": "geolocalisation-application-mobile",
-      "title": "Géolocalisation application mobile : GPS et maps",
-      "description": "Intégrer la géolocalisation dans votre app. Google Maps, Mapbox, tracking, privacy.",
-      "tags": [
-        "Technique",
-        "Fonctionnalité",
-        "Mobile"
-      ],
-      "keyword": "géolocalisation application mobile"
-    },
-    {
       "slug": "camera-qr-code-application",
       "title": "Caméra et QR code : scanner depuis votre application",
       "description": "Intégrer la caméra, scanner des QR codes, réalité augmentée basique.",
@@ -557,7 +546,19 @@
       ],
       "keyword": "chat temps réel application",
       "publishedDate": "2026-03-08"
+    },
+    {
+      "slug": "geolocalisation-application-mobile",
+      "title": "Géolocalisation application mobile : GPS et maps",
+      "description": "Intégrer la géolocalisation dans votre app. Google Maps, Mapbox, tracking, privacy.",
+      "tags": [
+        "Technique",
+        "Fonctionnalité",
+        "Mobile"
+      ],
+      "keyword": "géolocalisation application mobile",
+      "publishedDate": "2026-03-09"
     }
   ],
-  "lastPublished": "2026-03-08"
+  "lastPublished": "2026-03-09"
 }
