@@ -1,17 +1,6 @@
 {
   "queue": [
     {
-      "slug": "camera-qr-code-application",
-      "title": "Caméra et QR code : scanner depuis votre application",
-      "description": "Intégrer la caméra, scanner des QR codes, réalité augmentée basique.",
-      "tags": [
-        "Technique",
-        "Fonctionnalité",
-        "Mobile"
-      ],
-      "keyword": "scanner QR code application"
-    },
-    {
       "slug": "lancer-application-mobile-marketing",
       "title": "Lancer son application mobile : stratégie marketing",
       "description": "Plan de lancement pour votre app. Pré-launch, jour J, acquisition des premiers utilisateurs.",
@@ -557,6 +546,18 @@
         "Mobile"
       ],
       "keyword": "géolocalisation application mobile",
+      "publishedDate": "2026-03-09"
+    },
+    {
+      "slug": "camera-qr-code-application",
+      "title": "Caméra et QR code : scanner depuis votre application",
+      "description": "Intégrer la caméra, scanner des QR codes, réalité augmentée basique.",
+      "tags": [
+        "Technique",
+        "Fonctionnalité",
+        "Mobile"
+      ],
+      "keyword": "scanner QR code application",
       "publishedDate": "2026-03-09"
     }
   ],

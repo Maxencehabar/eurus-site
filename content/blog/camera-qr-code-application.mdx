@@ -1,0 +1,231 @@
+---
+title: "Caméra et QR code : scanner depuis votre application"
+description: "Intégrer la caméra, scanner des QR codes, réalité augmentée basique."
+date: "2026-03-09"
+author: "Eurus"
+tags: ["Technique", "Fonctionnalité", "Mobile"]
+---
+
+Les QR codes ont fait un retour en force depuis la pandémie. Menus de restaurants, pass sanitaires, paiements mobiles, authentification... Ils sont partout. Et forcément, beaucoup de clients nous demandent d'intégrer un scanner dans leur app.
+
+Sur le papier, ça a l'air simple. Tu ouvres la caméra, tu pointes vers le code, tu récupères l'info. En pratique, c'est un peu plus subtil. Entre les permissions qui changent, les performances sur les vieux téléphones, et les cas d'usage bizarres que personne n'avait anticipés, l'intégration d'un scanner QR code réserve quelques surprises.
+
+Chez Eurus, on a intégré des scanners dans pas mal de contextes différents : applications de gestion de stock, billetterie, authentification deux facteurs, suivi de colis... Voici ce qu'on a appris.
+
+## Pourquoi les QR codes sont revenus à la mode
+
+Avant de parler technique, un peu de contexte. Les QR codes existent depuis 1994. Inventés par Denso Wave au Japon pour tracer des pièces automobiles. Pendant des années, ils sont restés confidentiels en Occident. Il fallait télécharger une app dédiée pour les lire, c'était fastidieux, personne ne s'en servait.
+
+Deux choses ont changé la donne. D'abord, Apple et Google ont intégré la lecture de QR codes directement dans l'app caméra native (iOS 11 en 2017, Android un peu après). Plus besoin d'app tierce. Ensuite, la pandémie a généralisé leur usage : menus sans contact, pass vaccinal, check-in dans les lieux publics.
+
+Aujourd'hui, les utilisateurs savent ce qu'est un QR code et comment le scanner. La barrière à l'adoption a disparu. C'est le bon moment pour intégrer cette fonctionnalité si elle a du sens dans votre app.
+
+## Les cas d'usage classiques
+
+Avant de coder, réfléchissez à ce que vous voulez faire exactement. Un scanner QR code, ça peut servir à plein de choses, et l'implémentation diffère selon le besoin.
+
+### Lire une URL ou un identifiant
+
+Le cas le plus simple. L'utilisateur scanne un code, vous récupérez son contenu (une URL, un identifiant produit, un numéro de série), et vous faites quelque chose avec. Afficher une page, charger une fiche produit, valider un ticket.
+
+C'est typiquement ce qu'on fait pour de la billetterie ou du contrôle d'accès. Le code contient un identifiant unique, vous vérifiez côté serveur s'il est valide, et vous affichez le résultat.
+
+### Scanner en continu (inventaire, caisse)
+
+Plus complexe. L'utilisateur doit scanner plusieurs codes à la suite, rapidement. Pensez à un inventaire en entrepôt ou à une caisse de supermarché. Le scanner doit rester actif, détecter chaque nouveau code, et éviter de scanner le même deux fois d'affilée.
+
+Ce mode demande plus de travail. Il faut gérer le debounce (éviter les doublons), donner un feedback sonore ou haptique à chaque scan réussi, et maintenir une liste des codes scannés.
+
+### Générer et afficher des QR codes
+
+L'inverse du scan : votre app génère des QR codes que d'autres vont scanner. Billets de concert, cartes de fidélité, codes de partage entre utilisateurs.
+
+C'est plus simple techniquement, mais attention à la taille du code et à son rendu. Un QR code trop dense (trop d'informations) sera difficile à scanner. Et si l'utilisateur fait une capture d'écran, assurez-vous que le code reste lisible même compressé.
+
+### Réalité augmentée basique
+
+Certaines apps utilisent la caméra pour superposer des informations sur le monde réel. Pas de la vraie AR avec ARKit ou ARCore, mais des overlays simples : pointer vers un produit et afficher son prix, scanner un monument et afficher des infos historiques.
+
+Ce n'est plus vraiment du QR code, mais ça utilise les mêmes briques de base (accès caméra, traitement d'image). On en parle en fin d'article.
+
+## Choisir sa bibliothèque de scan
+
+Vous n'allez pas coder un décodeur de QR code from scratch. Plusieurs bibliothèques font le travail, avec des compromis différents.
+
+### ZXing : le vétéran
+
+ZXing ("Zebra Crossing") est la bibliothèque open source historique. Elle existe depuis 2007, supporte à peu près tous les formats de codes-barres imaginables (QR, EAN, UPC, Data Matrix, Aztec...), et elle est disponible sur toutes les plateformes.
+
+Le hic : elle montre son âge. Les performances ne sont pas extraordinaires sur les appareils modernes, et l'API n'est pas la plus ergonomique. On l'utilise encore pour des projets où la compatibilité avec des formats exotiques est requise, mais ce n'est plus notre premier choix.
+
+### ML Kit de Google
+
+ML Kit, c'est la boîte à outils machine learning de Google, et elle inclut un scanner de codes-barres. Avantages : performances excellentes, intégration native Android, et le décodage se fait sur l'appareil (pas besoin de connexion internet).
+
+Sur iOS, ML Kit fonctionne aussi mais c'est moins naturel. Et vous ajoutez une dépendance Google à votre projet, ce qui peut poser problème pour certains clients.
+
+### Vision Framework d'Apple
+
+Sur iOS, le Vision Framework inclut la détection de codes-barres depuis iOS 11. C'est natif, performant, et bien intégré à l'écosystème Apple. Si votre app est iOS uniquement, c'est probablement le meilleur choix.
+
+Le revers : ça n'existe pas sur Android. Si vous faites du cross-platform, vous devrez maintenir deux implémentations différentes.
+
+### mobile_scanner (Flutter)
+
+Si vous utilisez Flutter, le package mobile_scanner est notre recommandation. Il utilise ML Kit sur Android et Vision Framework sur iOS sous le capot, donc vous avez le meilleur des deux mondes avec une API unifiée.
+
+On l'a utilisé sur plusieurs projets, dont Getaway. Il gère bien le scan continu, les performances sont bonnes, et la communauté est active.
+
+### Quel choix pour quel projet ?
+
+En résumé, voici notre grille de décision chez Eurus :
+
+Pour une app Flutter, on part sur mobile_scanner. Pour une app native iOS, Vision Framework. Pour une app native Android, ML Kit. Pour du cross-platform React Native, on utilise react-native-camera avec le plugin barcode, mais c'est moins propre qu'en Flutter.
+
+Si vous avez besoin de formats de codes-barres industriels exotiques, ZXing reste incontournable.
+
+## Gérer les permissions caméra
+
+Comme pour la géolocalisation, l'accès à la caméra nécessite une permission explicite de l'utilisateur. Et comme pour la géolocalisation, les règles ont évolué vers plus de restrictions.
+
+### Sur iOS
+
+Vous devez ajouter la clé NSCameraUsageDescription dans votre Info.plist avec un texte expliquant pourquoi vous avez besoin de la caméra. Ce texte s'affiche dans la popup de permission.
+
+Soignez ce message. "Cette app a besoin d'accéder à votre caméra" n'est pas suffisant. Préférez quelque chose comme "Scannez les QR codes des produits pour voir leur fiche détaillée". L'utilisateur comprend l'intérêt, il accepte plus facilement.
+
+Une fois la permission refusée, vous ne pouvez pas redemander. L'utilisateur doit aller dans les réglages de son iPhone pour la réactiver. Prévoyez un message explicatif et un bouton qui ouvre directement les réglages de l'app.
+
+### Sur Android
+
+Depuis Android 6, les permissions sont demandées à l'exécution. Vous demandez CAMERA, l'utilisateur accepte ou refuse. Comme sur iOS, une fois refusé, c'est refusé (sauf à aller dans les paramètres).
+
+Sur Android 11+, il y a une subtilité : si l'utilisateur refuse deux fois la permission, le système ne vous laisse plus la redemander du tout. Il faut obligatoirement passer par les paramètres. Gérez ce cas dans votre code.
+
+### Notre conseil
+
+Demandez la permission au moment où l'utilisateur déclenche une action qui la nécessite. Pas au lancement de l'app. S'il appuie sur "Scanner un code", là vous demandez. Le taux d'acceptation est bien meilleur.
+
+Et prévoyez toujours un fallback. L'utilisateur a refusé la caméra ? Peut-être qu'il peut entrer le code manuellement. C'est moins pratique, mais au moins l'app reste utilisable.
+
+## L'interface utilisateur du scanner
+
+Un scanner QR code, ce n'est pas juste une caméra avec un décodeur. L'interface compte énormément pour l'expérience utilisateur.
+
+### Le viseur
+
+La plupart des apps affichent un cadre au centre de l'écran pour indiquer où placer le code. Ce n'est pas obligatoire techniquement (les bibliothèques modernes détectent le code n'importe où dans l'image), mais ça guide l'utilisateur.
+
+On recommande un cadre carré avec les coins marqués, semi-transparent. Pas un rectangle plein qui cache une partie de l'écran. L'utilisateur doit voir ce qu'il scanne.
+
+### Le feedback
+
+Quand le scan réussit, donnez un feedback immédiat. Un son, une vibration, un changement visuel. L'utilisateur doit savoir que ça a marché sans avoir à regarder ailleurs sur l'écran.
+
+Sur DrMilou, on a appris que les vétérinaires ont besoin d'accéder aux infos critiques en 2 clics max. Quand ils scannent le QR code d'un animal, le dossier doit s'afficher instantanément. Pas de loader pendant 3 secondes, pas d'écran intermédiaire. Scan → dossier. Point.
+
+### La lampe torche
+
+Les codes sont souvent dans des endroits mal éclairés. Entrepôts, restaurants sombres, dos de colis dans un coin... Ajoutez un bouton pour activer le flash de l'appareil en mode torche. C'est simple à implémenter et ça améliore vraiment l'expérience.
+
+### L'annulation
+
+L'utilisateur a ouvert le scanner par erreur ? Il doit pouvoir fermer facilement. Un bouton X visible, ou un swipe vers le bas. Ne le piégez pas dans l'écran de scan.
+
+## Les pièges techniques classiques
+
+Après avoir intégré des scanners dans une dizaine d'apps, on a identifié quelques pièges récurrents.
+
+### Les performances sur les vieux appareils
+
+Un iPhone 8 et un iPhone 15, ce n'est pas la même puissance de calcul. Votre scanner doit fonctionner sur les deux. Testez sur des appareils d'entrée de gamme. Si ça rame, réduisez la résolution du preview ou la fréquence de détection.
+
+Les cabinets vétérinaires ont des contraintes qu'on n'imaginait pas : connexion internet instable, PC sous Windows XP, et parfois des tablettes Android premier prix. Le scanner doit fonctionner même dans ces conditions.
+
+### Le scan multiple involontaire
+
+L'utilisateur scanne un code, le décodeur le détecte, vous lancez une action. Mais le code est toujours visible, donc le décodeur le détecte encore, et vous relancez l'action. Boucle infinie.
+
+Solution : après un scan réussi, désactivez le décodeur pendant un court instant (300-500ms), ou jusqu'à ce que le code ne soit plus visible, ou jusqu'à une action explicite de l'utilisateur.
+
+### Les codes déformés ou partiels
+
+Un QR code imprimé sur une surface courbe (bouteille, emballage), froissé, ou partiellement caché peut être difficile à décoder. Les bibliothèques modernes gèrent assez bien ces cas grâce à la redondance intégrée aux QR codes, mais testez avec des codes réels, pas juste des codes parfaits affichés sur un écran.
+
+### L'orientation
+
+Certains codes-barres linéaires (EAN, UPC) doivent être scannés dans un certain sens. Les QR codes sont plus tolérants, mais vérifiez que votre scanner fonctionne quel que soit l'angle.
+
+### La luminosité
+
+Trop sombre, le code est invisible. Trop lumineux (reflets), le code est illisible. Votre bibliothèque de scan gère une partie de ces problèmes, mais encouragez l'utilisateur à activer la torche si nécessaire.
+
+## Générer des QR codes dans votre app
+
+L'inverse du scan : votre app crée des QR codes. C'est plus simple, mais il y a quelques bonnes pratiques.
+
+### Choisir le bon niveau de correction d'erreur
+
+Les QR codes incluent de la redondance pour rester lisibles même partiellement endommagés. Quatre niveaux existent : L (7% de correction), M (15%), Q (25%), H (30%).
+
+Plus le niveau est élevé, plus le code est gros pour la même quantité de données. Pour un code affiché sur écran, L ou M suffit. Pour un code imprimé qui va être manipulé, préférez Q ou H.
+
+### Limiter la quantité de données
+
+Un QR code peut contenir jusqu'à 3 000 caractères environ. Mais plus il y a de données, plus le code est dense et difficile à scanner. Gardez vos codes courts : une URL raccourcie, un identifiant, pas un JSON de 2 Ko.
+
+### Couleurs et design
+
+Les QR codes sont traditionnellement noirs sur blanc. Vous pouvez personnaliser les couleurs, mais gardez un contraste élevé. Un code gris clair sur blanc ne scannera pas bien.
+
+Vous pouvez aussi intégrer un logo au centre du code (grâce à la correction d'erreur qui compense la partie masquée). Mais testez que le code reste scannable. Un logo trop gros = code illisible.
+
+## Au-delà du QR code : vers la réalité augmentée
+
+Une fois que vous maîtrisez l'accès à la caméra et le traitement d'image, vous n'êtes plus très loin de fonctionnalités AR basiques.
+
+### Détection d'objets
+
+ML Kit et Vision Framework peuvent détecter et identifier des objets dans l'image, pas seulement des QR codes. Produits, texte, visages... Vous pouvez superposer des informations sur ce que la caméra voit.
+
+Ce n'est pas de la vraie AR (les objets virtuels ne sont pas ancrés dans l'espace 3D), mais pour beaucoup de cas d'usage, c'est suffisant.
+
+### ARKit et ARCore
+
+Si vous voulez de la vraie réalité augmentée (placer des objets 3D dans l'environnement, qu'ils restent en place quand vous bougez), il faut passer à ARKit (iOS) ou ARCore (Android).
+
+C'est un autre niveau de complexité. Tracking spatial, rendu 3D, gestion de la lumière... Mais si votre app le justifie (essayage virtuel, visualisation de meubles, jeux), c'est puissant.
+
+## FAQ : les questions qu'on nous pose souvent
+
+### Peut-on scanner des codes-barres classiques (EAN) avec les mêmes outils ?
+
+Oui. ML Kit, Vision Framework, ZXing et mobile_scanner supportent tous les codes-barres linéaires (EAN-13, UPC, Code 128, etc.) en plus des QR codes. Vous n'avez généralement rien à changer côté code.
+
+### Le scan fonctionne-t-il hors connexion ?
+
+Oui. Le décodage se fait entièrement sur l'appareil. Vous n'avez besoin d'internet que si vous voulez vérifier le contenu du code côté serveur (valider un ticket, charger des infos depuis une API).
+
+### Quelle est la distance maximale de scan ?
+
+Ça dépend de la taille du code et de la qualité de la caméra. Un QR code de 2cm se scanne à 10-15cm. Un code de 10cm peut se scanner à 50cm ou plus. Testez avec vos codes réels.
+
+### Peut-on scanner depuis une image de la galerie ?
+
+Oui, mais c'est une fonctionnalité séparée. Au lieu du flux vidéo de la caméra, vous passez une image statique au décodeur. Toutes les bibliothèques le supportent. Utile si l'utilisateur a une capture d'écran d'un code.
+
+### Comment gérer les QR codes malveillants ?
+
+Un QR code peut contenir n'importe quoi, y compris des URLs vers des sites de phishing. Si votre app ouvre automatiquement les URLs scannées, vous exposez vos utilisateurs. Affichez d'abord l'URL et demandez confirmation avant d'ouvrir. Ou limitez les domaines autorisés si les codes sont censés venir de vous.
+
+### Faut-il une connexion internet pour générer un QR code ?
+
+Non. La génération est purement algorithmique, elle se fait sur l'appareil. Vous pouvez générer des codes même en mode avion.
+
+## Un projet avec de la caméra ou du scan ?
+
+L'intégration d'un scanner QR code, ça va de quelques heures (cas simple, une seule plateforme) à plusieurs jours (scan continu, multi-plateforme, cas particuliers). Et si vous voulez aller vers la réalité augmentée, comptez quelques semaines.
+
+Chez Eurus, on a fait des scanners pour de la billetterie, de l'inventaire, de l'authentification, du suivi de colis. On connaît les pièges et on sait ce qui fonctionne sur le terrain.
+
+Vous avez un projet qui implique de la caméra, du scan ou de l'AR ? [Parlons-en](/contact). On peut vous aider à choisir la bonne approche et éviter les galères classiques.
