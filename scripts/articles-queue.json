@@ -1,17 +1,6 @@
 {
   "queue": [
     {
-      "slug": "lancer-application-mobile-marketing",
-      "title": "Lancer son application mobile : stratégie marketing",
-      "description": "Plan de lancement pour votre app. Pré-launch, jour J, acquisition des premiers utilisateurs.",
-      "tags": [
-        "Marketing",
-        "Lancement",
-        "Mobile"
-      ],
-      "keyword": "lancement application mobile marketing"
-    },
-    {
       "slug": "feedback-utilisateurs-application",
       "title": "Feedback utilisateurs : collecter et exploiter les retours",
       "description": "Outils et méthodes pour recueillir les avis utilisateurs et améliorer votre app.",
@@ -559,7 +548,19 @@
       ],
       "keyword": "scanner QR code application",
       "publishedDate": "2026-03-09"
+    },
+    {
+      "slug": "lancer-application-mobile-marketing",
+      "title": "Lancer son application mobile : stratégie marketing",
+      "description": "Plan de lancement pour votre app. Pré-launch, jour J, acquisition des premiers utilisateurs.",
+      "tags": [
+        "Marketing",
+        "Lancement",
+        "Mobile"
+      ],
+      "keyword": "lancement application mobile marketing",
+      "publishedDate": "2026-03-10"
     }
   ],
-  "lastPublished": "2026-03-09"
+  "lastPublished": "2026-03-10"
 }
