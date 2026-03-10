@@ -1,17 +1,6 @@
 {
   "queue": [
     {
-      "slug": "feedback-utilisateurs-application",
-      "title": "Feedback utilisateurs : collecter et exploiter les retours",
-      "description": "Outils et méthodes pour recueillir les avis utilisateurs et améliorer votre app.",
-      "tags": [
-        "UX",
-        "Feedback",
-        "Mobile"
-      ],
-      "keyword": "feedback utilisateurs application"
-    },
-    {
       "slug": "scalabilite-application-mobile",
       "title": "Scalabilité application mobile : préparer la croissance",
       "description": "Architecture et infrastructure pour une app qui scale. De 1000 à 1 million d'utilisateurs.",
@@ -559,6 +548,18 @@
         "Mobile"
       ],
       "keyword": "lancement application mobile marketing",
+      "publishedDate": "2026-03-10"
+    },
+    {
+      "slug": "feedback-utilisateurs-application",
+      "title": "Feedback utilisateurs : collecter et exploiter les retours",
+      "description": "Outils et méthodes pour recueillir les avis utilisateurs et améliorer votre app.",
+      "tags": [
+        "UX",
+        "Feedback",
+        "Mobile"
+      ],
+      "keyword": "feedback utilisateurs application",
       "publishedDate": "2026-03-10"
     }
   ],
