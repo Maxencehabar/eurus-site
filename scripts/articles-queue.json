@@ -1,17 +1,6 @@
 {
   "queue": [
     {
-      "slug": "application-mobile-b2b-vs-b2c",
-      "title": "Application B2B vs B2C : différences de conception",
-      "description": "Spécificités du développement d'apps B2B et B2C. UX, fonctionnalités, monétisation.",
-      "tags": [
-        "Business",
-        "B2B",
-        "B2C"
-      ],
-      "keyword": "application B2B B2C"
-    },
-    {
       "slug": "accessibilite-application-mobile",
       "title": "Accessibilité application mobile : guide de conformité",
       "description": "Rendre votre app accessible à tous. WCAG, VoiceOver, TalkBack, bonnes pratiques.",
@@ -557,6 +546,14 @@
       "description": "Architecture et infrastructure pour une app qui scale. De 1000 à 1 million d'utilisateurs.",
       "tags": ["Technique", "Scalabilité", "Mobile"],
       "keyword": "scalabilité application mobile",
+      "publishedDate": "2026-03-11"
+    },
+    {
+      "slug": "application-mobile-b2b-vs-b2c",
+      "title": "Application B2B vs B2C : différences de conception",
+      "description": "Spécificités du développement d'apps B2B et B2C. UX, fonctionnalités, monétisation.",
+      "tags": ["Business", "B2B", "B2C"],
+      "keyword": "application B2B B2C",
       "publishedDate": "2026-03-11"
     }
   ],
