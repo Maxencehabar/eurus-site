@@ -1,17 +1,6 @@
 {
   "queue": [
     {
-      "slug": "accessibilite-application-mobile",
-      "title": "Accessibilité application mobile : guide de conformité",
-      "description": "Rendre votre app accessible à tous. WCAG, VoiceOver, TalkBack, bonnes pratiques.",
-      "tags": [
-        "Accessibilité",
-        "UX",
-        "Mobile"
-      ],
-      "keyword": "accessibilité application mobile"
-    },
-    {
       "slug": "intelligence-artificielle-application-mobile",
       "title": "IA dans les applications mobiles : cas d'usage et intégration",
       "description": "Intégrer l'intelligence artificielle dans votre app. Chatbots, ML, vision, recommandations.",
@@ -555,7 +544,15 @@
       "tags": ["Business", "B2B", "B2C"],
       "keyword": "application B2B B2C",
       "publishedDate": "2026-03-11"
+    },
+    {
+      "slug": "accessibilite-application-mobile",
+      "title": "Accessibilité application mobile : guide de conformité",
+      "description": "Rendre votre app accessible à tous. WCAG, VoiceOver, TalkBack, bonnes pratiques.",
+      "tags": ["Accessibilité", "UX", "Mobile"],
+      "keyword": "accessibilité application mobile",
+      "publishedDate": "2026-03-12"
     }
   ],
-  "lastPublished": "2026-03-11"
+  "lastPublished": "2026-03-12"
 }
