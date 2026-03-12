@@ -1,0 +1,260 @@
+---
+title: "Next.js vs Nuxt.js : comparatif complet [2026]"
+description: "Comparatif détaillé Next.js vs Nuxt.js : performances SSR, écosystème, DX. Guide pour choisir le bon framework fullstack en 2026."
+date: "2026-03-12"
+author: "Eurus"
+tags: ["Comparatif", "Next.js", "Nuxt.js", "React", "Vue", "SSR"]
+---
+
+# Next.js vs Nuxt.js : quel choix pour votre projet en 2026 ?
+
+Vous voulez du SSR (Server-Side Rendering), du SEO optimal, et un framework fullstack moderne. Deux options dominent : **Next.js** (React) et **Nuxt.js** (Vue.js). Lequel choisir ?
+
+La réponse dépend moins du framework que de votre équipe. Mais il y a des différences réelles qu'on va décortiquer.
+
+## TL;DR — Le verdict rapide
+
+| Critère | Next.js | Nuxt.js |
+|---------|---------|---------|
+| **Basé sur** | React | Vue.js |
+| **GitHub Stars** | 130K+ | 55K+ |
+| **Entreprise derrière** | Vercel | NuxtLabs |
+| **Rendering modes** | SSR, SSG, ISR, RSC | SSR, SSG, ISR, ESR |
+| **Courbe d'apprentissage** | Moyenne (React) | Facile (Vue) |
+| **Écosystème** | Gigantesque (React) | Solide (Vue) |
+| **DX (Developer Experience)** | ⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐ |
+| **Performance** | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐ |
+
+**En 3 points :**
+- **Choisissez Next.js** si votre équipe connaît React, si vous voulez le plus gros écosystème, ou si vous déployez sur Vercel
+- **Choisissez Nuxt.js** si vous préférez Vue.js, si vous voulez une DX plus simple, ou si vous cherchez plus de "batteries included"
+- **Les deux sont production-ready** et peuvent livrer exactement le même résultat final
+
+## Qu'est-ce que Next.js ?
+
+Next.js est le framework React fullstack créé par Vercel (ex-Zeit). Il permet de faire du SSR, SSG (Static Site Generation), ISR (Incremental Static Regeneration), et depuis la v13, des React Server Components.
+
+**Chiffres clés 2026 :**
+- **130K+ étoiles GitHub**
+- **~6M téléchargements npm/semaine**
+- Utilisé par **Hulu, TikTok, Nike, Twitch, Netflix Jobs**
+- Version stable : Next.js 15+
+- Sponsorisé par **Vercel** (valorisé 2.5B$)
+
+**Ce que Next.js apporte :**
+- App Router (nouveau) ou Pages Router (legacy)
+- React Server Components
+- API Routes intégrées
+- Optimisation d'images automatique
+- Déploiement optimisé sur Vercel
+
+## Qu'est-ce que Nuxt.js ?
+
+Nuxt.js est le framework Vue.js pour le SSR et le fullstack. Il suit la philosophie Vue : simplicité, convention over configuration, "batteries included".
+
+**Chiffres clés 2026 :**
+- **55K+ étoiles GitHub**
+- **~1.5M téléchargements npm/semaine**
+- Utilisé par **GitLab, Upwork, Ecosia, Nintendo**
+- Version stable : Nuxt 4
+- Développé par **NuxtLabs** (équipe indépendante)
+
+**Ce que Nuxt.js apporte :**
+- Auto-imports (composants, composables, utils)
+- File-based routing intuitif
+- Nitro (moteur serveur universel)
+- Nuxt Modules (écosystème riche)
+- Edge-Side Rendering (ESR) natif
+
+## Comparaison détaillée
+
+### Performance SSR
+
+Les deux frameworks offrent d'excellentes performances. Les benchmarks varient selon les scénarios.
+
+**Benchmark DebugBear 2025 :**
+- **SSR simple (page statique)** : Next.js légèrement plus rapide
+- **SSR avec data fetching** : Nuxt.js meilleur dans certains scénarios API
+- **Différence réelle** : < 100ms dans la plupart des cas
+
+**Next.js — forces performance :**
+- React Server Components (moins de JS côté client)
+- Image Optimization mature
+- Vercel Edge Network intégré
+- Turbopack (bundler Rust, très rapide en dev)
+
+**Nuxt.js — forces performance :**
+- Nitro (serveur universel, déployable partout)
+- ESR (Edge-Side Rendering) natif
+- Payload extraction (moins de données dupliquées)
+- Lazy loading automatique des composants
+
+**Verdict** : performances quasi-identiques en production. Le choix ne devrait pas se faire sur ce critère.
+
+### Developer Experience (DX)
+
+C'est ici que Nuxt.js brille vraiment.
+
+**Nuxt.js — DX supérieure :**
+```vue
+<!-- Composant auto-importé, pas besoin d'import -->
+<template>
+  <div>
+    <MyButton @click="handleClick">
+      {{ count }}
+    </MyButton>
+  </div>
+</template>
+
+<script setup>
+// Composables auto-importés
+const count = ref(0)
+const { data } = await useFetch('/api/data')
+</script>
+```
+
+- **Auto-imports** : composants, composables, utilitaires
+- **Convention stricte** : dossiers `components/`, `composables/`, `pages/`
+- **Moins de boilerplate** que Next.js App Router
+- **DevTools** excellents (Nuxt DevTools)
+
+**Next.js — DX solide mais plus verbose :**
+```tsx
+// Imports explicites nécessaires
+import { useState } from 'react'
+import MyButton from '@/components/MyButton'
+
+export default function Page() {
+  const [count, setCount] = useState(0)
+  
+  return (
+    <MyButton onClick={() => setCount(c => c + 1)}>
+      {count}
+    </MyButton>
+  )
+}
+```
+
+- App Router puissant mais complexe
+- Server Components = nouvelle façon de penser
+- Plus de configuration explicite
+- Flexibilité maximale
+
+**Notre expérience** : les équipes qui découvrent le fullstack sont productives plus vite avec Nuxt.js. Les équipes React expérimentées préfèrent souvent Next.js.
+
+### Écosystème et communauté
+
+**Next.js — écosystème React :**
+- Accès à **tout npm** (React = le plus gros écosystème)
+- Shadcn/ui, Tailwind, Prisma, tRPC...
+- Plus de ressources (tutos, Stack Overflow)
+- Plus d'offres d'emploi
+
+**Nuxt.js — écosystème Vue :**
+- **Nuxt Modules** (200+ modules officiels/communautaires)
+- VueUse (collection de composables)
+- Pinia (state management)
+- Communauté passionnée mais plus petite
+
+**Statistique clé** : Next.js a ~4x plus de téléchargements npm. Mais Nuxt.js a un écosystème très cohérent (moins de fragmentation).
+
+### Modes de rendu
+
+Les deux supportent tous les modes modernes :
+
+| Mode | Next.js | Nuxt.js |
+|------|---------|---------|
+| SSR (Server-Side Rendering) | ✅ | ✅ |
+| SSG (Static Site Generation) | ✅ | ✅ |
+| ISR (Incremental Static Regeneration) | ✅ | ✅ |
+| CSR (Client-Side Rendering) | ✅ | ✅ |
+| RSC (React Server Components) | ✅ | ❌ (pas React) |
+| ESR (Edge-Side Rendering) | ✅ (Edge Runtime) | ✅ (Nitro) |
+| Hybrid (par route) | ✅ | ✅ |
+
+**Différence clé** : Next.js a les RSC (révolutionnent React). Nuxt.js a un système de rendu hybride plus simple à configurer.
+
+### Déploiement
+
+**Next.js :**
+- **Vercel** : déploiement optimal, 1 clic
+- Netlify, AWS Amplify : support correct
+- Self-hosted : possible mais moins documenté
+- Edge Functions : Vercel Edge optimisé
+
+**Nuxt.js :**
+- **Nitro** : déploie partout (Vercel, Netlify, Cloudflare, AWS, Azure, Node, Deno...)
+- Plus de flexibilité d'hébergement
+- Cloudflare Workers : excellent support
+- Self-hosted : très bien documenté
+
+**Observation** : si vous êtes all-in Vercel, Next.js. Si vous voulez de la flexibilité, Nuxt.js (Nitro).
+
+### Cas d'usage idéaux
+
+**Choisissez Next.js pour :**
+- Équipes React existantes
+- Projets qui bénéficient de Server Components
+- Déploiement sur Vercel
+- Applications très dynamiques (RSC shines)
+- Écosystème React indispensable (libs spécifiques)
+
+**Choisissez Nuxt.js pour :**
+- Équipes Vue.js ou débutant fullstack
+- DX prioritaire (moins de boilerplate)
+- Déploiement multi-plateforme (Cloudflare, AWS...)
+- Sites content-heavy (blog, docs, marketing)
+- Préférence pour "convention over configuration"
+
+## Notre recommandation chez Eurus
+
+Honnêtement ? **Les deux sont excellents**. Le choix se fait sur :
+
+1. **Votre équipe connaît React ?** → Next.js
+2. **Votre équipe connaît Vue.js ?** → Nuxt.js
+3. **Nouvelle équipe, pas de préférence ?** → Nuxt.js (DX plus douce)
+4. **Déploiement Vercel obligatoire ?** → Next.js
+5. **Besoin de Server Components ?** → Next.js
+
+**Notre usage Eurus :**
+- Projets clients React : Next.js
+- Projets internes / sites : souvent Nuxt.js (plus rapide à prototyper)
+- Pas de dogme — on utilise ce qui convient au projet
+
+## FAQ
+
+### Next.js est-il plus populaire que Nuxt.js ?
+
+Oui, significativement. Next.js a ~4x plus de téléchargements npm et ~2.5x plus d'étoiles GitHub. Cela reflète la domination de React dans l'écosystème frontend. Mais popularité ≠ qualité — Nuxt.js est un excellent framework, simplement basé sur Vue.js (moins populaire que React).
+
+### Peut-on migrer de Nuxt.js vers Next.js (ou inverse) ?
+
+Théoriquement oui, pratiquement c'est une réécriture. Les templates (Vue vs JSX), le routing, le data fetching, les composables/hooks... tout change. Estimez 70-80% du travail initial. C'est pourquoi le choix initial est important.
+
+### Lequel est meilleur pour le SEO ?
+
+Les deux sont équivalents pour le SEO. SSR, meta tags, sitemap, structured data... tout est faisable de manière identique. Le SEO dépend de votre implémentation, pas du framework.
+
+### Next.js est-il "lock-in" Vercel ?
+
+Pas totalement, mais... Next.js est développé par Vercel, et certaines features (optimisation images, ISR avancé, analytics) sont optimisées pour Vercel. Vous POUVEZ déployer ailleurs (Netlify, AWS), mais vous perdez quelques optimisations. Nuxt.js (via Nitro) est plus "provider-agnostic".
+
+### Lequel choisir pour un blog ou site de documentation ?
+
+Pour du contenu statique, les deux font très bien le job. Mais considérez aussi :
+- **Astro** : excellent pour les sites content-first, compatible React ET Vue
+- **Nuxt Content** : module Nuxt excellent pour les blogs/docs
+- **Next.js + MDX** : très flexible mais plus de setup
+
+Notre choix pour un blog tech : Nuxt Content (simplicité) ou Astro (performance).
+
+## Conclusion
+
+Next.js vs Nuxt.js, c'est React vs Vue.js avec une surcouche fullstack. Les deux sont matures, performants, et production-ready en 2026.
+
+**Notre règle simple :**
+- Équipe React → Next.js
+- Équipe Vue → Nuxt.js
+- Pas d'équipe / nouveau projet → testez les deux, choisissez celui où vous êtes productif le plus vite
+
+Besoin d'aide pour choisir votre stack technique ? [Contactez Eurus](/contact) — on vous conseille sur l'architecture adaptée à votre projet, sans dogme technologique.

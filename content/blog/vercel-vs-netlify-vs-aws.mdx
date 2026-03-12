@@ -1,0 +1,292 @@
+---
+title: "Vercel vs Netlify vs AWS : comparatif complet [2026]"
+description: "Comparatif détaillé Vercel vs Netlify vs AWS : pricing, performance, fonctionnalités. Guide pour choisir votre hébergement frontend en 2026."
+date: "2026-03-12"
+author: "Eurus"
+tags: ["Comparatif", "Vercel", "Netlify", "AWS", "Hébergement", "DevOps"]
+---
+
+# Vercel vs Netlify vs AWS : quel choix pour héberger votre projet en 2026 ?
+
+Vous avez codé votre application. Maintenant, où la déployer ? Vercel pour la hype Next.js ? Netlify le pionnier Jamstack ? Ou AWS pour le contrôle total ?
+
+Chez Eurus, on utilise les trois selon les projets. Ce comparatif vous aide à choisir sans vous perdre dans le marketing.
+
+## TL;DR — Le verdict rapide
+
+| Critère | Vercel | Netlify | AWS Amplify |
+|---------|--------|---------|-------------|
+| **Spécialité** | Next.js / React | Jamstack / SSG | Tout AWS |
+| **Free tier** | Généreux (hobby) | Généreux | 12 mois gratuits |
+| **Pricing** | $$$ à scale | $$ à scale | $ (mais complexe) |
+| **DX (simplicité)** | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐ | ⭐⭐⭐ |
+| **Flexibilité** | ⭐⭐⭐ | ⭐⭐⭐ | ⭐⭐⭐⭐⭐ |
+| **Edge Functions** | Excellent | Bon | Bon (Lambda@Edge) |
+| **Lock-in** | Modéré (Next.js) | Faible | Élevé (écosystème) |
+
+**En 3 points :**
+- **Choisissez Vercel** pour Next.js, la meilleure DX, si le budget n'est pas un problème
+- **Choisissez Netlify** pour Jamstack/SSG, si vous voulez éviter le lock-in Vercel/Next.js
+- **Choisissez AWS** si vous avez des besoins complexes, une équipe DevOps, ou un budget serré à scale
+
+## Qu'est-ce que Vercel ?
+
+Vercel est la plateforme créée par les développeurs de Next.js. Elle propose un déploiement frontend optimisé avec Edge Functions, Analytics, et une DX exceptionnelle.
+
+**Chiffres clés 2026 :**
+- **Valorisation** : 2.5 milliards $ (2024)
+- **Déploiements** : milliards/mois
+- **Edge Network** : 100+ locations mondiales
+- Utilisé par **Washington Post, Hulu, Nike, TikTok**
+
+**Free tier :**
+- Déploiements illimités
+- 100GB bandwidth/mois
+- Edge Functions incluses
+- ⚠️ **Interdit de monétiser** sur le free tier
+
+**Ce que Vercel apporte :**
+- Deploy preview automatique (chaque PR)
+- Intégration Next.js parfaite
+- Analytics intégré
+- Image Optimization
+- Edge Functions (< 50ms latence)
+
+## Qu'est-ce que Netlify ?
+
+Netlify a pionnier le concept Jamstack (2015). C'est une plateforme de déploiement frontend/fullstack avec un focus sur les sites statiques et les fonctions serverless.
+
+**Chiffres clés 2026 :**
+- **2 millions+** de développeurs
+- **Focus** : Jamstack, Astro, SvelteKit, Nuxt, Next.js
+- **Netlify Connect** : nouvelle offre data layer
+
+**Free tier :**
+- 100GB bandwidth/mois
+- 300 minutes build/mois
+- Netlify Functions incluses
+- ✅ **Monétisation autorisée** sur free tier
+
+**Ce que Netlify apporte :**
+- Forms intégrés (sans backend)
+- Identity (auth simple)
+- Netlify CMS (contenu)
+- Edge Functions (Deno)
+- **Netlify Postgres** : base de données intégrée
+
+## Qu'est-ce qu'AWS Amplify ?
+
+AWS Amplify est le service AWS pour le déploiement frontend/fullstack. Il s'intègre dans l'écosystème AWS (Lambda, S3, CloudFront, DynamoDB...).
+
+**Chiffres clés 2026 :**
+- **AWS** : leader cloud mondial (32% market share)
+- **Free tier** : 12 mois généreux pour nouveaux comptes
+- **CDN** : CloudFront (310+ edge locations)
+
+**Free tier (12 mois) :**
+- 1000 minutes build/mois
+- 15GB stockage
+- 5GB data out/mois
+- Après : pay-as-you-go
+
+**Ce qu'AWS Amplify apporte :**
+- Intégration AWS native
+- Lambda@Edge
+- Backend complet (Cognito, DynamoDB, AppSync)
+- Contrôle total
+- Prix linéaire à scale
+
+## Comparaison détaillée
+
+### Pricing réel
+
+C'est le nerf de la guerre. Vercel est connu pour être cher à scale.
+
+**Scénario : app SaaS, 50K visiteurs/mois, 500GB bandwidth**
+
+| Plateforme | Coût mensuel estimé |
+|------------|---------------------|
+| **Vercel Pro** | 20$/mois + ~50-100$ bandwidth = **70-120$** |
+| **Netlify Pro** | 19$/mois + ~55$ bandwidth = **~75$** |
+| **AWS Amplify** | ~15-30$ (pay-as-you-go) = **~25$** |
+
+**Scénario : scale (500K visiteurs, 5TB bandwidth)**
+
+| Plateforme | Coût mensuel estimé |
+|------------|---------------------|
+| **Vercel Enterprise** | **500-2000$/mois** (négociation) |
+| **Netlify Business** | **~400-600$/mois** |
+| **AWS Amplify** | **~100-200$/mois** |
+
+**Insight clé** : Vercel coûte **15-20% plus cher** que les alternatives, mais offre **30% de déploiements plus rapides** selon DevOps Insights 2022. ROI à calculer.
+
+### Performance Edge
+
+Les trois proposent du Edge Computing, mais avec des différences.
+
+**Vercel Edge Functions :**
+- Runtime V8 (comme Chrome)
+- < 50ms cold start
+- Intégration Next.js Middleware parfaite
+- Limitations : pas Node.js complet
+
+**Netlify Edge Functions :**
+- Runtime Deno
+- Bonne performance
+- Plus flexible que Vercel (Deno = plus d'APIs)
+
+**AWS Lambda@Edge :**
+- Node.js ou Python
+- Cold start plus long (~100-500ms)
+- Plus puissant (accès à tout AWS)
+- Configuration complexe
+
+**Pour 90% des cas** : Vercel et Netlify sont équivalents et suffisants. AWS pour les cas complexes.
+
+### Developer Experience (DX)
+
+**Vercel — la référence DX :**
+- `vercel` CLI → déployé en 30 secondes
+- Git push = preview deploy automatique
+- Dashboard clair
+- Logs temps réel
+
+**Netlify — excellent aussi :**
+- `netlify deploy` simple
+- Preview deploys
+- Plugins et intégrations
+- Formulaires no-code
+
+**AWS Amplify — DX correcte mais... :**
+- Plus de configuration
+- Console AWS complexe
+- Courbe d'apprentissage
+- Documentation parfois confuse
+
+**Verdict DX** : Vercel ≈ Netlify >> AWS Amplify
+
+### Lock-in et portabilité
+
+**Vercel :**
+- Lock-in modéré via Next.js optimizations
+- Certaines features (Image Optimization, Analytics) sont Vercel-only
+- Vous POUVEZ déployer Next.js ailleurs, mais moins optimisé
+
+**Netlify :**
+- Lock-in faible
+- Netlify Functions = AWS Lambda compatible
+- Facilement portable vers autre hébergeur
+
+**AWS Amplify :**
+- Lock-in élevé (écosystème AWS)
+- Difficile de migrer vers autre cloud
+- Mais : AWS = le plus pérenne
+
+### Framework support
+
+| Framework | Vercel | Netlify | AWS Amplify |
+|-----------|--------|---------|-------------|
+| Next.js | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐ | ⭐⭐⭐ |
+| Nuxt.js | ⭐⭐⭐⭐ | ⭐⭐⭐⭐ | ⭐⭐⭐ |
+| Astro | ⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐ | ⭐⭐⭐ |
+| SvelteKit | ⭐⭐⭐⭐ | ⭐⭐⭐⭐ | ⭐⭐⭐ |
+| Static (Hugo, 11ty) | ⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐ |
+
+**Vercel** est optimisé pour Next.js. **Netlify** est le plus généraliste. **AWS** supporte tout mais avec plus de config.
+
+### Cas d'usage idéaux
+
+**Choisissez Vercel pour :**
+- Projets Next.js (support natif)
+- Équipes qui veulent la meilleure DX
+- Startups avec budget comfortable
+- Besoin de deploy previews parfaits
+- Analytics frontend intégré
+
+**Choisissez Netlify pour :**
+- Sites Jamstack/SSG (Astro, Hugo, 11ty)
+- Projets qui veulent éviter le lock-in Vercel
+- Besoin de formulaires sans backend
+- Budget plus serré que Vercel
+- Multi-framework (pas que Next.js)
+
+**Choisissez AWS Amplify pour :**
+- Déjà dans l'écosystème AWS
+- Budget serré à scale (pricing linéaire)
+- Besoin de services AWS (Cognito, DynamoDB)
+- Équipe avec expertise AWS/DevOps
+- Contrôle total obligatoire
+
+## Alternatives à considérer
+
+**Cloudflare Pages** : 
+- Free tier très généreux
+- Performance edge excellente
+- Workers KV, D1 (SQLite edge)
+- Moins de features que Vercel/Netlify
+
+**Railway / Render** :
+- Fullstack (backend + frontend)
+- Pricing simple
+- Moins orienté "frontend"
+
+**Self-hosted (Docker/VPS)** :
+- Coût minimal (20-50€/mois VPS)
+- Contrôle total
+- Plus de maintenance
+
+## Notre recommandation chez Eurus
+
+Pas de réponse universelle. Notre grille de décision :
+
+1. **Projet Next.js, budget OK** → Vercel (no-brainer)
+2. **Site statique / Jamstack** → Netlify ou Cloudflare Pages
+3. **Déjà sur AWS** → AWS Amplify (cohérence)
+4. **Budget serré, gros traffic** → AWS Amplify ou Cloudflare
+5. **MVP / projet perso** → Vercel free tier (sauf si monétisation)
+6. **Monétisation dès le free tier** → Netlify
+
+**Notre usage Eurus :**
+- Sites marketing : Vercel (Next.js) ou Netlify (Astro)
+- Apps clients : selon l'infra existante
+- Projets à fort trafic : AWS pour le pricing
+
+## FAQ
+
+### Vercel est-il vraiment plus cher ?
+
+Oui, à trafic équivalent, Vercel coûte 15-30% de plus que Netlify et 2-3x plus qu'AWS. Mais la DX et les optimisations Next.js peuvent justifier ce coût (temps développeur économisé). Faites le calcul pour VOTRE cas.
+
+### Puis-je déployer Next.js ailleurs que sur Vercel ?
+
+Oui. Next.js tourne sur Netlify, AWS, Cloudflare, Docker, n'importe où. Certaines optimisations (Image Optimization automatique, ISR avancé) sont moins performantes hors Vercel, mais l'app fonctionne.
+
+### Quel est le meilleur pour le SEO ?
+
+Les trois sont équivalents pour le SEO. Ce qui compte : SSR/SSG (les trois supportent), TTFB (edge = bon), et votre implémentation. Aucun avantage SEO spécifique à l'un ou l'autre.
+
+### Cloudflare Pages est-il une bonne alternative ?
+
+Excellent free tier, performance top, pricing agressif. Moins de features que Vercel/Netlify (pas de preview comments, analytics moins riche). Pour les sites statiques et Workers, c'est souvent le meilleur rapport qualité/prix.
+
+### Comment migrer de Vercel vers Netlify (ou inverse) ?
+
+Relativement simple pour la plupart des projets :
+1. Adapter le fichier de config (`vercel.json` → `netlify.toml`)
+2. Ajuster les variables d'environnement
+3. Tester les fonctions serverless (syntaxe légèrement différente)
+4. Rediriger le DNS
+
+Comptez 1-2 jours pour un projet standard.
+
+## Conclusion
+
+En 2026, Vercel, Netlify, et AWS sont tous production-ready. Le choix se fait sur :
+
+- **DX et Next.js** → Vercel
+- **Flexibilité et Jamstack** → Netlify  
+- **Contrôle et coût à scale** → AWS
+
+Ne sur-optimisez pas ce choix. Pour un MVP, le free tier de n'importe lequel suffit. Vous pourrez toujours migrer.
+
+Besoin d'aide pour votre infrastructure ? [Contactez Eurus](/contact) — on vous conseille et on peut gérer le déploiement pour vous.

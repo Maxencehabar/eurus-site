@@ -1,0 +1,272 @@
+---
+title: "Firebase vs Supabase vs Backend Custom : comparatif complet [2026]"
+description: "Comparatif détaillé Firebase vs Supabase vs backend personnalisé : coûts, scalabilité, cas d'usage. Guide pour choisir votre architecture backend en 2026."
+date: "2026-03-12"
+author: "Eurus"
+tags: ["Comparatif", "Firebase", "Supabase", "Backend", "BaaS"]
+---
+
+# Firebase vs Supabase vs Backend Custom : quel choix pour votre projet en 2026 ?
+
+Base de données, authentification, stockage fichiers, fonctions serverless... Vous pouvez soit tout coder vous-même, soit utiliser un Backend-as-a-Service (BaaS). Mais entre Firebase (Google), Supabase (l'outsider open source), et un backend custom, lequel choisir ?
+
+Chez Eurus, on a tout testé. **Youdy** tourne sur Firebase (temps réel critique). **DrMilou** utilise un backend Java Spring custom (contraintes métier spécifiques). Ce comparatif vous donne notre grille de décision.
+
+## TL;DR — Le verdict rapide
+
+| Critère | Firebase | Supabase | Backend Custom |
+|---------|----------|----------|----------------|
+| **Type de BDD** | NoSQL (Firestore) | PostgreSQL (SQL) | Choix libre |
+| **Coût démarrage** | Gratuit généreux | Gratuit généreux | 5-20K€ setup |
+| **Coût à scale** | Peut exploser | Prévisible | Maîtrisé |
+| **Time-to-market** | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐ | ⭐⭐ |
+| **Flexibilité** | ⭐⭐ | ⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐ |
+| **Vendor lock-in** | Élevé | Faible (open source) | Aucun |
+| **Temps réel** | Excellent natif | Excellent natif | À implémenter |
+
+**En 3 points :**
+- **Choisissez Firebase** pour les MVP, le temps réel, et si vous êtes dans l'écosystème Google
+- **Choisissez Supabase** si vous voulez du SQL, de la prévisibilité des coûts, et pouvoir partir
+- **Choisissez Custom** pour les projets complexes, régulés, ou à très haut volume
+
+## Qu'est-ce que Firebase ?
+
+Firebase est le BaaS de Google, lancé en 2011 (acquis en 2014). Il offre une suite complète : base de données NoSQL (Firestore), authentification, stockage, hosting, Cloud Functions, analytics, crash reporting, et depuis 2024, une intégration poussée avec les modèles IA de Google.
+
+**Chiffres clés 2026 :**
+- **3 millions+ d'applications** actives
+- **Firestore** : 10K écritures/sec, 1M connexions simultanées
+- **Free tier** : 50K lectures/jour, 20K écritures/jour, 1GB stockage
+- Intégré avec **Google Cloud Platform**
+- Support natif Flutter, React Native, Web, iOS, Android
+
+**Forces Firebase :**
+- Temps réel out-of-the-box (listeners Firestore)
+- Authentification Google/Apple/Facebook en 5 minutes
+- Écosystème Google (Analytics, Crashlytics, Remote Config)
+- Documentation exemplaire
+
+**Faiblesses Firebase :**
+- NoSQL = pas de relations, pas de JOIN
+- Coûts imprévisibles à scale (facturation par lecture/écriture)
+- Vendor lock-in fort (migration douloureuse)
+- Queries limités (pas de full-text search natif)
+
+## Qu'est-ce que Supabase ?
+
+Supabase est "l'alternative open source à Firebase", lancée en 2020. Elle utilise PostgreSQL comme base, avec une API REST/GraphQL auto-générée, authentification, stockage, et edge functions.
+
+**Chiffres clés 2026 :**
+- **1 million+ de bases de données** créées
+- **PostgreSQL** : le moteur SQL le plus populaire au monde
+- **Free tier** : 500MB base, 1GB stockage, 2GB bandwidth
+- **Pricing prévisible** : pas de facturation par lecture
+- **Open source** : auto-hébergeable
+
+**Forces Supabase :**
+- SQL complet (JOIN, transactions, contraintes)
+- Pricing prévisible (forfait, pas par opération)
+- Open source (vous pouvez partir avec vos données)
+- Row Level Security natif (sécurité au niveau ligne)
+- Extensions PostgreSQL (PostGIS, pgvector pour l'IA)
+
+**Faiblesses Supabase :**
+- Plus jeune que Firebase (moins de ressources/tutos)
+- Temps réel moins mature (mais fonctionnel)
+- Pas d'écosystème aussi intégré (pas de Crashlytics équivalent)
+- Self-hosting = responsabilité ops
+
+## Qu'est-ce qu'un Backend Custom ?
+
+Un backend custom, c'est votre propre serveur avec vos propres choix : Node.js/Express, Python/Django, Java/Spring, Go, Ruby on Rails... Vous choisissez la base de données, l'hébergement, l'architecture.
+
+**Cas typiques :**
+- **DrMilou (Eurus)** : Java Spring Boot + PostgreSQL, hébergé sur serveur dédié. Choix dicté par les contraintes médicales et l'existant client.
+- Grandes entreprises avec équipes DevOps
+- Projets avec contraintes réglementaires (données de santé, bancaire)
+- Applications à très haut volume
+
+**Forces Custom :**
+- Contrôle total (architecture, optimisation, données)
+- Pas de vendor lock-in
+- Coûts maîtrisés à grande échelle
+- Possibilité d'optimiser chaque composant
+
+**Faiblesses Custom :**
+- Time-to-market lent (tout à coder)
+- Coût initial élevé (développement + infrastructure)
+- Maintenance continue (sécurité, mises à jour)
+- Besoin d'expertise DevOps
+
+## Comparaison détaillée
+
+### Coût réel
+
+C'est LE sujet qui fâche avec Firebase.
+
+**Firebase — modèle de facturation :**
+- Facturation par lecture/écriture Firestore
+- 0.036€ pour 100K lectures, 0.108€ pour 100K écritures
+- Bandwidth : 0.12€/GB après 10GB/mois
+- **Le piège** : une app mal optimisée peut générer des millions de lectures/jour
+
+**Cas réel** : une startup e-commerce à 10K utilisateurs actifs a vu sa facture passer de 0€ à 2.500€/mois en 3 mois. Cause : listeners Firestore mal gérés, chaque scroll = nouvelles lectures.
+
+**Supabase — modèle de facturation :**
+- Free : 500MB base, 1GB storage
+- Pro (25$/mois) : 8GB base, 100GB storage
+- Team (599$/mois) : 100GB base, unlimited storage
+- **Pas de facturation par requête** (juste le volume de données)
+
+**Backend Custom — coûts typiques :**
+- Développement initial : 20-60K€
+- Serveur (VPS/cloud) : 50-500€/mois selon scale
+- Maintenance : 5-10K€/an
+- **Prévisible et linéaire**
+
+**Notre règle Eurus :**
+- < 1K utilisateurs : Firebase gratuit ou Supabase gratuit
+- 1K-50K utilisateurs : Supabase Pro (coût prévisible)
+- 50K+ utilisateurs ou contraintes fortes : Custom ou Supabase self-hosted
+
+### Base de données
+
+**Firestore (Firebase) — NoSQL :**
+```javascript
+// Structure NoSQL : documents imbriqués
+{
+  "users": {
+    "user123": {
+      "name": "Jean",
+      "orders": [
+        { "product": "abc", "price": 29.99 }
+      ]
+    }
+  }
+}
+```
+
+- ✅ Flexible, pas de schéma
+- ✅ Temps réel natif
+- ❌ Pas de JOIN (dénormalisation obligatoire)
+- ❌ Requêtes complexes impossibles
+
+**PostgreSQL (Supabase) — SQL :**
+```sql
+-- Structure SQL : relations
+SELECT users.name, orders.total
+FROM users
+JOIN orders ON users.id = orders.user_id
+WHERE orders.created_at > '2026-01-01';
+```
+
+- ✅ Relations, JOIN, transactions ACID
+- ✅ Contraintes d'intégrité
+- ✅ Full-text search, JSON, géospatial
+- ❌ Schéma à définir upfront
+
+**Notre expérience** :
+- Youdy (Firebase) : données temps réel (messagerie), structure simple → NoSQL OK
+- DrMilou (PostgreSQL) : données médicales relationnelles, reporting complexe → SQL obligatoire
+
+### Temps réel
+
+**Firebase** a inventé le BaaS temps réel. Un listener Firestore, et votre UI se met à jour instantanément quand les données changent. C'est magique pour le chat, les notifications, les tableaux de bord live.
+
+**Supabase** propose Realtime via PostgreSQL LISTEN/NOTIFY + websockets. Ça marche bien, mais c'est moins "magique" que Firebase — il faut configurer quelles tables écouter.
+
+**Backend Custom** : vous devez implémenter vous-même (Socket.io, Server-Sent Events, ou service tiers comme Pusher/Ably). Comptez 2-4 semaines de développement.
+
+### Authentification
+
+Les deux BaaS excellent ici :
+
+**Firebase Auth :**
+- Google, Apple, Facebook, Twitter, GitHub
+- Email/password, téléphone (SMS)
+- Anonymous auth (puis conversion)
+- Intégration Google One Tap
+
+**Supabase Auth :**
+- Providers similaires (OAuth)
+- Magic links (connexion par email)
+- Row Level Security intégré (le user ne voit que SES données)
+- Self-hosted possible
+
+**Custom** : comptez 2-4 semaines pour implémenter OAuth + session management + password reset + 2FA. Utilisez Passport.js ou Auth0 pour accélérer.
+
+### Cas d'usage idéaux
+
+**Choisissez Firebase pour :**
+- MVP et prototypes rapides
+- Apps temps réel (chat, collaboration)
+- Équipes front-end sans expertise backend
+- Projets dans l'écosystème Google/Flutter
+- < 50K utilisateurs
+
+**Choisissez Supabase pour :**
+- Projets nécessitant du SQL (relations complexes)
+- Startups qui veulent éviter le lock-in
+- Budgets serrés (pricing prévisible)
+- Équipes avec expérience SQL
+- Projets qui pourraient nécessiter self-hosting
+
+**Choisissez Custom pour :**
+- Données réglementées (santé, finance)
+- > 100K utilisateurs (coûts optimisés)
+- Besoins très spécifiques (algorithmes custom, intégrations legacy)
+- Équipes avec expertise backend/DevOps
+- Projets long terme (5+ ans)
+
+## Notre recommandation chez Eurus
+
+On ne choisit pas un BaaS pour sa hype. On le choisit pour son adéquation au projet.
+
+**Nouvel arbre de décision Eurus :**
+
+1. Données sensibles (santé, bancaire) ? → **Custom** (contrôle obligatoire)
+2. Time-to-market < 2 mois et < 10K users ? → **Firebase** (le plus rapide)
+3. Besoin de SQL et relations ? → **Supabase**
+4. Peur du lock-in Google ? → **Supabase** (open source)
+5. > 50K users et équipe tech senior ? → **Custom** ou **Supabase self-hosted**
+
+**Notre vécu** :
+- **Youdy** : Firebase était le bon choix. Messagerie temps réel, MVP rapide, équipe frontend-first.
+- **DrMilou** : Custom obligatoire. Données médicales, intégrations legacy, contraintes réglementaires.
+- **Projets récents** : on démarre souvent en Supabase maintenant. Le SQL + pricing prévisible + open source, c'est le meilleur compromis.
+
+## FAQ
+
+### Firebase est-il vraiment si cher à scale ?
+
+Ça dépend de votre usage. Si votre app fait beaucoup de lectures (dashboard temps réel, infinite scroll), oui. Une app avec 50K DAU mal optimisée peut coûter 3-5K€/mois. Bien optimisée (cache, pagination, listeners ciblés), 200-500€/mois. La différence vient du développeur.
+
+### Peut-on migrer de Firebase vers Supabase ?
+
+Oui, mais c'est douloureux. Firestore → PostgreSQL = transformation complète du modèle de données. Authentication = export/import users (sans les passwords, donc reset obligatoire). Comptez 4-8 semaines de travail selon la complexité. On a fait cette migration pour un client — c'est faisable mais pas anodin.
+
+### Supabase est-il production-ready en 2026 ?
+
+Oui. 1M+ de bases de données, utilisé par des scale-ups sérieuses, SOC2 compliant, SLA 99.9%. Le produit a mûri énormément depuis 2022. Les edge functions sont stables, le temps réel fiable. On l'utilise en production sans souci.
+
+### Quel backend custom recommandez-vous ?
+
+Ça dépend de l'équipe :
+- **Node.js/Express ou NestJS** : si votre équipe est JavaScript
+- **Python/FastAPI** : si vous faites de l'IA/ML
+- **Java/Spring Boot** : pour les projets enterprise (comme DrMilou)
+- **Go** : pour les services à très haut débit
+
+En 2026, on recommande souvent **NestJS** (structure, TypeScript) ou **FastAPI** (performance, simplicité).
+
+### Firebase ou Supabase pour une app Flutter ?
+
+Les deux fonctionnent très bien avec Flutter. Firebase a FlutterFire (SDK officiel Google), Supabase a supabase_flutter. Notre recommandation : Supabase si vous voulez du SQL, Firebase si le temps réel est critique et que vous acceptez le NoSQL.
+
+## Conclusion
+
+Le BaaS n'est pas une solution paresseuse — c'est un choix stratégique. Firebase et Supabase permettent de livrer 3x plus vite qu'un backend custom. Mais le custom reste pertinent pour les projets complexes ou réglementés.
+
+**En 2026, notre default est Supabase** : SQL, open source, pricing prévisible. Sauf besoin spécifique de l'écosystème Google ou du temps réel Firebase.
+
+Besoin d'aide pour choisir ? [Contactez Eurus](/contact) — on analyse votre projet et on vous recommande l'architecture adaptée. On ne vend pas de BaaS, on vend du pragmatisme.
