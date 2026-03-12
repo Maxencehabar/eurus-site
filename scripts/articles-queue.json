@@ -1,17 +1,5 @@
 {
-  "queue": [
-    {
-      "slug": "intelligence-artificielle-application-mobile",
-      "title": "IA dans les applications mobiles : cas d'usage et intégration",
-      "description": "Intégrer l'intelligence artificielle dans votre app. Chatbots, ML, vision, recommandations.",
-      "tags": [
-        "IA",
-        "Technique",
-        "Tendances"
-      ],
-      "keyword": "intelligence artificielle application mobile"
-    }
-  ],
+  "queue": [],
   "published": [
     {
       "slug": "freelance-ou-agence-developpement",
@@ -551,6 +539,14 @@
       "description": "Rendre votre app accessible à tous. WCAG, VoiceOver, TalkBack, bonnes pratiques.",
       "tags": ["Accessibilité", "UX", "Mobile"],
       "keyword": "accessibilité application mobile",
+      "publishedDate": "2026-03-12"
+    },
+    {
+      "slug": "intelligence-artificielle-application-mobile",
+      "title": "IA dans les applications mobiles : cas d'usage et intégration",
+      "description": "Intégrer l'intelligence artificielle dans votre app. Chatbots, ML, vision, recommandations.",
+      "tags": ["IA", "Technique", "Tendances"],
+      "keyword": "intelligence artificielle application mobile",
       "publishedDate": "2026-03-12"
     }
   ],
