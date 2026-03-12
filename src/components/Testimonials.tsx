@@ -12,24 +12,17 @@ interface Testimonial {
 const testimonials: Testimonial[] = [
   {
     quote:
-      "Eurus a transformé notre idée en une application mobile performante. Communication fluide, livraison dans les temps, qualité irréprochable.",
-    name: "Sophie Martin",
-    role: "CEO",
-    company: "TravelApp",
+      "Maxence a su transformer notre vision en une vraie plateforme. Il comprend les enjeux produit, pas juste le code. Youdy n'existerait pas sans lui.",
+    name: "Élodie",
+    role: "Co-fondatrice",
+    company: "Youdy",
   },
   {
     quote:
-      "Une équipe réactive et à l'écoute. Notre plateforme SaaS a été livrée avec une qualité technique qui a dépassé nos attentes.",
-    name: "Thomas Durand",
-    role: "CTO",
-    company: "EduConnect",
-  },
-  {
-    quote:
-      "Grâce à Eurus, notre back-office est devenu un vrai outil de pilotage. L'interface est intuitive et les performances sont au rendez-vous.",
-    name: "Claire Petit",
-    role: "Directrice des opérations",
-    company: "LogiPro",
+      "Un vrai partenaire technique. L'app Getaway est fluide, rapide, et nos utilisateurs adorent. Le choix de Flutter était le bon.",
+    name: "Fily",
+    role: "Fondateur",
+    company: "Getaway",
   },
 ];
 
@@ -75,7 +68,7 @@ export default function Testimonials() {
         </div>
 
         {/* Testimonials grid */}
-        <div className="grid md:grid-cols-3 gap-8">
+        <div className="grid md:grid-cols-2 gap-8 max-w-4xl">
           {testimonials.map((testimonial, index) => (
             <div
               key={testimonial.name}
