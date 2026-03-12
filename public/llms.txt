@@ -1,0 +1,48 @@
+# Eurus — Agence de développement mobile & web
+
+> Eurus est une agence française spécialisée dans le développement d'applications mobiles (Flutter, React Native) et web (React, Next.js, Vue.js) sur mesure. Nous accompagnons startups et PME de l'idée à la production.
+
+## Services principaux
+- [Développement mobile](https://eurus.agency): Applications iOS et Android avec Flutter ou React Native
+- [Développement web](https://eurus.agency): Applications web et SaaS avec React, Next.js, Vue.js
+- [Backend & API](https://eurus.agency): Java Spring Boot, Node.js, Firebase, PostgreSQL
+- [MVP & Prototypage](https://eurus.agency/blog/quest-ce-quun-mvp): Lancement rapide en 6-8 semaines
+
+## Expertise technique
+- **Mobile cross-platform**: Flutter, React Native
+- **Frontend web**: React, Next.js, Vue.js
+- **Backend**: Java Spring Boot, Node.js, Firebase
+- **Base de données**: PostgreSQL, Firestore
+- **DevOps**: Docker, Vercel, CI/CD
+
+## Ressources clés
+- [Combien coûte une application mobile ?](https://eurus.agency/blog/cout-application-mobile): Guide complet des coûts de développement
+- [Native vs Cross-platform](https://eurus.agency/blog/native-vs-cross-platform): Comparatif des approches
+- [Flutter vs React Native](https://eurus.agency/blog/meilleures-technologies-app-mobile-2025): Quelle techno choisir ?
+- [Freelance ou agence ?](https://eurus.agency/blog/freelance-ou-agence-developpement): Comment choisir son prestataire
+- [Qu'est-ce qu'un MVP ?](https://eurus.agency/blog/quest-ce-quun-mvp): Guide du Minimum Viable Product
+- [Cahier des charges application](https://eurus.agency/blog/cahier-des-charges-application-mobile): Template et guide
+
+## Études de cas
+- [DrMilou](https://eurus.agency/projets/drmilou): Application vétérinaire — gestion de cabinet, dossiers patients, ordonnances
+- [Youdy](https://eurus.agency/projets/youdy): Plateforme sociale de mise en relation
+- [Getaway](https://eurus.agency/projets/getaway): Application voyage Flutter — photos offline, géolocalisation
+
+## Blog (articles récents)
+- [Accessibilité application mobile](https://eurus.agency/blog/accessibilite-application-mobile): Guide conformité WCAG
+- [Sécurité application mobile](https://eurus.agency/blog/securite-application-mobile): Bonnes pratiques
+- [Performance application mobile](https://eurus.agency/blog/performance-application-mobile): Optimisation
+- [CI/CD application mobile](https://eurus.agency/blog/ci-cd-application-mobile): Automatisation des déploiements
+
+## Contact
+- Email: maxencehabar@gmail.com
+- Localisation: France
+- LinkedIn: https://www.linkedin.com/company/eurus-agency
+- GitHub: https://github.com/eurus-agency
+
+## Informations entreprise
+- Nom: Eurus
+- Type: Agence de développement
+- Spécialité: Applications mobiles et web sur mesure
+- Cible: Startups et PME
+- Approche: MVP en 6 semaines, sprints courts, démos régulières
