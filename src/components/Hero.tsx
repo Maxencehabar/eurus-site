@@ -1,55 +1,113 @@
+"use client";
+
+import { useEffect, useState } from "react";
+
 export default function Hero() {
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    setIsVisible(true);
+  }, []);
+
   return (
     <section
       id="hero"
-      className="relative flex min-h-screen items-center justify-center overflow-hidden px-8 pt-32 pb-16 text-center"
+      className="relative min-h-screen overflow-hidden bg-bg-primary"
     >
-      {/* Animated background */}
-      <div className="absolute -top-1/2 -left-1/2 h-[200%] w-[200%] animate-[pulse-bg_8s_ease-in-out_infinite] bg-[radial-gradient(circle_at_50%_50%,var(--color-accent-glow)_0%,transparent_50%)]" />
+      {/* Subtle gradient orb */}
+      <div className="absolute top-20 right-[10%] w-[600px] h-[600px] rounded-full bg-gradient-to-br from-accent/5 to-transparent blur-3xl pointer-events-none" />
+      <div className="absolute bottom-20 left-[5%] w-[400px] h-[400px] rounded-full bg-gradient-to-tr from-orange-200/20 to-transparent blur-3xl pointer-events-none" />
 
-      <div className="relative z-10 max-w-3xl">
-        <div className="mb-8 inline-flex items-center gap-2 rounded-full border border-border bg-bg-card px-4 py-2 text-xs text-text-secondary">
-          &#x1F5D3; 2 cr&eacute;neaux disponibles ce mois
+      <div className="relative z-10 mx-auto max-w-[1400px] px-6 md:px-12 pt-32 md:pt-40 pb-20">
+        {/* Availability badge */}
+        <div
+          className={`mb-8 transition-all duration-700 ${
+            isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
+          }`}
+        >
+          <span className="inline-flex items-center gap-2 text-sm text-text-secondary">
+            <span className="relative flex h-2 w-2">
+              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-green-500 opacity-75"></span>
+              <span className="relative inline-flex h-2 w-2 rounded-full bg-green-500"></span>
+            </span>
+            2 créneaux disponibles ce mois
+          </span>
         </div>
 
-        <h1 className="mb-6 text-[clamp(2.5rem,6vw,4.5rem)] font-bold leading-[1.1] tracking-tight">
-          Nous construisons vos{" "}
-          <span className="bg-gradient-to-br from-accent to-[#8b5cf6] bg-clip-text text-transparent">
-            applications mobiles et web
-          </span>
-          , de l&apos;id&eacute;e &agrave; la production.
+        {/* Main heading */}
+        <h1
+          className={`heading-editorial text-[clamp(2.75rem,8vw,6rem)] max-w-[900px] mb-8 transition-all duration-1000 delay-100 ${
+            isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+          }`}
+        >
+          Nous créons des{" "}
+          <span className="accent-underline">applications</span> qui{" "}
+          <em className="not-italic text-accent">marquent</em>
         </h1>
 
-        <p className="mx-auto mb-10 max-w-xl text-[clamp(1rem,2vw,1.25rem)] leading-relaxed text-text-secondary">
-          Eurus accompagne startups et PME dans la conception et le
-          d&eacute;veloppement de produits digitaux performants, sur mesure.
+        {/* Subheading */}
+        <p
+          className={`text-lg md:text-xl text-text-secondary max-w-[600px] mb-12 leading-relaxed transition-all duration-1000 delay-200 ${
+            isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+          }`}
+        >
+          Eurus accompagne startups et PME dans la conception d&apos;applications 
+          mobiles et web sur mesure. De l&apos;idée à la production.
         </p>
 
-        <div className="flex flex-wrap justify-center gap-4">
+        {/* CTA buttons */}
+        <div
+          className={`flex flex-wrap gap-4 mb-20 transition-all duration-1000 delay-300 ${
+            isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+          }`}
+        >
           <a
             href="#contact"
-            className="inline-flex items-center gap-2 rounded-xl bg-accent px-8 py-3.5 text-[0.95rem] font-semibold text-white shadow-[0_4px_20px_rgba(59,130,246,0.3)] transition-all hover:-translate-y-0.5 hover:bg-accent-hover hover:shadow-[0_6px_30px_rgba(59,130,246,0.4)]"
+            className="group inline-flex items-center gap-3 bg-bg-dark text-white px-8 py-4 rounded-full text-[0.95rem] font-medium transition-all hover:gap-4 hover:shadow-xl hover:shadow-black/10"
           >
             Discutons de votre projet
             <svg
-              width="16"
-              height="16"
+              className="w-4 h-4 transition-transform group-hover:translate-x-1"
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"
-              strokeWidth="2.5"
+              strokeWidth="2"
             >
               <path d="M5 12h14M12 5l7 7-7 7" />
             </svg>
           </a>
           <a
             href="#projets"
-            className="inline-flex items-center gap-2 rounded-xl border border-border bg-bg-card px-8 py-3.5 text-[0.95rem] font-semibold text-text-primary transition-all hover:-translate-y-0.5 hover:bg-bg-card-hover"
+            className="inline-flex items-center gap-2 px-8 py-4 rounded-full text-[0.95rem] font-medium border border-border-strong text-text-primary transition-all hover:bg-bg-secondary hover:border-text-muted"
           >
-            Voir nos projets
+            Voir nos réalisations
           </a>
         </div>
+
+        {/* Stats row */}
+        <div
+          className={`grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-12 pt-12 border-t border-border transition-all duration-1000 delay-500 ${
+            isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+          }`}
+        >
+          {[
+            { value: "5+", label: "Projets livrés" },
+            { value: "3", label: "Années d'expertise" },
+            { value: "700+", label: "Utilisateurs actifs" },
+            { value: "100%", label: "Clients satisfaits" },
+          ].map((stat, i) => (
+            <div key={i} className="text-center md:text-left">
+              <div className="heading-editorial text-3xl md:text-4xl text-text-primary mb-1">
+                {stat.value}
+              </div>
+              <div className="text-sm text-text-muted">{stat.label}</div>
+            </div>
+          ))}
+        </div>
       </div>
+
+      {/* Bottom decorative line */}
+      <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-border-strong to-transparent" />
     </section>
   );
 }

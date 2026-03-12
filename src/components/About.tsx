@@ -1,60 +1,110 @@
-import type { Stat } from "@/types";
-import SectionHeader from "./SectionHeader";
-import FadeIn from "./FadeIn";
+"use client";
 
-const stats: Stat[] = [
-  { value: "5+", label: "Projets livrés" },
-  { value: "700+", label: "Utilisateurs" },
-  { value: "3+", label: "Années d'expérience" },
-  { value: "100%", label: "Clients satisfaits" },
-];
+import { useEffect, useRef, useState } from "react";
 
 export default function About() {
+  const [isVisible, setIsVisible] = useState(false);
+  const sectionRef = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+        }
+      },
+      { threshold: 0.2 }
+    );
+
+    if (sectionRef.current) {
+      observer.observe(sectionRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, []);
+
   return (
-    <section id="apropos" className="mx-auto max-w-[1200px] px-8 py-24 max-md:px-6 max-md:py-16">
-      <FadeIn>
-        <SectionHeader label="À propos" title="Qui sommes-nous" />
-      </FadeIn>
-
-      <div className="grid grid-cols-2 items-center gap-16 max-md:grid-cols-1 max-md:gap-8">
-        <FadeIn>
-          <div className="space-y-6">
-            <p className="text-[1.05rem] leading-loose text-text-secondary">
-              <strong className="text-text-primary">Eurus</strong> est une
-              agence de d&eacute;veloppement bas&eacute;e en France,
-              sp&eacute;cialis&eacute;e dans la cr&eacute;ation
-              d&apos;applications mobiles et web sur mesure.
-            </p>
-            <p className="text-[1.05rem] leading-loose text-text-secondary">
-              De la startup &agrave; la PME, nous transformons vos
-              id&eacute;es en produits digitaux performants. Notre approche :
-              comprendre votre m&eacute;tier, concevoir la bonne architecture,
-              et livrer un produit fiable, rapide et maintenable.
-            </p>
-            <p className="text-[1.05rem] leading-loose text-text-secondary">
-              Nous privil&eacute;gions la qualit&eacute; du code, la
-              communication transparente, et le respect des d&eacute;lais.
-              Chaque projet est trait&eacute; avec l&apos;attention
-              qu&apos;il m&eacute;rite.
-            </p>
+    <section
+      ref={sectionRef}
+      id="apropos"
+      className="py-24 md:py-32 bg-bg-secondary"
+    >
+      <div className="mx-auto max-w-[1400px] px-6 md:px-12">
+        <div className="grid md:grid-cols-2 gap-12 md:gap-20 items-center">
+          {/* Left column - Text */}
+          <div
+            className={`transition-all duration-700 ${
+              isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+            }`}
+          >
+            <span className="text-accent text-sm font-medium tracking-wide uppercase mb-4 block">
+              À propos
+            </span>
+            <h2 className="heading-editorial text-[clamp(2rem,5vw,3rem)] mb-6">
+              Une agence qui comprend les enjeux des créateurs de produits
+            </h2>
+            <div className="space-y-4 text-text-secondary leading-relaxed">
+              <p>
+                Eurus est née d&apos;une conviction : le développement d&apos;applications 
+                ne devrait pas être un parcours du combattant. Trop de projets 
+                échouent par manque de communication, de compréhension métier, 
+                ou simplement de rigueur technique.
+              </p>
+              <p>
+                Notre approche est différente. Nous prenons le temps de comprendre 
+                votre vision avant d&apos;écrire la première ligne de code. Nous 
+                privilégions les solutions pragmatiques aux usines à gaz. Et nous 
+                restons à vos côtés bien après la mise en production.
+              </p>
+              <p className="text-text-primary font-medium">
+                Basés en France, nous accompagnons startups et PME depuis 2021.
+              </p>
+            </div>
           </div>
-        </FadeIn>
 
-        <FadeIn>
-          <div className="grid grid-cols-2 gap-6">
-            {stats.map((s) => (
+          {/* Right column - Values */}
+          <div
+            className={`grid grid-cols-2 gap-4 transition-all duration-700 delay-200 ${
+              isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+            }`}
+          >
+            {[
+              {
+                icon: "💬",
+                title: "Communication",
+                desc: "Transparence totale sur l'avancement et les décisions",
+              },
+              {
+                icon: "⚡",
+                title: "Efficacité",
+                desc: "MVP en 6 semaines, itérations rapides",
+              },
+              {
+                icon: "🎯",
+                title: "Pragmatisme",
+                desc: "Les bonnes solutions, pas les plus complexes",
+              },
+              {
+                icon: "🤝",
+                title: "Engagement",
+                desc: "Votre succès est notre priorité",
+              },
+            ].map((value) => (
               <div
-                key={s.label}
-                className="rounded-2xl border border-border bg-bg-card p-6 text-center"
+                key={value.title}
+                className="bg-bg-card border border-border rounded-xl p-6 hover:border-accent/30 transition-colors"
               >
-                <div className="bg-gradient-to-br from-accent to-[#8b5cf6] bg-clip-text text-3xl font-bold text-transparent">
-                  {s.value}
-                </div>
-                <div className="mt-1 text-sm text-text-muted">{s.label}</div>
+                <span className="text-2xl mb-3 block">{value.icon}</span>
+                <h3 className="font-semibold text-text-primary mb-2">
+                  {value.title}
+                </h3>
+                <p className="text-sm text-text-muted leading-relaxed">
+                  {value.desc}
+                </p>
               </div>
             ))}
           </div>
-        </FadeIn>
+        </div>
       </div>
     </section>
   );

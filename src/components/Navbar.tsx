@@ -1,131 +1,118 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { NAV_ITEMS } from "@/lib/constants";
+import { useState, useEffect } from "react";
+import { NAV_ITEMS, SITE_NAME } from "@/lib/constants";
 
 export default function Navbar() {
-  const [scrolled, setScrolled] = useState(false);
-  const [menuOpen, setMenuOpen] = useState(false);
-  const pathname = usePathname();
+  const [isScrolled, setIsScrolled] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 50);
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 20);
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const closeMenu = useCallback(() => setMenuOpen(false), []);
-
-  // Close menu on Escape key
-  useEffect(() => {
-    const onKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "Escape") closeMenu();
-    };
-    if (menuOpen) {
-      document.addEventListener("keydown", onKeyDown);
-      return () => document.removeEventListener("keydown", onKeyDown);
-    }
-  }, [menuOpen, closeMenu]);
-
-  const resolveHref = (href: string) => {
-    if (href.startsWith("#") && pathname !== "/") return `/${href}`;
-    return href;
-  };
-
   return (
-    <nav
-      className={`fixed inset-x-0 top-0 z-50 border-b border-border backdrop-blur-xl transition-all duration-300 ${
-        scrolled
-          ? "bg-[rgba(10,14,26,0.95)] py-3 px-8"
-          : "bg-[rgba(10,14,26,0.8)] py-4 px-8"
+    <header
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+        isScrolled
+          ? "bg-bg-primary/90 backdrop-blur-md border-b border-border"
+          : "bg-transparent"
       }`}
     >
-      <div className="mx-auto flex max-w-[1200px] items-center justify-between">
+      <nav className="mx-auto max-w-[1400px] px-6 md:px-12 h-20 flex items-center justify-between">
+        {/* Logo */}
         <Link
           href="/"
-          className="bg-gradient-to-br from-accent to-[#8b5cf6] bg-clip-text text-2xl font-bold tracking-tight text-transparent"
+          className="heading-editorial text-2xl text-text-primary hover:text-accent transition-colors"
         >
-          eurus
+          {SITE_NAME}
         </Link>
 
-        {/* Desktop links */}
-        <ul className="hidden gap-8 md:flex">
+        {/* Desktop Nav */}
+        <ul className="hidden md:flex items-center gap-8">
           {NAV_ITEMS.map((item) => (
-            <li key={item.href}>
-              {item.href.startsWith("/") ? (
-                <Link
-                  href={item.href}
-                  className="relative text-sm font-medium text-text-secondary transition-colors hover:text-text-primary after:absolute after:-bottom-1 after:left-0 after:h-0.5 after:w-0 after:bg-accent after:transition-all hover:after:w-full"
-                >
-                  {item.label}
-                </Link>
-              ) : (
-                <a
-                  href={resolveHref(item.href)}
-                  className="relative text-sm font-medium text-text-secondary transition-colors hover:text-text-primary after:absolute after:-bottom-1 after:left-0 after:h-0.5 after:w-0 after:bg-accent after:transition-all hover:after:w-full"
-                >
-                  {item.label}
-                </a>
-              )}
+            <li key={item.label}>
+              <Link
+                href={item.href}
+                className="text-[0.9rem] text-text-secondary hover:text-text-primary transition-colors"
+              >
+                {item.label}
+              </Link>
             </li>
           ))}
         </ul>
 
-        {/* Mobile hamburger button */}
+        {/* CTA Button */}
+        <a
+          href="#contact"
+          className="hidden md:inline-flex items-center gap-2 bg-bg-dark text-white px-5 py-2.5 rounded-full text-sm font-medium transition-all hover:bg-text-secondary"
+        >
+          Parlons-en
+        </a>
+
+        {/* Mobile Menu Button */}
         <button
-          type="button"
-          className="flex flex-col gap-[5px] p-1 md:hidden"
-          onClick={() => setMenuOpen(!menuOpen)}
-          aria-expanded={menuOpen}
-          aria-controls="mobile-menu"
-          aria-label={menuOpen ? "Fermer le menu" : "Ouvrir le menu"}
+          onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+          className="md:hidden p-2 text-text-primary"
+          aria-label="Menu"
         >
-          <span
-            className={`block h-0.5 w-6 bg-text-primary transition-all duration-300 ${menuOpen ? "translate-y-[7px] rotate-45" : ""}`}
-          />
-          <span
-            className={`block h-0.5 w-6 bg-text-primary transition-all duration-300 ${menuOpen ? "opacity-0" : ""}`}
-          />
-          <span
-            className={`block h-0.5 w-6 bg-text-primary transition-all duration-300 ${menuOpen ? "-translate-y-[7px] -rotate-45" : ""}`}
-          />
+          <svg
+            className="w-6 h-6"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            {isMobileMenuOpen ? (
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={1.5}
+                d="M6 18L18 6M6 6l12 12"
+              />
+            ) : (
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={1.5}
+                d="M4 6h16M4 12h16M4 18h16"
+              />
+            )}
+          </svg>
         </button>
-      </div>
+      </nav>
 
-      {/* Mobile menu */}
-      {menuOpen && (
-        <ul
-          id="mobile-menu"
-          className="flex flex-col gap-5 border-b border-border bg-[rgba(10,14,26,0.98)] px-8 py-6 md:hidden"
-          role="menu"
-        >
-          {NAV_ITEMS.map((item) => (
-            <li key={item.href} role="none">
-              {item.href.startsWith("/") ? (
+      {/* Mobile Menu */}
+      {isMobileMenuOpen && (
+        <div className="md:hidden bg-bg-primary border-b border-border">
+          <ul className="px-6 py-4 space-y-4">
+            {NAV_ITEMS.map((item) => (
+              <li key={item.label}>
                 <Link
                   href={item.href}
-                  onClick={closeMenu}
-                  className="text-sm font-medium text-text-secondary transition-colors hover:text-text-primary"
-                  role="menuitem"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="block text-text-secondary hover:text-text-primary transition-colors"
                 >
                   {item.label}
                 </Link>
-              ) : (
-                <a
-                  href={resolveHref(item.href)}
-                  onClick={closeMenu}
-                  className="text-sm font-medium text-text-secondary transition-colors hover:text-text-primary"
-                  role="menuitem"
-                >
-                  {item.label}
-                </a>
-              )}
+              </li>
+            ))}
+            <li className="pt-2">
+              <a
+                href="#contact"
+                onClick={() => setIsMobileMenuOpen(false)}
+                className="inline-flex items-center gap-2 bg-bg-dark text-white px-5 py-2.5 rounded-full text-sm font-medium"
+              >
+                Parlons-en
+              </a>
             </li>
-          ))}
-        </ul>
+          </ul>
+        </div>
       )}
-    </nav>
+    </header>
   );
 }

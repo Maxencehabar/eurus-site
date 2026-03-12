@@ -1,7 +1,6 @@
-import FadeIn from "./FadeIn";
-import SectionHeader from "./SectionHeader";
+"use client";
 
-const techs = [
+const technologies = [
   "Flutter",
   "React",
   "Next.js",
@@ -20,24 +19,17 @@ const techs = [
 
 export default function TechStack() {
   return (
-    <div className="border-y border-border bg-bg-secondary px-8 py-16">
-      <FadeIn className="mx-auto max-w-[1200px] text-center">
-        <SectionHeader
-          label="Technologies"
-          title="Notre stack technique"
-          center
-        />
-        <div className="mt-8 flex flex-wrap justify-center gap-3">
-          {techs.map((tech) => (
-            <span
-              key={tech}
-              className="rounded-full border border-border bg-bg-card px-5 py-2.5 text-sm font-medium text-text-secondary transition-all hover:border-accent hover:bg-accent-glow hover:text-text-primary"
-            >
-              {tech}
-            </span>
-          ))}
-        </div>
-      </FadeIn>
-    </div>
+    <section className="py-16 border-y border-border overflow-hidden">
+      <div className="flex animate-[marquee_30s_linear_infinite]">
+        {[...technologies, ...technologies].map((tech, index) => (
+          <span
+            key={index}
+            className="flex-shrink-0 px-8 text-text-muted text-sm font-medium tracking-wide"
+          >
+            {tech}
+          </span>
+        ))}
+      </div>
+    </section>
   );
 }

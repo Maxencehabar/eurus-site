@@ -1,59 +1,132 @@
-import type { ServiceCard } from "@/types";
-import SectionHeader from "./SectionHeader";
-import FadeIn from "./FadeIn";
+"use client";
 
-const services: ServiceCard[] = [
+import { useEffect, useRef, useState } from "react";
+
+interface Service {
+  number: string;
+  title: string;
+  description: string;
+  details: string[];
+}
+
+const services: Service[] = [
   {
-    icon: "\u{1F4F1}",
+    number: "01",
     title: "Applications mobiles",
     description:
-      "Développement d'applications iOS et Android performantes avec Flutter et React Native. De la maquette au store.",
+      "iOS et Android avec une seule base de code. Flutter et React Native pour un développement rapide et des performances natives.",
+    details: ["Flutter", "React Native", "iOS", "Android"],
   },
   {
-    icon: "\u{1F310}",
-    title: "Développement web",
+    number: "02",
+    title: "Applications web",
     description:
-      "Applications web modernes et réactives avec React, Next.js et Vue.js. SPA, SSR, sites vitrines complexes.",
+      "Des interfaces modernes et réactives. SPA, SSR, ou sites vitrines complexes avec les meilleurs frameworks du marché.",
+    details: ["React", "Next.js", "Vue.js", "TypeScript"],
   },
   {
-    icon: "\u2699\uFE0F",
+    number: "03",
     title: "Backend & API",
     description:
-      "Architectures robustes et scalables avec Java Spring Boot, Node.js et Firebase. API REST, microservices, BDD.",
+      "Architectures robustes qui tiennent la charge. API REST ou GraphQL, bases de données optimisées, intégrations tierces.",
+    details: ["Node.js", "Java Spring", "PostgreSQL", "Firebase"],
   },
   {
-    icon: "\u{1F4A1}",
-    title: "Conseil technique",
+    number: "04",
+    title: "Conseil & Audit",
     description:
-      "Audit de code, choix d'architecture, accompagnement CTO. Nous vous aidons à prendre les bonnes décisions techniques.",
+      "Besoin d'un regard externe ? Audit de code, choix d'architecture, accompagnement technique pour vos équipes.",
+    details: ["Audit technique", "Architecture", "Formation", "CTO as a service"],
   },
 ];
 
 export default function Services() {
-  return (
-    <section id="services" className="mx-auto max-w-[1200px] px-8 py-24 max-md:px-6 max-md:py-16">
-      <FadeIn>
-        <SectionHeader
-          label="Services"
-          title="Ce que nous faisons"
-          description="De la conception à la mise en production, nous couvrons l'ensemble du cycle de développement."
-        />
-      </FadeIn>
+  const [visibleItems, setVisibleItems] = useState<Set<number>>(new Set());
+  const refs = useRef<(HTMLDivElement | null)[]>([]);
 
-      <div className="grid grid-cols-[repeat(auto-fit,minmax(260px,1fr))] gap-6">
-        {services.map((s) => (
-          <FadeIn key={s.title}>
-            <div className="group relative overflow-hidden rounded-2xl border border-border bg-bg-card p-8 transition-all duration-300 before:absolute before:inset-x-0 before:top-0 before:h-[3px] before:bg-gradient-to-r before:from-accent before:to-[#8b5cf6] before:opacity-0 before:transition-opacity hover:-translate-y-1 hover:border-[rgba(59,130,246,0.2)] hover:bg-bg-card-hover hover:before:opacity-100">
-              <div className="mb-5 flex h-12 w-12 items-center justify-center rounded-xl bg-accent-glow text-xl">
-                {s.icon}
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          const index = refs.current.indexOf(entry.target as HTMLDivElement);
+          if (entry.isIntersecting && index !== -1) {
+            setVisibleItems((prev) => new Set([...prev, index]));
+          }
+        });
+      },
+      { threshold: 0.2 }
+    );
+
+    refs.current.forEach((ref) => {
+      if (ref) observer.observe(ref);
+    });
+
+    return () => observer.disconnect();
+  }, []);
+
+  return (
+    <section id="services" className="bg-bg-secondary py-24 md:py-32">
+      <div className="mx-auto max-w-[1400px] px-6 md:px-12">
+        {/* Section header */}
+        <div className="mb-16 md:mb-24">
+          <span className="text-accent text-sm font-medium tracking-wide uppercase mb-4 block">
+            Services
+          </span>
+          <h2 className="heading-editorial text-[clamp(2rem,5vw,3.5rem)] max-w-[700px]">
+            Ce que nous faisons, et ce que nous faisons <em className="not-italic text-accent">bien</em>
+          </h2>
+        </div>
+
+        {/* Services grid */}
+        <div className="grid md:grid-cols-2 gap-6 md:gap-8">
+          {services.map((service, index) => (
+            <div
+              key={service.number}
+              ref={(el) => { refs.current[index] = el; }}
+              className={`group bg-bg-card border border-border rounded-2xl p-8 md:p-10 transition-all duration-700 hover:border-accent/30 hover:shadow-lg hover:shadow-accent/5 ${
+                visibleItems.has(index)
+                  ? "opacity-100 translate-y-0"
+                  : "opacity-0 translate-y-8"
+              }`}
+              style={{ transitionDelay: `${index * 100}ms` }}
+            >
+              <div className="flex items-start justify-between mb-6">
+                <span className="text-5xl font-light text-border-strong group-hover:text-accent/30 transition-colors">
+                  {service.number}
+                </span>
+                <svg
+                  className="w-6 h-6 text-text-muted group-hover:text-accent transition-all group-hover:translate-x-1 group-hover:-translate-y-1"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={1.5}
+                    d="M7 17L17 7M17 7H7M17 7V17"
+                  />
+                </svg>
               </div>
-              <h3 className="mb-3 text-lg font-semibold">{s.title}</h3>
-              <p className="text-sm leading-relaxed text-text-secondary">
-                {s.description}
+              <h3 className="text-xl font-semibold text-text-primary mb-3">
+                {service.title}
+              </h3>
+              <p className="text-text-secondary mb-6 leading-relaxed">
+                {service.description}
               </p>
+              <div className="flex flex-wrap gap-2">
+                {service.details.map((detail) => (
+                  <span
+                    key={detail}
+                    className="text-xs px-3 py-1.5 rounded-full bg-bg-secondary text-text-muted border border-border"
+                  >
+                    {detail}
+                  </span>
+                ))}
+              </div>
             </div>
-          </FadeIn>
-        ))}
+          ))}
+        </div>
       </div>
     </section>
   );
