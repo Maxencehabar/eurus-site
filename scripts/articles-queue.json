@@ -1,143 +1,212 @@
 {
   "queue": [
     {
-      "slug": "integration-crm-application-mobile",
-      "title": "Intégrer un CRM dans votre application mobile (Salesforce, HubSpot)",
-      "description": "Guide complet pour connecter votre app à Salesforce, HubSpot ou Pipedrive. API, sync, cas d'usage.",
-      "tags": ["Technique", "CRM", "Intégration"],
-      "keyword": "intégration CRM application mobile"
-    },
-    {
       "slug": "application-saas-multi-tenant",
       "title": "Application SaaS multi-tenant : architecture et coûts",
       "description": "Concevoir une app SaaS multi-tenant. Architecture, isolation des données, pricing par tenant.",
-      "tags": ["SaaS", "Architecture", "Technique"],
+      "tags": [
+        "SaaS",
+        "Architecture",
+        "Technique"
+      ],
       "keyword": "application SaaS multi-tenant"
     },
     {
       "slug": "migration-application-legacy",
       "title": "Migrer une application legacy : guide complet",
       "description": "Stratégies pour moderniser une app vieillissante. Refactoring, réécriture, migration progressive.",
-      "tags": ["Migration", "Legacy", "Guide"],
+      "tags": [
+        "Migration",
+        "Legacy",
+        "Guide"
+      ],
       "keyword": "migration application legacy"
     },
     {
       "slug": "application-ecommerce-mobile",
       "title": "Application e-commerce mobile : fonctionnalités essentielles",
       "description": "Créer une app e-commerce performante. Panier, paiement, catalogue, UX mobile-first.",
-      "tags": ["E-commerce", "Mobile", "Guide"],
+      "tags": [
+        "E-commerce",
+        "Mobile",
+        "Guide"
+      ],
       "keyword": "application e-commerce mobile"
     },
     {
       "slug": "application-sante-healthtech",
       "title": "Application santé (healthtech) : réglementation et développement",
       "description": "Développer une app santé conforme. RGPD santé, HDS, certification, cas d'usage.",
-      "tags": ["Healthtech", "Réglementation", "Mobile"],
+      "tags": [
+        "Healthtech",
+        "Réglementation",
+        "Mobile"
+      ],
       "keyword": "application santé healthtech"
     },
     {
       "slug": "realite-augmentee-application-mobile",
       "title": "Réalité augmentée (AR) dans les applications mobiles",
       "description": "Intégrer l'AR dans votre app. ARKit, ARCore, cas d'usage retail, industrie, gaming.",
-      "tags": ["AR", "Innovation", "Mobile"],
+      "tags": [
+        "AR",
+        "Innovation",
+        "Mobile"
+      ],
       "keyword": "réalité augmentée application mobile"
     },
     {
       "slug": "commandes-vocales-application",
       "title": "Commandes vocales et interface voice-first",
       "description": "Ajouter la voix à votre app. Speech-to-text, assistants vocaux, UX conversationnelle.",
-      "tags": ["Voice", "UX", "Innovation"],
+      "tags": [
+        "Voice",
+        "UX",
+        "Innovation"
+      ],
       "keyword": "commandes vocales application"
     },
     {
       "slug": "gamification-application-mobile",
       "title": "Gamification : augmenter l'engagement de votre application",
       "description": "Mécaniques de jeu pour fidéliser vos utilisateurs. Points, badges, classements, streaks.",
-      "tags": ["Gamification", "Engagement", "UX"],
+      "tags": [
+        "Gamification",
+        "Engagement",
+        "UX"
+      ],
       "keyword": "gamification application mobile"
     },
     {
       "slug": "application-iot-objets-connectes",
       "title": "Applications IoT : connecter objets et mobile",
       "description": "Développer une app pour objets connectés. Bluetooth, MQTT, protocoles, cas d'usage.",
-      "tags": ["IoT", "Technique", "Innovation"],
+      "tags": [
+        "IoT",
+        "Technique",
+        "Innovation"
+      ],
       "keyword": "application IoT objets connectés"
     },
     {
       "slug": "internationalisation-application-multilingue",
       "title": "Internationalisation : rendre son application multilingue",
       "description": "Traduire et adapter votre app pour l'international. i18n, RTL, formats locaux.",
-      "tags": ["i18n", "International", "Guide"],
+      "tags": [
+        "i18n",
+        "International",
+        "Guide"
+      ],
       "keyword": "internationalisation application multilingue"
     },
     {
       "slug": "dark-mode-implementation",
       "title": "Dark mode : implémentation et bonnes pratiques",
       "description": "Ajouter le mode sombre à votre app. Design system, accessibilité, préférences système.",
-      "tags": ["Design", "UX", "Technique"],
+      "tags": [
+        "Design",
+        "UX",
+        "Technique"
+      ],
       "keyword": "dark mode application mobile"
     },
     {
       "slug": "synchronisation-offline-avancee",
       "title": "Synchronisation offline avancée : gestion des conflits",
       "description": "Stratégies de sync pour apps offline-first. Conflict resolution, CRDT, eventual consistency.",
-      "tags": ["Offline", "Technique", "Architecture"],
+      "tags": [
+        "Offline",
+        "Technique",
+        "Architecture"
+      ],
       "keyword": "synchronisation offline application"
     },
     {
       "slug": "microservices-vs-monolithe",
       "title": "Microservices vs monolithe : quelle architecture choisir ?",
       "description": "Avantages et inconvénients de chaque approche. Quand passer aux microservices.",
-      "tags": ["Architecture", "Backend", "Technique"],
+      "tags": [
+        "Architecture",
+        "Backend",
+        "Technique"
+      ],
       "keyword": "microservices vs monolithe"
     },
     {
       "slug": "websockets-temps-reel-avance",
       "title": "WebSockets : temps réel au-delà du chat",
       "description": "Cas d'usage avancés des WebSockets. Collaboration, live updates, gaming, trading.",
-      "tags": ["Technique", "Temps réel", "WebSocket"],
+      "tags": [
+        "Technique",
+        "Temps réel",
+        "WebSocket"
+      ],
       "keyword": "WebSocket temps réel application"
     },
     {
       "slug": "modele-abonnement-application",
       "title": "Modèle abonnement (subscription) dans une application",
       "description": "Implémenter un système d'abonnement. Pricing, gestion, rétention, churn.",
-      "tags": ["Business", "Monétisation", "Mobile"],
+      "tags": [
+        "Business",
+        "Monétisation",
+        "Mobile"
+      ],
       "keyword": "abonnement subscription application"
     },
     {
       "slug": "beta-testing-application",
       "title": "Beta testing : organiser les tests utilisateurs de votre app",
       "description": "Lancer une beta efficace. TestFlight, Firebase App Distribution, recrutement testeurs.",
-      "tags": ["QA", "Beta", "Lancement"],
+      "tags": [
+        "QA",
+        "Beta",
+        "Lancement"
+      ],
       "keyword": "beta testing application mobile"
     },
     {
       "slug": "social-login-partage-reseaux-sociaux",
       "title": "Social login et partage : intégration réseaux sociaux",
       "description": "Ajouter la connexion sociale et le partage. OAuth, Facebook, Google, Apple Sign-In.",
-      "tags": ["Social", "Auth", "Intégration"],
+      "tags": [
+        "Social",
+        "Auth",
+        "Intégration"
+      ],
       "keyword": "social login application mobile"
     },
     {
       "slug": "application-marketplace",
       "title": "Application marketplace : architecture et défis techniques",
       "description": "Créer une marketplace mobile. Multi-vendeurs, commission, paiement split, modération.",
-      "tags": ["Marketplace", "Architecture", "Business"],
+      "tags": [
+        "Marketplace",
+        "Architecture",
+        "Business"
+      ],
       "keyword": "application marketplace mobile"
     },
     {
       "slug": "integration-erp-application-mobile",
       "title": "Intégration ERP (SAP, Odoo) dans une application mobile",
       "description": "Connecter votre app à un ERP. API, middleware, sync, cas d'usage terrain.",
-      "tags": ["ERP", "Intégration", "Entreprise"],
+      "tags": [
+        "ERP",
+        "Intégration",
+        "Entreprise"
+      ],
       "keyword": "intégration ERP application mobile"
     },
     {
       "slug": "kpis-application-mobile",
       "title": "KPIs d'une application mobile : que mesurer ?",
       "description": "Métriques essentielles pour piloter votre app. Acquisition, activation, rétention, revenu.",
-      "tags": ["Analytics", "KPIs", "Business"],
+      "tags": [
+        "Analytics",
+        "KPIs",
+        "Business"
+      ],
       "keyword": "KPIs application mobile"
     }
   ],
@@ -146,10 +215,26 @@
       "slug": "intelligence-artificielle-application-mobile",
       "title": "IA dans les applications mobiles : cas d'usage et intégration",
       "description": "Intégrer l'intelligence artificielle dans votre app. Chatbots, ML, vision, recommandations.",
-      "tags": ["IA", "Technique", "Tendances"],
+      "tags": [
+        "IA",
+        "Technique",
+        "Tendances"
+      ],
       "keyword": "intelligence artificielle application mobile",
       "publishedDate": "2026-03-12"
+    },
+    {
+      "slug": "integration-crm-application-mobile",
+      "title": "Intégrer un CRM dans votre application mobile (Salesforce, HubSpot)",
+      "description": "Guide complet pour connecter votre app à Salesforce, HubSpot ou Pipedrive. API, sync, cas d'usage.",
+      "tags": [
+        "Technique",
+        "CRM",
+        "Intégration"
+      ],
+      "keyword": "intégration CRM application mobile",
+      "publishedDate": "2026-03-13"
     }
   ],
-  "lastPublished": "2026-03-12"
+  "lastPublished": "2026-03-13"
 }

@@ -1,0 +1,402 @@
+---
+title: "Intégrer un CRM dans votre application mobile (Salesforce, HubSpot)"
+description: "Guide complet pour connecter votre app à Salesforce, HubSpot ou Pipedrive. API, sync, cas d'usage et retours d'expérience terrain."
+date: "2026-03-13"
+author: "Eurus"
+tags: ["Technique", "CRM", "Intégration"]
+---
+
+Connecter votre application mobile à un CRM, c'est transformer des données éparpillées en une machine de guerre commerciale. Vos commerciaux accèdent aux fiches clients en déplacement. Vos équipes support voient l'historique complet avant même de décrocher. Et vos managers ont des dashboards qui se mettent à jour en temps réel. Selon DemandSage (2026), Salesforce détient 31% du marché CRM mondial, suivi par Oracle, Adobe et HubSpot. Autant dire que si vous développez une app B2B ou orientée ventes, l'intégration CRM n'est plus une option — c'est un prérequis.
+
+Chez Eurus, on a connecté des dizaines d'applications à des CRM variés. DrMilou synchronise ses données clients avec un système tiers. Youdy gère des profils utilisateurs qui doivent remonter dans HubSpot pour le suivi marketing. À chaque fois, les défis sont différents, mais les fondamentaux restent les mêmes. Ce guide vous donne tout ce qu'il faut pour réussir votre intégration — sans les galères qu'on a dû traverser en apprenant.
+
+## Pourquoi intégrer un CRM à votre application mobile ?
+
+La question peut sembler évidente, mais elle mérite qu'on s'y arrête. Trop de projets démarrent une intégration CRM "parce que le client l'a demandé" sans vraiment comprendre la valeur ajoutée. Résultat : des mois de développement pour une fonctionnalité que personne n'utilise.
+
+Une étude Wave Connect (2026) révèle que 71% des PME ont adopté un système CRM, dont 65% dans leurs cinq premières années d'activité. Ces entreprises ne font pas ça pour le plaisir — elles ont compris que centraliser l'information client génère du business.
+
+### Les vrais gains d'une intégration réussie
+
+Concrètement, intégrer votre app mobile à un CRM apporte trois avantages majeurs. D'abord, l'accès terrain aux données. Vos commerciaux n'ont plus besoin d'un laptop pour consulter une fiche client avant un rendez-vous. Ils ouvrent l'app, et tout est là : historique des échanges, dernières commandes, notes de la dernière visite. Sur DrMilou, les vétérinaires accèdent aux dossiers animaux en deux clics maximum. Pourquoi ? Parce qu'on a compris très tôt que dans un cabinet, chaque seconde compte quand une urgence arrive.
+
+Ensuite, la synchronisation bidirectionnelle. Ce que vos utilisateurs saisissent dans l'app remonte automatiquement dans le CRM. Plus de ressaisie manuelle, plus d'oublis, plus de données qui traînent dans un coin. Comme le souligne Marc Benioff, fondateur de Salesforce : "Le CRM n'est pas un outil, c'est une stratégie. Et cette stratégie ne fonctionne que si les données circulent sans friction."
+
+Enfin, l'automatisation des workflows. Un nouveau lead capturé dans l'app ? Il déclenche automatiquement une séquence d'emails dans HubSpot. Un client passe une commande ? Son statut se met à jour dans Pipedrive. Ces automatisations libèrent un temps fou pour vos équipes.
+
+## Choisir le bon CRM pour votre intégration
+
+Tous les CRM ne se valent pas côté API. Avant de vous lancer, il faut comprendre les forces et faiblesses de chaque plateforme.
+
+### Salesforce : le mastodonte
+
+Salesforce domine le marché avec près d'un tiers des parts mondiales. Son API REST est robuste, bien documentée, et couvre à peu près tous les cas d'usage imaginables. Le taux d'adoption utilisateur de Salesforce Sales Cloud atteint 72% selon Cyntexa (2025) — le plus élevé du marché.
+
+En revanche, la complexité est au rendez-vous. Le modèle de données Salesforce est puissant mais dense. Comptez plusieurs jours juste pour comprendre la différence entre un Lead, un Contact, une Opportunity et un Account. Et les limites d'API peuvent vite devenir un casse-tête si votre app génère beaucoup de requêtes.
+
+| Critère | Salesforce | HubSpot | Pipedrive |
+|---------|-----------|---------|-----------|
+| Part de marché | 31% | 3,4% | ~2% |
+| Complexité API | Élevée | Moyenne | Faible |
+| Limites requêtes/jour | 15 000 (standard) | 500 000 | 100/sec |
+| Documentation | Excellente | Très bonne | Bonne |
+| Coût entrée | Élevé | Gratuit possible | Abordable |
+
+### HubSpot : l'ami des startups
+
+HubSpot a conquis 62% des installations CRM dans les PME selon 6sense (2025). Pourquoi ? Parce que leur offre gratuite est généreuse, leur API simple à prendre en main, et leur documentation claire.
+
+L'API HubSpot utilise des endpoints REST classiques avec une authentification OAuth 2.0. Les objets sont intuitifs : Contacts, Companies, Deals, Tickets. On comprend la logique en quelques heures. Leur système de webhooks fonctionne bien pour la sync temps réel.
+
+Le bémol ? Les fonctionnalités avancées sont payantes. Et si vous avez des besoins custom très spécifiques, vous atteindrez vite les limites de la plateforme.
+
+### Pipedrive : focus commercial
+
+Pipedrive est un CRM pensé par et pour les commerciaux. L'interface est centrée sur le pipeline de ventes, et l'API reflète cette philosophie. Si votre app est orientée prospection et suivi des deals, Pipedrive peut être un excellent choix.
+
+L'API est simple, les webhooks réactifs, et les limites de requêtes généreuses (100 par seconde). Par contre, si vous avez besoin de fonctionnalités marketing automation ou support client, il faudra compléter avec d'autres outils.
+
+## Architecture technique d'une intégration CRM
+
+Maintenant qu'on a posé le contexte, entrons dans le vif du sujet. Comment architecturer proprement une intégration CRM dans votre application mobile ?
+
+### Ne jamais appeler l'API CRM directement depuis l'app
+
+C'est la première erreur qu'on voit chez les débutants. L'app mobile appelle directement l'API Salesforce ou HubSpot. Ça fonctionne en dev, et puis ça explose en production.
+
+Pourquoi ? Plusieurs raisons. D'abord, la sécurité. Vos credentials API n'ont rien à faire dans le code de l'app — même obfusqués, ils peuvent être extraits. Ensuite, la gestion des limites. Si chaque utilisateur de votre app fait des appels directs, vous allez exploser vos quotas en quelques heures. Enfin, la résilience. Que se passe-t-il si l'API CRM est down ? Votre app plante.
+
+La bonne approche : passer par votre propre backend. L'app mobile parle à votre API, qui elle-même communique avec le CRM. Vous centralisez la logique, vous gérez le cache, vous absorbez les pannes.
+
+```
+Mobile App → Votre Backend → CRM API
+                ↑
+            Cache Redis
+```
+
+### Synchronisation : temps réel ou batch ?
+
+La question revient à chaque projet : faut-il synchroniser les données en temps réel ou par lots ? La réponse dépend de votre cas d'usage.
+
+Le temps réel (via webhooks) convient quand vos utilisateurs ont besoin de données fraîches immédiatement. Un commercial consulte une fiche client juste avant un appel ? Il lui faut les dernières notes. Un ticket support vient d'être créé ? L'équipe doit le voir tout de suite.
+
+Le batch convient pour les synchronisations massives où la latence est acceptable. Importer tous les contacts chaque nuit. Mettre à jour les statistiques de ventes. Générer des rapports hebdomadaires.
+
+En pratique, la plupart des intégrations combinent les deux. Webhooks pour les événements critiques, batch pour le reste. Sur Youdy, on a dû refaire 3 fois le système de notifications push avant de trouver le bon équilibre entre engagement et spam. La leçon s'applique aussi aux syncs CRM : trop de temps réel, c'est du bruit ; pas assez, c'est de la frustration.
+
+### Gestion des conflits de synchronisation
+
+Quand deux systèmes modifient les mêmes données, les conflits arrivent. Un commercial met à jour une fiche client dans l'app mobile pendant qu'un collègue la modifie dans le CRM web. Qui gagne ?
+
+Plusieurs stratégies existent. La plus simple : "last write wins". Le dernier à écrire écrase les modifications précédentes. C'est brutal mais ça fonctionne pour beaucoup de cas.
+
+Plus sophistiqué : la fusion intelligente. Vous comparez les champs modifiés et ne fusionnez que ceux qui ont changé. Si le commercial a modifié le téléphone et le collègue l'email, pas de conflit — vous prenez les deux.
+
+Encore plus avancé : les CRDT (Conflict-free Replicated Data Types). Ces structures de données sont conçues pour converger automatiquement sans conflit. Overkill pour la plupart des intégrations CRM, mais intéressant si vous gérez des collaborations temps réel complexes.
+
+Chez Eurus, on opte généralement pour le "last write wins" avec notification. L'utilisateur est prévenu qu'une version plus récente existe, et il peut choisir de la charger ou d'écraser. Transparent et efficace.
+
+## Intégration Salesforce : guide pas à pas
+
+Salesforce étant le leader du marché, détaillons son intégration. Les concepts s'appliquent largement aux autres CRM.
+
+### Authentification OAuth 2.0
+
+Salesforce utilise OAuth 2.0 avec plusieurs flows possibles. Pour une intégration backend, le "JWT Bearer Flow" est recommandé. Vous générez un token côté serveur sans intervention utilisateur.
+
+Étapes principales :
+1. Créer une "Connected App" dans Salesforce Setup
+2. Générer un certificat SSL et l'uploader
+3. Configurer les scopes (permissions) nécessaires
+4. Implémenter le flow JWT dans votre backend
+
+Le piège classique : oublier de configurer les IP de confiance. Salesforce peut bloquer les requêtes venant d'IP non autorisées. Ajoutez les IP de vos serveurs de production dans les paramètres de la Connected App.
+
+### Modèle de données Salesforce
+
+Avant de coder, comprenez le modèle de données. Salesforce distingue :
+
+- **Lead** : un prospect non qualifié
+- **Contact** : une personne identifiée
+- **Account** : une entreprise
+- **Opportunity** : une affaire en cours
+- **Case** : un ticket support
+
+Ces objets sont liés entre eux. Un Contact appartient à un Account. Une Opportunity est liée à un Account et peut avoir plusieurs Contacts associés. Un Case concerne un Contact.
+
+Vous pouvez aussi créer des objets custom pour des besoins métier spécifiques. Sur un projet, on a créé un objet "Visite_Terrain__c" pour tracker les déplacements commerciaux avec géolocalisation.
+
+### Requêtes SOQL
+
+Salesforce utilise SOQL (Salesforce Object Query Language) pour interroger les données. C'est du SQL-like avec quelques différences.
+
+```sql
+SELECT Id, Name, Email, Account.Name 
+FROM Contact 
+WHERE CreatedDate > 2026-01-01T00:00:00Z 
+ORDER BY LastModifiedDate DESC 
+LIMIT 100
+```
+
+Attention aux limites : une requête SOQL ne peut retourner que 2000 enregistrements par défaut. Pour des volumes plus importants, utilisez la pagination via `queryMore` ou le Bulk API.
+
+### Bulk API pour les gros volumes
+
+Si vous devez synchroniser des milliers d'enregistrements, oubliez l'API REST classique. Utilisez le Bulk API 2.0 qui permet d'envoyer des fichiers CSV et de traiter des millions de lignes en batch.
+
+Le flow Bulk API :
+1. Créer un job (POST /jobs/ingest)
+2. Uploader les données CSV
+3. Fermer le job pour lancer le traitement
+4. Poller le statut jusqu'à completion
+5. Récupérer les résultats (succès et erreurs)
+
+C'est plus complexe à implémenter, mais indispensable pour les migrations de données ou les syncs massives.
+
+## Intégration HubSpot : approche pratique
+
+HubSpot est souvent plus accessible pour une première intégration CRM. Voici comment procéder.
+
+### API privée vs OAuth
+
+HubSpot propose deux modes d'authentification. L'API Key (privée) est simple : un token unique que vous passez dans chaque requête. Pratique pour du prototypage, mais déconseillé en production — si la clé fuite, c'est game over.
+
+OAuth 2.0 est la voie recommandée. Vous créez une app dans le portail développeur HubSpot, configurez les scopes, et implémentez le flow d'autorisation. L'avantage : vous obtenez un refresh token qui permet de renouveler l'accès sans réauthentification.
+
+### Endpoints principaux
+
+L'API HubSpot v3 est bien structurée. Voici les endpoints que vous utiliserez le plus :
+
+```
+GET /crm/v3/objects/contacts
+POST /crm/v3/objects/contacts
+PATCH /crm/v3/objects/contacts/{id}
+DELETE /crm/v3/objects/contacts/{id}
+
+GET /crm/v3/objects/deals
+POST /crm/v3/objects/deals
+...
+```
+
+Les associations entre objets se gèrent via l'endpoint `/crm/v3/associations`. Par exemple, pour lier un Contact à une Company :
+
+```
+PUT /crm/v3/associations/contact/company/batch/create
+```
+
+### Webhooks HubSpot
+
+Les webhooks HubSpot permettent de recevoir des notifications en temps réel quand des événements se produisent. Contact créé, deal mis à jour, formulaire soumis — vous êtes notifié instantanément.
+
+Configuration :
+1. Dans votre app HubSpot, section Webhooks
+2. Définir l'URL de callback (votre endpoint)
+3. Sélectionner les événements à écouter
+4. HubSpot envoie une requête POST à chaque événement
+
+Point important : HubSpot envoie les webhooks en batch. Vous pouvez recevoir plusieurs événements dans une seule requête. Votre code doit itérer sur le tableau reçu.
+
+Un bug de timezone sur Youdy a fait que les utilisateurs au Canada recevaient leurs rappels à 3h du mat. Leçon : toujours stocker en UTC, toujours convertir à l'affichage. Cette règle s'applique aussi aux webhooks CRM — les timestamps arrivent en UTC, à vous de les convertir pour l'utilisateur final.
+
+## Cas d'usage réels et patterns d'intégration
+
+Passons de la théorie à la pratique avec des scénarios concrets.
+
+### Capture de leads depuis l'app mobile
+
+Votre app permet aux utilisateurs de remplir un formulaire de contact. Ces leads doivent remonter dans le CRM pour être traités par l'équipe commerciale.
+
+Pattern recommandé :
+1. L'app envoie les données à votre backend
+2. Le backend valide et enrichit (géolocalisation, source...)
+3. Le backend crée le lead dans le CRM via API
+4. Le backend stocke l'ID CRM retourné pour référence future
+5. Webhook CRM notifie votre backend si le lead est modifié côté CRM
+
+L'enrichissement côté backend est crucial. Vous pouvez ajouter des informations que l'utilisateur n'a pas saisies : pays déduit de l'IP, device utilisé, page de provenance. Ces data points valent de l'or pour le scoring des leads.
+
+### Affichage du pipeline commercial
+
+Vos commerciaux veulent voir leur pipeline de deals directement dans l'app. Ils doivent pouvoir filtrer par étape, trier par montant, et accéder aux détails de chaque opportunité.
+
+Architecture :
+1. Sync quotidienne des deals vers votre base de données
+2. L'app interroge votre backend (pas le CRM directement)
+3. Webhooks CRM mettent à jour votre base en temps réel
+4. Votre backend agrège et calcule les métriques (total pipeline, taux de conversion...)
+
+Pourquoi ne pas interroger le CRM en temps réel ? Performance et coût. Les requêtes CRM ont une latence de 200-500ms. Multipliez par le nombre d'utilisateurs, et votre app devient lente. Sans parler des limites d'API que vous atteindrez vite.
+
+### Synchronisation des activités terrain
+
+Cas typique : un commercial fait une visite client, prend des notes dans l'app, et ces informations doivent remonter dans le CRM comme une "Activité" ou "Tâche".
+
+Les cabinets vétérinaires ont des contraintes qu'on n'imaginait pas : connexion internet instable, PC sous Windows XP, urgences qui arrivent pendant qu'on tape une ordonnance. Ces réalités terrain s'appliquent aussi aux apps commerciales. Votre intégration doit fonctionner offline.
+
+Pattern offline-first :
+1. L'app stocke les activités localement (SQLite, Realm...)
+2. Quand le réseau est disponible, sync vers le backend
+3. Le backend push vers le CRM
+4. En cas d'erreur CRM, retry avec backoff exponentiel
+5. L'utilisateur voit un statut de sync (✓ synchronisé, ⏳ en attente, ❌ erreur)
+
+## Sécurité et conformité RGPD
+
+Intégrer un CRM implique de manipuler des données personnelles. La sécurité n'est pas optionnelle.
+
+### Chiffrement des données en transit et au repos
+
+Toutes les communications avec l'API CRM doivent passer par HTTPS. C'est non négociable. Vérifiez aussi que votre backend chiffre les données sensibles au repos — tokens d'accès, credentials, informations client.
+
+Les tokens OAuth doivent être stockés de manière sécurisée. Pas en clair dans une base de données accessible. Utilisez un secret manager (AWS Secrets Manager, HashiCorp Vault...) ou au minimum un chiffrement AES-256.
+
+### Minimisation des données
+
+Le RGPD impose de ne collecter que les données strictement nécessaires. Avant de synchroniser un champ du CRM vers votre app, posez-vous la question : l'utilisateur mobile en a-t-il vraiment besoin ?
+
+Si vos commerciaux n'ont pas besoin de voir les revenus annuels des clients dans l'app, ne synchronisez pas ce champ. Moins de données = moins de risques.
+
+### Droit à l'effacement
+
+Un utilisateur demande la suppression de ses données ? Vous devez pouvoir les effacer du CRM ET de votre app. Documentez le processus et automatisez-le autant que possible.
+
+Selon une étude Gartner (2025), 78% des entreprises utilisant un CRM ont dû adapter leurs processus pour la conformité RGPD. Ne sous-estimez pas cet aspect.
+
+## Performance et monitoring
+
+Une intégration CRM en production, ça se surveille.
+
+### Métriques à suivre
+
+- **Latence des appels API** : temps moyen de réponse du CRM
+- **Taux d'erreur** : pourcentage de requêtes échouées
+- **Consommation de quota** : où en êtes-vous par rapport aux limites ?
+- **Temps de sync** : durée des synchronisations batch
+- **File d'attente** : nombre de modifications en attente de sync
+
+Configurez des alertes. Si le taux d'erreur dépasse 5%, vous voulez le savoir avant vos utilisateurs.
+
+### Gestion des erreurs et retry
+
+Les API CRM échouent. Timeout réseau, maintenance planifiée, limite de rate atteinte. Votre code doit gérer ces cas gracieusement.
+
+Pattern de retry recommandé :
+1. Première tentative immédiate
+2. Retry après 1 seconde
+3. Retry après 5 secondes
+4. Retry après 30 secondes
+5. Abandon et notification
+
+Utilisez un backoff exponentiel avec jitter (variation aléatoire) pour éviter que tous vos serveurs retentent en même temps.
+
+### Logs structurés
+
+Loggez chaque interaction CRM avec contexte :
+- Timestamp
+- Type d'opération (create, update, delete, query)
+- Objet concerné et ID
+- Durée de l'appel
+- Statut (succès, erreur, type d'erreur)
+- ID de corrélation (pour tracer une requête de bout en bout)
+
+Ces logs seront votre meilleur ami quand il faudra debugger un problème en production.
+
+## Coûts et considérations business
+
+Intégrer un CRM, ça a un coût. Mieux vaut l'anticiper.
+
+### Coûts de développement
+
+Comptez entre 2 et 6 semaines de développement pour une intégration CRM standard, selon la complexité. Ce temps inclut :
+- Analyse du modèle de données CRM
+- Développement des endpoints backend
+- Implémentation de la sync
+- Tests d'intégration
+- Documentation
+
+Notre règle d'or chez Eurus : un MVP en 6 semaines max. Au-delà, on perd le feedback terrain. Pour une intégration CRM, on vise la première version fonctionnelle en 3 semaines, puis on itère.
+
+### Coûts d'infrastructure
+
+Votre intégration CRM ajoute de la charge à votre backend :
+- Stockage pour le cache et les données synchronisées
+- Compute pour les jobs de sync
+- Bande passante pour les appels API
+
+Sur AWS, comptez 50-200€/mois supplémentaires pour une intégration moyenne. Plus si vous gérez des volumes importants.
+
+### Coûts de licence CRM
+
+Les CRM facturent souvent l'accès API dans leurs plans payants. Vérifiez :
+- L'API est-elle incluse dans votre plan ?
+- Y a-t-il des frais par appel au-delà d'un quota ?
+- Les fonctionnalités dont vous avez besoin sont-elles disponibles via API ?
+
+HubSpot propose un accès API généreux même sur les plans gratuits. Salesforce réserve certaines fonctionnalités API aux plans Enterprise. Pipedrive inclut l'API dans tous les plans payants.
+
+## Erreurs courantes à éviter
+
+En 3 ans chez Eurus, j'ai vu des projets échouer non pas à cause du code, mais parce que personne n'avait vraiment compris le besoin métier. Voici les erreurs les plus fréquentes sur les intégrations CRM.
+
+### Synchroniser trop de données
+
+L'envie de "tout avoir" est compréhensible. Mais synchroniser l'intégralité du CRM vers votre app mobile est une mauvaise idée. Vous allez :
+- Exploser votre stockage local
+- Ralentir les syncs initiales (mauvaise première impression)
+- Complexifier la gestion des conflits
+- Augmenter les risques de sécurité
+
+Commencez minimal. Synchronisez uniquement ce dont vos utilisateurs ont besoin au quotidien. Vous pourrez toujours étendre plus tard.
+
+### Ignorer les webhooks
+
+Certaines équipes font du polling toutes les X minutes pour détecter les changements dans le CRM. C'est inefficace et coûteux en API calls. Les webhooks existent — utilisez-les.
+
+### Négliger l'expérience offline
+
+Votre commercial est dans un parking souterrain sans réseau. Il ouvre l'app pour préparer son rendez-vous. Si tout plante parce que le CRM est inaccessible, vous avez raté quelque chose.
+
+L'intégration d'un assistant IA dans Youdy nous a appris que les utilisateurs préfèrent des réponses imparfaites mais rapides plutôt que parfaites mais lentes. Même logique pour le CRM : affichez les données cachées instantanément, synchronisez en arrière-plan.
+
+### Oublier la documentation
+
+Votre intégration CRM va évoluer. De nouveaux développeurs vont la maintenir. Si personne ne comprend comment elle fonctionne, c'est la dette technique garantie.
+
+Documentez :
+- L'architecture globale (schéma)
+- Les endpoints utilisés
+- Le mapping des champs
+- Les jobs de sync et leur fréquence
+- Les procédures de debug
+
+## FAQ : questions fréquentes sur l'intégration CRM
+
+**Combien de temps prend une intégration CRM ?**
+
+Entre 2 et 6 semaines pour une intégration standard. Les facteurs qui rallongent : complexité du modèle de données CRM, nombre de cas d'usage à couvrir, besoin de synchronisation bidirectionnelle, contraintes de performance.
+
+**Faut-il un middleware comme Zapier ou MuleSoft ?**
+
+Pour des cas simples (un webhook, quelques syncs), coder directement est souvent plus rapide et moins coûteux. Les middlewares deviennent pertinents quand vous avez de nombreuses intégrations à gérer ou des besoins de transformation de données complexes.
+
+**Comment gérer les migrations de CRM ?**
+
+Si votre client passe de HubSpot à Salesforce, votre intégration doit s'adapter. La bonne pratique : abstraire la couche CRM derrière une interface. Votre app parle à "ICrmService", pas à "SalesforceService". Le jour du changement, vous implémentez une nouvelle classe sans toucher au reste du code.
+
+**Peut-on utiliser GraphQL avec Salesforce ?**
+
+Salesforce ne propose pas d'API GraphQL native. Vous pouvez créer une couche GraphQL devant l'API REST, mais c'est du travail supplémentaire. HubSpot n'a pas non plus de GraphQL officiel. Pour l'instant, REST reste le standard dans l'écosystème CRM.
+
+**Comment tester une intégration CRM ?**
+
+Utilisez les environnements sandbox fournis par les CRM. Salesforce propose des "Developer Edition" gratuites. HubSpot a un mode test dans le portail développeur. Pipedrive offre des comptes sandbox sur demande. Ne testez jamais sur des données de production.
+
+## Conclusion : lancez-vous, mais préparez le terrain
+
+Intégrer un CRM à votre application mobile est un projet structurant. Bien fait, il transforme votre app en outil indispensable pour les équipes commerciales et support. Mal fait, il devient un cauchemar de maintenance et une source de frustration utilisateur.
+
+Les clés du succès : comprendre le besoin métier avant de coder, architecturer proprement avec un backend intermédiaire, gérer l'offline dès le départ, et monitorer en production.
+
+Chez Eurus, on accompagne des entreprises de toutes tailles sur ces intégrations. Que vous partiez de zéro ou que vous ayez une intégration existante à optimiser, on peut vous aider à aller plus vite et éviter les pièges classiques.
+
+**Besoin d'un regard expert sur votre projet d'intégration CRM ?** [Contactez-nous](/contact) pour en discuter. Premier échange gratuit, sans engagement.
