@@ -1,17 +1,6 @@
 {
   "queue": [
     {
-      "slug": "application-saas-multi-tenant",
-      "title": "Application SaaS multi-tenant : architecture et coûts",
-      "description": "Concevoir une app SaaS multi-tenant. Architecture, isolation des données, pricing par tenant.",
-      "tags": [
-        "SaaS",
-        "Architecture",
-        "Technique"
-      ],
-      "keyword": "application SaaS multi-tenant"
-    },
-    {
       "slug": "migration-application-legacy",
       "title": "Migrer une application legacy : guide complet",
       "description": "Stratégies pour moderniser une app vieillissante. Refactoring, réécriture, migration progressive.",
@@ -233,6 +222,18 @@
         "Intégration"
       ],
       "keyword": "intégration CRM application mobile",
+      "publishedDate": "2026-03-13"
+    },
+    {
+      "slug": "application-saas-multi-tenant",
+      "title": "Application SaaS multi-tenant : architecture et coûts",
+      "description": "Concevoir une app SaaS multi-tenant. Architecture, isolation des données, pricing par tenant.",
+      "tags": [
+        "SaaS",
+        "Architecture",
+        "Technique"
+      ],
+      "keyword": "application SaaS multi-tenant",
       "publishedDate": "2026-03-13"
     }
   ],
