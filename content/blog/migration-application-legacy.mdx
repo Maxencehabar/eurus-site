@@ -1,0 +1,235 @@
+---
+title: "Migrer une application legacy : guide complet"
+description: "Stratégies pour moderniser une app vieillissante. Refactoring, réécriture, migration progressive — retour d'expérience terrain et méthode Eurus."
+date: "2026-03-14"
+author: "Eurus"
+tags: ["Migration", "Legacy", "Guide"]
+---
+
+Votre application a 8 ans. Elle tourne. Les utilisateurs s'en plaignent parfois, mais globalement "ça passe". Et puis un jour, votre hébergeur annonce la fin de support de PHP 7.4. Ou votre développeur historique part en retraite. Ou un audit de sécurité révèle 47 vulnérabilités critiques.
+
+Bienvenue dans le monde de la migration legacy.
+
+Selon une étude McKinsey, **environ 70% des logiciels utilisés par les entreprises du Fortune 500 ont plus de vingt ans**. Ce n'est pas un bug, c'est une réalité : les systèmes qui fonctionnent ont tendance à rester en place. Le problème, c'est qu'ils finissent toujours par devenir un frein.
+
+Chez Eurus, on accompagne régulièrement des entreprises dans cette transition. On a migré le backend DrMilou de PHP vers Java — trois mois de travail, mais les temps de réponse ont été divisés par quatre. On a aussi vu des projets échouer parce que l'équipe avait sous-estimé la complexité. Ce guide compile tout ce qu'on a appris.
+
+## Pourquoi les migrations legacy échouent (et comment éviter ça)
+
+Commençons par ce qui fâche. Une étude Forrester de 2024 révèle que **les entreprises consacrent jusqu'à 70% de leur budget IT à la maintenance de systèmes existants**. Autrement dit : pour chaque euro investi dans l'innovation, sept partent dans le maintien de l'existant.
+
+C'est un cercle vicieux. Plus on tarde à migrer, plus le système accumule de dette technique. Plus la dette technique s'accumule, plus la migration devient risquée. Et plus elle devient risquée, plus on la repousse.
+
+Le rapport IT-CISQ 2022 chiffre la dette technique accumulée aux États-Unis à **1 520 milliards de dollars**. Un chiffre abstrait, jusqu'à ce qu'on le ramène à l'échelle d'une entreprise : chaque ligne de code mal architecturée, chaque dépendance obsolète, chaque contournement "temporaire" qui dure depuis 2015.
+
+### Les trois signaux d'alarme
+
+Comment savoir si c'est le moment ? En général, il y a trois signaux :
+
+**Premier signal : la vélocité s'effondre.** Ajouter une fonctionnalité simple prend des semaines. Les développeurs passent plus de temps à comprendre le code existant qu'à en écrire du nouveau. Les régressions se multiplient. Sur un projet qu'on a repris l'année dernière, l'équipe mettait en moyenne 12 jours pour livrer un changement qui aurait dû prendre 2 jours. Le ratio temps-valeur ne faisait plus sens.
+
+**Deuxième signal : les incidents de production.** Selon ITIC (2024), **91% des moyennes et grandes entreprises estiment qu'une heure d'indisponibilité leur coûte plus de 300 000 dollars**. Quand votre système legacy commence à tomber régulièrement, le calcul économique bascule vite.
+
+**Troisième signal : la sécurité.** IBM estime le coût moyen d'une fuite de données à **4,45 millions de dollars**. Et ce chiffre explose quand l'infrastructure impliquée est obsolète. Les systèmes legacy sont des cibles privilégiées : ils ne reçoivent plus de correctifs, leurs dépendances sont vulnérables, et les équipes qui les maintiennent sont souvent débordées.
+
+## Les trois stratégies de migration
+
+Il n'existe pas de solution unique. Selon la situation, on peut opter pour trois approches distinctes — et parfois les combiner.
+
+### 1. Le refactoring progressif (strangler fig pattern)
+
+C'est l'approche qu'on privilégie chez Eurus pour les applications métier critiques. Le principe : au lieu de tout reconstruire d'un coup, on "étrangle" progressivement l'ancien système en remplaçant ses composants un par un.
+
+Concrètement, ça donne quoi ?
+
+On commence par identifier les frontières du système. Où sont les points d'entrée ? Quelles sont les dépendances entre modules ? Ensuite, on crée une façade qui intercepte les requêtes. Cette façade route vers l'ancien système par défaut, mais permet de rediriger progressivement vers de nouveaux composants.
+
+Sur DrMilou, on a procédé exactement comme ça. Le frontend Angular parlait à une API PHP. On a introduit une couche intermédiaire qui routait les appels. Pendant trois mois, chaque sprint, on migrait un endpoint. L'ancien code PHP cohabitait avec le nouveau backend Java. Les vétérinaires n'ont jamais vu de coupure de service.
+
+**Avantages :**
+- Risque maîtrisé (rollback facile)
+- Livraison de valeur continue
+- L'équipe apprend le nouveau stack progressivement
+
+**Inconvénients :**
+- Plus long qu'une réécriture totale (en apparence)
+- Complexité temporaire de maintenir deux systèmes
+- Nécessite une architecture bien découpée au départ
+
+### 2. La réécriture complète (big bang)
+
+Parfois, il n'y a pas le choix. Le système est tellement enchevêtré, tellement dépendant de technologies obsolètes, qu'une migration progressive coûterait plus cher que repartir de zéro.
+
+C'est rare, mais ça arrive. On a vu une application de gestion de stocks construite sur Microsoft Access avec des macros VBA datant de 2008. Personne dans l'entreprise ne comprenait plus comment ça fonctionnait. Le seul développeur qui connaissait le système était parti depuis cinq ans. Dans ce cas, oui, on a recommandé une réécriture.
+
+Mais attention : les réécritures complètes ont un taux d'échec élevé. Joel Spolsky (co-fondateur de Stack Overflow) a écrit un article célèbre sur le sujet : "Things You Should Never Do, Part I". Son argument : quand on réécrit, on perd toute la connaissance accumulée dans le code existant — y compris les corrections de bugs obscurs qu'on ne comprend plus mais qui sont essentielles.
+
+**Quand c'est justifié :**
+- Le système actuel est complètement incompréhensible
+- Les technologies sont mortes (pas de support, pas de communauté)
+- L'entreprise change fondamentalement de modèle métier
+
+**Comment minimiser les risques :**
+- Extraire d'abord toutes les règles métier (tests, documentation, interviews)
+- Commencer par un MVP qui couvre 80% des cas d'usage
+- Faire cohabiter les deux systèmes pendant une période de transition
+
+### 3. L'encapsulation (lift and shift)
+
+Et si on changeait juste l'infrastructure sans toucher au code ?
+
+C'est l'approche "lift and shift" : on prend l'application telle quelle et on la déplace vers une nouvelle infrastructure. Par exemple, d'un serveur physique vers le cloud, ou d'une VM vers des conteneurs.
+
+Cette stratégie ne résout pas les problèmes fondamentaux du code, mais elle peut débloquer certaines situations :
+
+- Fin de support d'un système d'exploitation
+- Besoin de scalabilité que l'infrastructure actuelle ne permet pas
+- Contraintes réglementaires sur l'hébergement des données
+
+Une enquête Saritasa (2025) révèle que **62% des organisations utilisent encore des systèmes legacy, et 50% d'entre elles justifient ce choix par "le système actuel fonctionne encore"**. Le lift and shift permet de gagner du temps tout en préparant une modernisation plus profonde.
+
+## Le cas des systèmes critiques : banques, santé, gouvernement
+
+Certains secteurs sont particulièrement exposés. Selon Avato, **70% des banques mondiales reposent encore sur des systèmes legacy en 2025**. Et Reuters rapporte que **95% des transactions aux distributeurs automatiques sont traitées par des systèmes en COBOL**.
+
+Le problème ? Ces systèmes fonctionnent. Ils traitent des millions de transactions par jour, sans interruption. Mais ils deviennent impossibles à maintenir.
+
+Une étude citée par MoldStud indique que **60% des organisations utilisant COBOL déclarent que trouver des développeurs compétents est leur plus grand défi**. Les développeurs COBOL partent à la retraite. Les formations n'existent plus. Et les jeunes diplômés ne veulent pas travailler sur des technologies vieilles de 60 ans.
+
+Dans le secteur de la santé, HIMSS Analytics rapporte que **plus de 60% des hôpitaux américains utilisent des applications critiques sur des logiciels obsolètes**. Avec un coût moyen de fuite de données dans la santé estimé à 9,77 millions de dollars (HIPAA Journal), le risque n'est pas théorique.
+
+### Retour d'expérience : DrMilou
+
+DrMilou gère des milliers de dossiers animaux pour des cabinets vétérinaires. Quand on a repris le projet, le backend PHP commençait à montrer ses limites : temps de réponse en hausse, difficultés à scaler, dépendances de sécurité non maintenues.
+
+On aurait pu patcher. Mettre des rustines. Ça aurait tenu encore deux ou trois ans. Mais les vétérinaires ont des contraintes qu'on n'imaginait pas : connexion internet instable en zone rurale, PC sous Windows XP dans certains cabinets, urgences qui arrivent pendant qu'on tape une ordonnance. Le système devait être rapide. Vraiment rapide.
+
+La migration vers Java a pris trois mois. On a gardé la même base de données PostgreSQL, donc pas de migration de données complexe. On a réécrit chaque endpoint un par un, en commençant par les plus critiques (consultation de dossier, ordonnances). Les temps de réponse ont été divisés par quatre. Et surtout, on a une base de code maintenable pour les dix prochaines années.
+
+## Méthodologie de migration : notre approche en 6 étapes
+
+### Étape 1 : L'audit technique (1-2 semaines)
+
+Avant de migrer quoi que ce soit, il faut comprendre ce qu'on a. Ça paraît évident, mais c'est souvent négligé.
+
+On cartographie :
+- Les dépendances (versions, support, vulnérabilités)
+- Les points d'entrée (APIs, interfaces utilisateur, jobs batch)
+- Les flux de données (bases, fichiers, services externes)
+- Les zones de complexité (modules les plus modifiés, les plus buggés)
+
+L'outil qu'on utilise le plus : l'analyse du historique Git. Les fichiers modifiés le plus souvent sont généralement les plus problématiques. C'est là qu'on concentre l'effort.
+
+### Étape 2 : La définition du scope (1 semaine)
+
+Migrer tout n'est pas toujours nécessaire. Parfois, 20% du système génère 80% de la valeur — et des problèmes.
+
+On priorise selon trois critères :
+1. **Criticité métier** : qu'est-ce qui ferait mal si ça tombe ?
+2. **Risque technique** : qu'est-ce qui est le plus fragile ?
+3. **Effort de migration** : qu'est-ce qu'on peut migrer rapidement pour prouver le concept ?
+
+Notre règle d'or : un MVP en 6 semaines max. Au-delà, on perd le feedback terrain.
+
+### Étape 3 : La mise en place de l'infrastructure de test
+
+Avant de toucher au code, on s'assure qu'on peut vérifier que rien ne casse.
+
+Si le système legacy n'a pas de tests automatisés (spoiler : c'est souvent le cas), on en ajoute. Pas des tests unitaires exhaustifs — ça prendrait des mois. Des tests d'intégration sur les parcours critiques. On appelle ça les "tests de caractérisation" : ils capturent le comportement actuel du système, même si ce comportement est parfois bizarre.
+
+### Étape 4 : La migration par incrément
+
+C'est le cœur du travail. Chaque sprint, on migre un composant :
+
+1. On écrit les tests pour le composant existant
+2. On réécrit le composant dans la nouvelle stack
+3. On vérifie que les tests passent
+4. On déploie en parallèle (ancien et nouveau)
+5. On bascule progressivement le trafic
+6. On monitore les erreurs et les performances
+
+Sur Youdy, on a dû refaire trois fois le système de notifications push avant de trouver le bon équilibre entre engagement et spam. La migration n'est pas linéaire. On apprend en faisant.
+
+### Étape 5 : La période de cohabitation
+
+Les deux systèmes tournent en parallèle. C'est inconfortable, mais nécessaire.
+
+Pendant cette phase, on surveille :
+- Les divergences de comportement entre ancien et nouveau
+- Les performances comparées
+- Les retours utilisateurs
+
+Un bug de timezone sur Youdy a fait que les utilisateurs au Canada recevaient leurs rappels à 3h du matin. Leçon : toujours stocker en UTC. Ce genre de problème n'apparaît qu'en production, avec de vrais utilisateurs.
+
+### Étape 6 : La décommission de l'ancien système
+
+La partie la plus satisfaisante : supprimer l'ancien code.
+
+Mais attention à ne pas aller trop vite. On garde l'ancien système en lecture seule pendant quelques semaines, au cas où. On archive les données selon les exigences légales. Et on documente tout ce qu'on a appris pour la prochaine fois.
+
+## Les erreurs qu'on voit (trop) souvent
+
+En trois ans chez Eurus, j'ai vu des projets échouer non pas à cause du code, mais parce que personne n'avait vraiment compris le besoin métier. Voici les erreurs les plus fréquentes :
+
+**Sous-estimer la connaissance métier enfouie dans le code.** Ce if/else bizarre qui ne semble servir à rien ? Il gère un cas particulier qu'un client important a demandé en 2019. Le supprimer casse son workflow.
+
+**Vouloir tout améliorer en même temps.** Migration + refonte UX + nouvelles fonctionnalités = recette pour l'échec. On migre d'abord à iso-fonctionnalité. On améliore ensuite.
+
+**Négliger la formation des équipes.** Migrer vers une nouvelle stack ne sert à rien si personne ne sait la maintenir. On prévoit toujours du temps pour la montée en compétences.
+
+**Oublier les données.** La migration de code est une chose. La migration de données en est une autre. Les formats changent, les contraintes d'intégrité évoluent, les historiques doivent être préservés.
+
+## Combien ça coûte ?
+
+La question qui fâche. Réponse honnête : ça dépend.
+
+Un refactoring progressif sur 6 mois pour une application métier de taille moyenne (disons 50 000 lignes de code, une équipe de 3-4 développeurs) coûte généralement entre 150 000 et 300 000 euros.
+
+Une réécriture complète peut aller du simple au triple, selon la complexité fonctionnelle.
+
+Mais le vrai calcul, c'est le coût de ne pas migrer :
+
+| Scénario | Coût annuel estimé |
+|----------|-------------------|
+| Maintenance legacy (70% du budget IT) | Variable selon taille |
+| Une heure d'indisponibilité | 300 000 €+ (ITIC) |
+| Fuite de données | 4,45 M€ moyen (IBM) |
+| Perte d'un développeur clé | 6-12 mois de recrutement |
+
+J'ai appris à mes dépens qu'un client qui dit "c'est urgent" et un client qui paie pour l'urgence, c'est pas pareil. Mais quand les vrais coûts du legacy sont sur la table, la décision devient souvent évidente.
+
+## FAQ : vos questions sur la migration legacy
+
+### Peut-on migrer sans interruption de service ?
+
+Oui, avec une approche strangler fig bien exécutée. Les deux systèmes cohabitent, le trafic bascule progressivement. C'est plus long, mais les utilisateurs ne voient rien.
+
+### Faut-il migrer vers le cloud en même temps ?
+
+Pas nécessairement. On peut séparer les deux projets. Mais si l'infrastructure actuelle est aussi obsolète que le code, combiner les deux peut faire sens économiquement.
+
+### Comment convaincre la direction ?
+
+Les chiffres. Coût de maintenance actuel, risques de sécurité quantifiés, dette technique estimée. Et surtout : le coût d'opportunité. Chaque euro dépensé en maintenance est un euro non investi dans l'innovation.
+
+### Combien de temps ça prend ?
+
+Pour une application de taille moyenne, comptez 3 à 9 mois selon l'approche. Un MVP fonctionnel peut souvent être livré en 6 semaines.
+
+### Faut-il changer de technologie ?
+
+Pas forcément. Parfois, le problème n'est pas le langage mais l'architecture. On peut moderniser une application PHP ou Java sans changer de stack — en améliorant la structure, les tests, les dépendances.
+
+## Conclusion : le meilleur moment pour migrer, c'était hier
+
+La dette technique, comme la dette financière, s'accumule avec des intérêts. Plus on attend, plus ça coûte.
+
+Si votre système legacy fonctionne encore, félicitations — vous avez le luxe de planifier. Si des signaux d'alarme apparaissent (performances, sécurité, départs de développeurs), c'est le moment d'agir.
+
+Chez Eurus, on accompagne ces transitions avec une approche pragmatique : on ne migre pas pour le plaisir de migrer, mais pour débloquer de la valeur métier. Parfois, ça veut dire un refactoring progressif sur six mois. Parfois, une réécriture ciblée sur un module critique.
+
+Vous avez un système legacy qui vous préoccupe ? [Parlons-en](/contact). On peut commencer par un audit technique gratuit pour évaluer la situation et proposer une feuille de route réaliste.
+
+---
+
+*Cet article fait partie de notre série sur la modernisation d'applications. Retrouvez aussi nos guides sur [l'architecture SaaS multi-tenant](/blog/application-saas-multi-tenant) et [l'intégration CRM](/blog/integration-crm-application-mobile).*

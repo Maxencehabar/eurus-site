@@ -1,17 +1,6 @@
 {
   "queue": [
     {
-      "slug": "migration-application-legacy",
-      "title": "Migrer une application legacy : guide complet",
-      "description": "Stratégies pour moderniser une app vieillissante. Refactoring, réécriture, migration progressive.",
-      "tags": [
-        "Migration",
-        "Legacy",
-        "Guide"
-      ],
-      "keyword": "migration application legacy"
-    },
-    {
       "slug": "application-ecommerce-mobile",
       "title": "Application e-commerce mobile : fonctionnalités essentielles",
       "description": "Créer une app e-commerce performante. Panier, paiement, catalogue, UX mobile-first.",
@@ -235,7 +224,19 @@
       ],
       "keyword": "application SaaS multi-tenant",
       "publishedDate": "2026-03-13"
+    },
+    {
+      "slug": "migration-application-legacy",
+      "title": "Migrer une application legacy : guide complet",
+      "description": "Stratégies pour moderniser une app vieillissante. Refactoring, réécriture, migration progressive.",
+      "tags": [
+        "Migration",
+        "Legacy",
+        "Guide"
+      ],
+      "keyword": "migration application legacy",
+      "publishedDate": "2026-03-14"
     }
   ],
-  "lastPublished": "2026-03-13"
+  "lastPublished": "2026-03-14"
 }
