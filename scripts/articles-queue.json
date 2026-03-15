@@ -1,17 +1,6 @@
 {
   "queue": [
     {
-      "slug": "application-sante-healthtech",
-      "title": "Application santé (healthtech) : réglementation et développement",
-      "description": "Développer une app santé conforme. RGPD santé, HDS, certification, cas d'usage.",
-      "tags": [
-        "Healthtech",
-        "Réglementation",
-        "Mobile"
-      ],
-      "keyword": "application santé healthtech"
-    },
-    {
       "slug": "realite-augmentee-application-mobile",
       "title": "Réalité augmentée (AR) dans les applications mobiles",
       "description": "Intégrer l'AR dans votre app. ARKit, ARCore, cas d'usage retail, industrie, gaming.",
@@ -179,6 +168,14 @@
   ],
   "published": [
     {
+      "slug": "application-sante-healthtech",
+      "title": "Application santé (healthtech) : réglementation et développement",
+      "description": "Développer une app santé conforme. RGPD santé, HDS, certification, cas d'usage.",
+      "tags": ["Healthtech", "Réglementation", "Mobile"],
+      "keyword": "application santé healthtech",
+      "publishedDate": "2026-03-15"
+    },
+    {
       "slug": "intelligence-artificielle-application-mobile",
       "title": "IA dans les applications mobiles : cas d'usage et intégration",
       "description": "Intégrer l'intelligence artificielle dans votre app. Chatbots, ML, vision, recommandations.",
@@ -239,5 +236,5 @@
       "publishedDate": "2026-03-14"
     }
   ],
-  "lastPublished": "2026-03-14"
+  "lastPublished": "2026-03-15"
 }
