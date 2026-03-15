@@ -1,17 +1,6 @@
 {
   "queue": [
     {
-      "slug": "realite-augmentee-application-mobile",
-      "title": "Réalité augmentée (AR) dans les applications mobiles",
-      "description": "Intégrer l'AR dans votre app. ARKit, ARCore, cas d'usage retail, industrie, gaming.",
-      "tags": [
-        "AR",
-        "Innovation",
-        "Mobile"
-      ],
-      "keyword": "réalité augmentée application mobile"
-    },
-    {
       "slug": "commandes-vocales-application",
       "title": "Commandes vocales et interface voice-first",
       "description": "Ajouter la voix à votre app. Speech-to-text, assistants vocaux, UX conversationnelle.",
@@ -167,6 +156,14 @@
     }
   ],
   "published": [
+    {
+      "slug": "realite-augmentee-application-mobile",
+      "title": "Réalité augmentée (AR) dans les applications mobiles",
+      "description": "Intégrer l'AR dans votre app. ARKit, ARCore, cas d'usage retail, industrie, gaming.",
+      "tags": ["AR", "Innovation", "Mobile"],
+      "keyword": "réalité augmentée application mobile",
+      "publishedDate": "2026-03-15"
+    },
     {
       "slug": "application-sante-healthtech",
       "title": "Application santé (healthtech) : réglementation et développement",
