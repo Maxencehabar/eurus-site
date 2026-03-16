@@ -6,9 +6,9 @@ author: "Eurus"
 tags: ["Technique", "Fonctionnalité", "Mobile"]
 ---
 
-"On veut juste un petit chat entre utilisateurs." Cette phrase, on l'entend souvent. Et à chaque fois, je souris intérieurement. Parce qu'un chat, ce n'est jamais "juste" un chat. C'est de la synchronisation temps réel, de la gestion d'état complexe, des notifications push, du stockage de messages, de la modération, des indicateurs de présence... Bref, c'est un projet dans le projet.
+"On veut juste un petit chat entre utilisateurs." Cette phrase, on l'entend souvent. Et à chaque fois, je souris intérieurement. Parce qu'un chat, ce n'est jamais "juste" un chat. C'est de la synchronisation temps réel, de la gestion d'état complexe, des [notifications push](/blog/notifications-push-guide-complet), du stockage de messages, de la modération, des indicateurs de présence... Bref, c'est un projet dans le projet.
 
-Chez Eurus, on a implémenté des systèmes de messagerie sur plusieurs applications. Sur Youdy notamment, le chat est au cœur de l'expérience utilisateur. Et croyez-moi, on a appris beaucoup de choses — souvent à la dure.
+Chez Eurus, on a implémenté des systèmes de messagerie sur plusieurs applications. Sur Youdy notamment, le chat est au cœur de l'[expérience utilisateur](/blog/design-ux-application-mobile). Et croyez-moi, on a appris beaucoup de choses — souvent à la dure.
 
 ## Pourquoi le temps réel change tout
 
@@ -16,7 +16,7 @@ Un chat, ce n'est pas comme afficher une liste d'articles. Quand l'utilisateur A
 
 Cette contrainte de temps réel bouleverse l'architecture classique requête-réponse qu'on utilise pour 90% des fonctionnalités d'une app. Au lieu de demander au serveur "est-ce qu'il y a du nouveau ?", le serveur doit pouvoir dire au client "hey, nouveau message !".
 
-C'est là qu'interviennent les WebSockets, le Server-Sent Events, ou les solutions managées comme Firebase. Chacune a ses avantages et ses compromis.
+C'est là qu'interviennent les WebSockets, le Server-Sent Events, ou les solutions managées comme [Firebase](/blog/backend-as-a-service-comparatif). Chacune a ses avantages et ses compromis.
 
 ## Les trois grandes approches
 
@@ -154,11 +154,11 @@ Pour la plupart des projets, voici ce qu'on recommande chez Eurus :
 
 **Chat comme produit principal** : Architecture custom avec WebSocket (Socket.io côté Node.js, ou équivalent), Redis pour le pub/sub, PostgreSQL pour la persistence. C'est plus de travail mais vous gardez le contrôle total.
 
-**Cross-platform Flutter** : Le package `cloud_firestore` s'intègre parfaitement. Pour du custom, `socket_io_client` fonctionne bien.
+**[Cross-platform](/blog/native-vs-cross-platform) Flutter** : Le package `cloud_firestore` s'intègre parfaitement. Pour du custom, `socket_io_client` fonctionne bien.
 
 ## Les fonctionnalités souvent oubliées
 
-Au-delà du chat basique, voici des fonctionnalités que les utilisateurs attendent souvent sans qu'on les ait prévues au cahier des charges :
+Au-delà du chat basique, voici des fonctionnalités que les utilisateurs attendent souvent sans qu'on les ait prévues au [cahier des charges](/blog/cahier-des-charges-application-mobile) :
 
 ### La recherche dans les messages
 

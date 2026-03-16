@@ -8,7 +8,7 @@ tags: ["Technique", "Mobile", "Engagement"]
 
 J'ai une confession à vous faire. Sur Youdy, on a dû refaire 3 fois le système de notifications push avant de trouver le bon équilibre entre engagement et spam. Trois fois. Et à chaque itération, on pensait avoir trouvé la bonne formule.
 
-La première version ? Trop agressive. Les utilisateurs désactivaient les notifs au bout de 48h. La deuxième ? Tellement timide qu'on avait l'impression de parler dans le vide. La troisième... on a enfin compris que les notifications push, c'est pas juste une feature technique. C'est une conversation.
+La [première version](/blog/quest-ce-quun-mvp) ? Trop agressive. Les utilisateurs désactivaient les notifs au bout de 48h. La deuxième ? Tellement timide qu'on avait l'impression de parler dans le vide. La troisième... on a enfin compris que les notifications push, c'est pas juste une feature technique. C'est une conversation.
 
 Et c'est exactement ce dont on va parler aujourd'hui.
 
@@ -34,7 +34,7 @@ FCM est devenu le standard de facto pour Android. Google a fait un travail remar
 4. Quand vous voulez envoyer une notif, vous appelez l'API FCM avec le token
 5. FCM se charge de router le message vers le bon appareil
 
-Concrètement, l'intégration côté app prend une demi-journée pour un dev expérimenté. Le SDK Firebase gère la plupart de la complexité. Ce qui prend du temps, c'est tout le reste : la gestion des tokens (ils peuvent changer !), le stockage côté serveur, la logique d'envoi.
+Concrètement, l'intégration côté app prend une demi-journée pour un dev expérimenté. Le SDK [Firebase](/blog/backend-as-a-service-comparatif) gère la plupart de la complexité. Ce qui prend du temps, c'est tout le reste : la gestion des tokens (ils peuvent changer !), le stockage côté serveur, la logique d'envoi.
 
 Un point souvent négligé : les tokens FCM peuvent être invalidés. Quand un utilisateur désinstalle et réinstalle l'app, quand il change de téléphone, quand il efface les données de l'app. Votre backend doit gérer ces cas proprement, sinon vous allez envoyer des notifs dans le vide et fausser vos métriques.
 

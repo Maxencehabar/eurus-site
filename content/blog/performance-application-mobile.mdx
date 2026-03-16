@@ -46,7 +46,7 @@ Le jank est vicieux parce qu'il n'est pas toujours visible dans les métriques c
 
 Quand l'utilisateur tape sur un bouton, combien de temps avant qu'il se passe quelque chose ? Idéalement, moins de 100ms pour un feedback visuel (le bouton change d'état), moins de 1 seconde pour l'action complète.
 
-Sur Youdy, une application sociale qu'on a construite, on a intégré un assistant IA. La première version prenait 2 à 3 secondes pour répondre — techniquement correct, mais l'expérience était frustrante. On a appris que les utilisateurs préfèrent des réponses imparfaites mais rapides plutôt que parfaites mais lentes. Du coup, on a implémenté du streaming : la réponse s'affiche progressivement, mot par mot. Techniquement, le temps total est le même. Perceptuellement, c'est instantané.
+Sur Youdy, une application sociale qu'on a construite, on a intégré un assistant IA. La [première version](/blog/quest-ce-quun-mvp) prenait 2 à 3 secondes pour répondre — techniquement correct, mais l'expérience était frustrante. On a appris que les utilisateurs préfèrent des réponses imparfaites mais rapides plutôt que parfaites mais lentes. Du coup, on a implémenté du streaming : la réponse s'affiche progressivement, mot par mot. Techniquement, le temps total est le même. Perceptuellement, c'est instantané.
 
 ### Consommation mémoire et batterie
 
@@ -120,13 +120,13 @@ Chez Eurus, on garde toujours un ou deux devices d'entrée de gamme pour les tes
 
 L'inverse existe aussi. Des apps ultra-rapides mais avec une expérience dégradée. Pas d'animations parce que "ça ralentit". Pas de feedback visuel parce que "ça consomme des ressources". Une UI minimaliste à l'extrême parce que "chaque pixel compte".
 
-La performance est un moyen, pas une fin. Le but est une expérience utilisateur fluide, pas des métriques techniques parfaites. Une animation bien faite à 60fps améliore la perception de rapidité, même si elle ajoute techniquement quelques millisecondes.
+La performance est un moyen, pas une fin. Le but est une [expérience utilisateur](/blog/design-ux-application-mobile) fluide, pas des métriques techniques parfaites. Une animation bien faite à 60fps améliore la perception de rapidité, même si elle ajoute techniquement quelques millisecondes.
 
 ### Ne pas monitorer en production
 
 Les performances en développement et en production, ce n'est pas la même chose. Vos serveurs de dev ne sont pas sous la même charge que la prod. Vos utilisateurs de test ne se comportent pas comme les vrais utilisateurs.
 
-Mettez en place du monitoring de performance dès le lancement. Firebase Performance, New Relic, Datadog — peu importe l'outil, l'important est d'avoir de la visibilité sur ce qui se passe réellement.
+Mettez en place du monitoring de performance dès le lancement. [Firebase](/blog/backend-as-a-service-comparatif) Performance, New Relic, Datadog — peu importe l'outil, l'important est d'avoir de la visibilité sur ce qui se passe réellement.
 
 ## Checklist performance avant lancement
 

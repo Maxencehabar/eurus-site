@@ -22,7 +22,7 @@ C'est aussi gagner du temps. Un déploiement manuel prend facilement une à deux
 
 Et surtout, c'est permettre des releases fréquentes. Quand déployer coûte cher en temps et en énergie, on accumule les features et on fait des grosses releases risquées. Quand c'est automatique, on peut shipper plusieurs fois par semaine sans stress.
 
-Sur Getaway, on a choisi de mettre en place un pipeline CI/CD complet dès le début du projet. C'était un investissement de quelques jours, mais sur la durée du projet, on a économisé des semaines. Et surtout, on a pu itérer rapidement avec les beta-testeurs.
+Sur Getaway, on a choisi de mettre en place un pipeline CI/CD complet dès le début du projet. C'était un investissement de quelques jours, mais sur la [durée du projet](/blog/combien-temps-developper-application), on a économisé des semaines. Et surtout, on a pu itérer rapidement avec les beta-testeurs.
 
 ## Les briques d'un pipeline mobile
 
@@ -50,7 +50,7 @@ Une fois le code validé, on passe au déploiement :
 
 **Upload vers les stores** — Le pipeline pousse directement vers App Store Connect et Google Play Console. Pas besoin d'ouvrir un navigateur.
 
-**Distribution beta** — Avant la prod, on peut distribuer aux testeurs via TestFlight, Firebase App Distribution, ou les tracks de test Google Play.
+**Distribution beta** — Avant la prod, on peut distribuer aux testeurs via TestFlight, [Firebase](/blog/backend-as-a-service-comparatif) App Distribution, ou les tracks de test Google Play.
 
 **Notifications** — L'équipe est notifiée du succès ou de l'échec. Slack, email, whatever works.
 
@@ -332,7 +332,7 @@ Même une petite suite de tests (quelques tests unitaires sur la logique métier
 
 ### Comment gérer les apps avec du code natif custom ?
 
-Si votre app Flutter ou React Native inclut du code natif (plugins custom, modules spécifiques), le pipeline doit gérer les deux environnements. C'est plus complexe mais tout à fait faisable.
+Si votre app [Flutter ou React Native](/blog/flutter-vs-react-native-2026) inclut du code natif (plugins custom, modules spécifiques), le pipeline doit gérer les deux environnements. C'est plus complexe mais tout à fait faisable.
 
 La clé : des jobs séparés pour iOS et Android, avec les dépendances natives (CocoaPods, Gradle) correctement configurées.
 

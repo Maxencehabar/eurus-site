@@ -18,7 +18,7 @@ La plupart des développeurs pensent "réseau d'abord". On code une requête API
 
 Regardez les chiffres : en France, 15% du temps mobile se passe en zone de couverture dégradée ou inexistante. Métro, ascenseur, zones rurales, avions, frontières... Le réseau n'est jamais garanti à 100%.
 
-En pensant offline-first, vous inversez la logique. Les données locales deviennent la source de vérité. Le serveur est là pour synchroniser, pas pour tout gérer. Concrètement, ça change tout pour l'expérience utilisateur.
+En pensant offline-first, vous inversez la logique. Les données locales deviennent la source de vérité. Le serveur est là pour synchroniser, pas pour tout gérer. Concrètement, ça change tout pour l'[expérience utilisateur](/blog/design-ux-application-mobile).
 
 ### Les bénéfices immédiats
 
@@ -143,7 +143,7 @@ Les outils existent pour tester différents scénarios :
 
 **Android Emulator** — Settings réseau intégrés pour throttle et simulation de déconnexion.
 
-**Chrome DevTools** — Pour les PWA, on peut simuler offline et différents profils réseau.
+**Chrome DevTools** — Pour les [PWA](/blog/pwa-vs-application-native), on peut simuler offline et différents profils réseau.
 
 **Charles Proxy / Proxyman** — Pour intercepter et manipuler les requêtes, simuler des timeouts, des erreurs 5xx.
 
@@ -187,7 +187,7 @@ Le temps réel (WebSocket, Firebase Realtime, etc.) reste pertinent pour les don
 
 L'approche hybride fonctionne bien : le cache local pour la base, le temps réel pour les mises à jour. L'utilisateur voit immédiatement les données cachées, puis elles se mettent à jour en live quand c'est possible.
 
-Sur Youdy, on a dû refaire 3 fois le système de notifications push avant de trouver le bon équilibre entre engagement et spam. Mais on a aussi appris que les utilisateurs préfèrent des réponses imparfaites mais rapides plutôt que parfaites mais lentes. Le cache local qui répond en 50ms bat toujours l'API qui répond en 500ms, même si les données sont légèrement décalées.
+Sur Youdy, on a dû refaire 3 fois le système de [notifications push](/blog/notifications-push-guide-complet) avant de trouver le bon équilibre entre engagement et spam. Mais on a aussi appris que les utilisateurs préfèrent des réponses imparfaites mais rapides plutôt que parfaites mais lentes. Le cache local qui répond en 50ms bat toujours l'API qui répond en 500ms, même si les données sont légèrement décalées.
 
 ## Les outils et frameworks qui simplifient la vie
 

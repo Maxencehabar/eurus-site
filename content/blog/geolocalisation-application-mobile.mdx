@@ -8,7 +8,7 @@ tags: ["Technique", "Fonctionnalité", "Mobile"]
 
 Vous voulez que votre app sache où se trouve l'utilisateur. Ça a l'air simple dit comme ça. Mais entre le GPS qui rame à l'intérieur des bâtiments, les permissions iOS qui changent tous les six mois, et les utilisateurs qui désactivent leur localisation par réflexe, vous allez vite comprendre que la géolocalisation, c'est un monde à part.
 
-Chez Eurus, on intègre la géolocalisation dans à peu près un projet sur trois. Applications de livraison, services de proximité, apps de voyage, outils métier avec tournées... Les cas d'usage sont partout. Selon Statista, le nombre d'utilisateurs mobiles atteindra 7,49 milliards en 2025, et une grande partie d'entre eux s'attend à ce que les apps exploitent intelligemment leur position. Et à chaque fois, les mêmes questions reviennent : quelle précision ? Quel SDK de cartes ? Comment gérer la batterie ? Est-ce qu'on respecte le RGPD ?
+Chez Eurus, on intègre la géolocalisation dans à peu près un projet sur trois. Applications de livraison, services de proximité, apps de voyage, outils métier avec tournées... Les cas d'usage sont partout. Selon Statista, le nombre d'utilisateurs mobiles atteindra 7,49 milliards en 2025, et une grande partie d'entre eux s'attend à ce que les apps exploitent intelligemment leur position. Et à chaque fois, les mêmes questions reviennent : quelle précision ? Quel SDK de cartes ? Comment gérer la batterie ? Est-ce qu'on respecte le [RGPD](/blog/rgpd-application-mobile) ?
 
 Cet article, c'est tout ce qu'on a appris en intégrant la géolocalisation dans des dizaines d'apps. Pas de blabla théorique, juste du concret.
 
@@ -32,7 +32,7 @@ En pratique, les systèmes modernes combinent tout ça. iOS et Android fusionnen
 
 Sur Android, vous avez un contrôle assez fin sur le provider de localisation. Vous pouvez demander explicitement du GPS haute précision ou vous contenter du réseau. Sur iOS, c'est plus opaque : vous demandez une précision (kCLLocationAccuracyBest, kCLLocationAccuracyKilometer, etc.) et le système se débrouille.
 
-Concrètement, ça veut dire que votre code sera différent sur les deux plateformes. Si vous utilisez Flutter ou React Native, les plugins abstraient une partie de cette complexité, mais pas tout.
+Concrètement, ça veut dire que votre code sera différent sur les deux plateformes. Si vous utilisez [Flutter ou React Native](/blog/flutter-vs-react-native-2026), les plugins abstraient une partie de cette complexité, mais pas tout.
 
 ## Choisir son SDK de cartes : Google Maps, Mapbox ou autre chose ?
 

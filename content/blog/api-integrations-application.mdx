@@ -8,7 +8,7 @@ tags: ["Technique", "API", "Intégration"]
 
 # API et intégrations : connecter votre application à vos outils métier
 
-Votre application ne vit pas en isolation. Pour offrir une expérience utilisateur complète et automatiser vos process, elle doit communiquer avec vos outils existants : CRM, système de paiement, plateforme d'emailing, analytics... C'est là qu'interviennent les **API** (Application Programming Interface).
+Votre application ne vit pas en isolation. Pour offrir une [expérience utilisateur](/blog/design-ux-application-mobile) complète et automatiser vos process, elle doit communiquer avec vos outils existants : CRM, système de paiement, plateforme d'emailing, analytics... C'est là qu'interviennent les **API** (Application Programming Interface).
 
 Dans ce guide, nous allons voir concrètement comment intégrer des API tierces dans votre application, quelles sont les bonnes pratiques, et comment éviter les pièges courants.
 
@@ -93,7 +93,7 @@ Les webhooks fonctionnent à l'inverse des API classiques : au lieu que vous app
 
 | Fonction | Services recommandés |
 |----------|---------------------|
-| Notifications push | Firebase Cloud Messaging, OneSignal |
+| [Notifications push](/blog/notifications-push-guide-complet) | Firebase Cloud Messaging, OneSignal |
 | Analytics | Firebase Analytics, Amplitude |
 | Crash reporting | Sentry, Crashlytics |
 | Authentification sociale | Sign in with Apple, Google Sign-In |
@@ -265,7 +265,7 @@ Les données reçues d'une API peuvent être incorrectes ou malformées.
 Quand vous envoyez des données utilisateur à un service tiers, vous êtes responsable de la conformité.
 
 **Solution :** 
-- Vérifiez que le provider est conforme RGPD
+- Vérifiez que le provider est conforme [RGPD](/blog/rgpd-application-mobile)
 - Signez un DPA (Data Processing Agreement)
 - N'envoyez que les données strictement nécessaires
 
@@ -354,7 +354,7 @@ Les intégrations API ne sont pas un "nice to have" — elles sont essentielles 
 **Les points clés à retenir :**
 - Choisissez des services avec une bonne documentation et des SDK pour votre stack
 - Gérez toujours les erreurs et prévoyez des fallbacks
-- Sécurisez vos clés API et respectez la conformité RGPD
+- Sécurisez vos clés API et respectez la [conformité RGPD](/blog/rgpd-application-mobile)
 - Commencez simple et itérez selon les besoins
 
 ---
@@ -363,4 +363,4 @@ Les intégrations API ne sont pas un "nice to have" — elles sont essentielles 
 
 Chez Eurus, nous avons intégré des dizaines d'API pour nos clients : Stripe, HubSpot, Salesforce, Slack, Google Workspace, et bien d'autres. Nous savons quels pièges éviter et comment construire des intégrations solides.
 
-**Vous avez un projet d'application nécessitant des intégrations ?** [Contactez-nous](/contact) pour en discuter. Nous vous aiderons à définir les intégrations prioritaires et à estimer le budget nécessaire.
+**Vous avez un projet d'application nécessitant des intégrations ?** [Contactez-nous](/contact) pour en discuter. Nous vous aiderons à définir les intégrations prioritaires et à [estimer le budget](/blog/cout-application-mobile) nécessaire.

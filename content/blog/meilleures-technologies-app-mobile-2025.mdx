@@ -16,9 +16,9 @@ Le marché du développement mobile a considérablement mûri. Selon TekRevol (2
 
 Concrètement, on distingue trois grandes approches pour développer une application mobile.
 
-**Le développement natif** consiste à coder séparément pour iOS (avec Swift) et Android (avec Kotlin). C'est l'approche historique, celle qui offre le maximum de performance et d'accès aux fonctionnalités du téléphone. Mais c'est aussi la plus coûteuse, puisqu'il faut maintenir deux codebases distinctes.
+**Le [développement natif](/blog/native-vs-cross-platform)** consiste à coder séparément pour iOS (avec Swift) et Android (avec Kotlin). C'est l'approche historique, celle qui offre le maximum de performance et d'accès aux fonctionnalités du téléphone. Mais c'est aussi la plus coûteuse, puisqu'il faut maintenir deux codebases distinctes.
 
-**Le développement cross-platform** permet d'écrire un seul code qui fonctionne sur les deux plateformes. Flutter (Google) et React Native (Meta) dominent ce segment. L'avantage est évident : moins de code, moins de coûts, des mises à jour synchronisées. Les inconvénients ? Des compromis parfois sur les performances ou l'accès à certaines fonctionnalités natives.
+**Le développement [cross-platform](/blog/native-vs-cross-platform)** permet d'écrire un seul code qui fonctionne sur les deux plateformes. Flutter (Google) et React Native (Meta) dominent ce segment. L'avantage est évident : moins de code, moins de coûts, des mises à jour synchronisées. Les inconvénients ? Des compromis parfois sur les performances ou l'accès à certaines fonctionnalités natives.
 
 **Les solutions hybrides et no-code** représentent la troisième voie. Des outils comme Ionic, Capacitor ou les plateformes no-code (Bubble, FlutterFlow) permettent de créer des apps rapidement. Parfait pour un MVP, plus limité pour une application ambitieuse.
 
@@ -30,7 +30,7 @@ Commençons par le haut du panier. Swift pour iOS, Kotlin pour Android. Ce sont 
 
 Le développement natif s'impose dans plusieurs situations précises. D'abord, quand votre application a besoin d'exploiter intensivement le hardware du téléphone. Je pense à la réalité augmentée, au traitement vidéo en temps réel, aux applications de santé qui utilisent les capteurs biométriques.
 
-Ensuite, quand l'expérience utilisateur doit être irréprochable. Les applications natives respectent parfaitement les guidelines de chaque plateforme. Les animations sont fluides, les transitions sont naturelles, le "feel" est celui attendu par l'utilisateur.
+Ensuite, quand l'[expérience utilisateur](/blog/design-ux-application-mobile) doit être irréprochable. Les applications natives respectent parfaitement les guidelines de chaque plateforme. Les animations sont fluides, les transitions sont naturelles, le "feel" est celui attendu par l'utilisateur.
 
 Enfin, quand vous ciblez une seule plateforme. Si 90% de vos utilisateurs sont sur iOS, développer en natif Swift fait sens. Vous n'avez pas besoin de payer le coût du cross-platform pour une audience que vous ne ciblez pas.
 
@@ -94,7 +94,7 @@ On parle beaucoup du frontend mobile, mais le backend est tout aussi déterminan
 
 ### Firebase et les solutions BaaS
 
-Firebase reste la solution la plus rapide pour démarrer. Authentication, base de données temps réel, stockage, notifications push — tout est intégré, tout fonctionne ensemble. Pour un MVP, c'est imbattable.
+Firebase reste la solution la plus rapide pour démarrer. Authentication, base de données temps réel, stockage, [notifications push](/blog/notifications-push-guide-complet) — tout est intégré, tout fonctionne ensemble. Pour un MVP, c'est imbattable.
 
 Mais Firebase a ses limites. Le modèle de pricing peut devenir coûteux à l'échelle. Les requêtes complexes sont difficiles avec Firestore. Et vous êtes dépendant de l'écosystème Google.
 
@@ -114,7 +114,7 @@ Assez de théorie. Comment prendre une décision concrète pour votre projet ?
 
 ### Le budget et le time-to-market
 
-Si vous devez lancer vite avec un budget limité, le cross-platform s'impose. Flutter ou React Native vous permettront de sortir sur les deux stores avec une seule équipe.
+Si vous devez lancer vite avec un budget limité, le cross-platform s'impose. [Flutter ou React Native](/blog/flutter-vs-react-native-2026) vous permettront de sortir sur les deux stores avec une seule équipe.
 
 Si le budget n'est pas une contrainte et que vous visez l'excellence sur chaque plateforme, le natif reste la référence.
 

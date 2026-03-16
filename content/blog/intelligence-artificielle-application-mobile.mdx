@@ -40,7 +40,7 @@ Sur une app e-commerce de taille moyenne, un système de recommandation bien cal
 
 **Comment ça marche concrètement ?** Deux approches principales existent. Le filtrage collaboratif analyse les comportements de tous les utilisateurs pour trouver des patterns ("les gens qui ont aimé X aiment aussi Y"). Le filtrage basé sur le contenu analyse les caractéristiques des items ("ce produit est rouge et en coton, comme celui que tu as acheté").
 
-En pratique, les meilleurs systèmes combinent les deux avec des modèles hybrides. Firebase ML offre des fonctionnalités de recommandation prêtes à l'emploi. Pour du sur-mesure, TensorFlow Lite permet d'exécuter des modèles directement sur le device.
+En pratique, les meilleurs systèmes combinent les deux avec des modèles hybrides. [Firebase](/blog/backend-as-a-service-comparatif) ML offre des fonctionnalités de recommandation prêtes à l'emploi. Pour du sur-mesure, TensorFlow Lite permet d'exécuter des modèles directement sur le device.
 
 ### 3. La vision par ordinateur
 
@@ -96,7 +96,7 @@ Le modèle s'exécute directement sur le smartphone de l'utilisateur.
 
 **Inconvénients.** Modèles limités en taille (quelques centaines de Mo maximum), consommation batterie, performances variables selon les devices.
 
-Avec Getaway, notre app voyage en Flutter, on a choisi Flutter pour le cross-platform. Le plus gros challenge ? Gérer les photos offline quand les voyageurs sont dans des zones sans réseau. On a implémenté un système de classification d'images directement sur le device avec TensorFlow Lite. Pas de connexion nécessaire, les photos sont tagées automatiquement.
+Avec Getaway, notre app voyage en Flutter, on a choisi Flutter pour le [cross-platform](/blog/native-vs-cross-platform). Le plus gros challenge ? Gérer les photos offline quand les voyageurs sont dans des zones sans réseau. On a implémenté un système de classification d'images directement sur le device avec TensorFlow Lite. Pas de connexion nécessaire, les photos sont tagées automatiquement.
 
 ### Architecture hybride
 
@@ -133,11 +133,11 @@ J'ai vu une startup passer de 200$ à 15 000$/mois de frais OpenAI en trois mois
 
 L'IA se trompe. Toujours. La question est : que se passe-t-il quand elle se trompe ?
 
-Sur Youdy, on a dû refaire 3 fois le système de notifications push avant de trouver le bon équilibre entre engagement et spam. L'IA de ciblage proposait d'envoyer des notifications à des moments où les utilisateurs étaient engagés... sauf que "engagé à 3h du matin" ne signifie pas "veut recevoir des notifications à 3h du matin". Un bug de timezone sur Youdy a fait que les utilisateurs au Canada recevaient leurs rappels à 3h du mat. Leçon : toujours stocker en UTC, et toujours tester les edge cases.
+Sur Youdy, on a dû refaire 3 fois le système de [notifications push](/blog/notifications-push-guide-complet) avant de trouver le bon équilibre entre engagement et spam. L'IA de ciblage proposait d'envoyer des notifications à des moments où les utilisateurs étaient engagés... sauf que "engagé à 3h du matin" ne signifie pas "veut recevoir des notifications à 3h du matin". Un bug de timezone sur Youdy a fait que les utilisateurs au Canada recevaient leurs rappels à 3h du mat. Leçon : toujours stocker en UTC, et toujours tester les edge cases.
 
 ### Piège n°4 : Négliger la confidentialité
 
-Envoyer les données de vos utilisateurs à des API tierces pose des questions RGPD. Surtout pour des données sensibles comme la santé, les finances, ou les conversations privées.
+Envoyer les données de vos utilisateurs à des API tierces pose des questions [RGPD](/blog/rgpd-application-mobile). Surtout pour des données sensibles comme la santé, les finances, ou les conversations privées.
 
 Pour les cas critiques, privilégiez l'exécution on-device ou des solutions avec des garanties de confidentialité (comme les API de Google avec processing sur leur infrastructure européenne).
 
@@ -159,7 +159,7 @@ Avant de former vos propres modèles, testez les API existantes. OpenAI, Anthrop
 
 ### Étape 3 : Prototyper rapidement
 
-Notre règle des 6 semaines s'applique aussi à l'IA. Un POC fonctionnel en quelques semaines permet de valider l'intérêt utilisateur avant d'investir lourdement. Utilisez des outils no-code comme Langflow ou Flowise pour tester des chaînes de prompts sans écrire de code.
+Notre règle des 6 semaines s'applique aussi à l'IA. Un POC fonctionnel en quelques semaines permet de valider l'intérêt utilisateur avant d'investir lourdement. Utilisez des outils [no-code](/blog/no-code-vs-developpement-custom) comme Langflow ou Flowise pour tester des chaînes de prompts sans écrire de code.
 
 ### Étape 4 : Mesurer, itérer, optimiser
 

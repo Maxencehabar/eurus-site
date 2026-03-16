@@ -24,7 +24,7 @@ En fait, la vraie question n'est pas "vertical ou horizontal" mais "à quel mome
 
 On a migré le backend DrMilou de PHP vers Java. 3 mois de travail, mais les temps de réponse ont été divisés par 4. Ce qu'on ne dit pas souvent, c'est qu'on aurait pu éviter cette migration si on avait fait les bons choix architecturaux dès le départ.
 
-Le problème, c'est que quand vous lancez un MVP, vous êtes focalisé sur la validation du concept. Normal. Vous voulez aller vite, prouver que votre idée a du potentiel, et vous ne voulez pas perdre du temps sur de l'infrastructure "au cas où ça marche". Je comprends totalement ce raisonnement. Mais il y a une nuance importante.
+Le problème, c'est que quand vous lancez un MVP, vous êtes focalisé sur la [validation du concept](/blog/quest-ce-quun-mvp). Normal. Vous voulez aller vite, prouver que votre idée a du potentiel, et vous ne voulez pas perdre du temps sur de l'infrastructure "au cas où ça marche". Je comprends totalement ce raisonnement. Mais il y a une nuance importante.
 
 Certaines décisions architecturales sont très difficiles à changer une fois que vous avez des utilisateurs. Choisir entre une base de données SQL ou NoSQL, définir comment vous structurez vos APIs, décider si vous utilisez des microservices ou un monolithe — ces choix ont des implications à long terme. Pas besoin de sur-ingénierer votre MVP, mais il faut au moins réfléchir à ces questions.
 
@@ -100,7 +100,7 @@ Au lieu de communications synchrones entre vos services, passez à un modèle é
 
 Ça découple vos services et permet à chacun de scaler indépendamment. Si votre service de notifications est submergé, les autres services continuent de fonctionner normalement — les événements s'accumulent dans la file d'attente et sont traités quand le service rattrape son retard.
 
-Sur Youdy, on a dû refaire 3 fois le système de notifications push avant de trouver le bon équilibre entre engagement et spam. Mais au-delà de l'aspect produit, c'est l'architecture event-driven qui nous a permis de gérer les pics de notifications sans impacter le reste de l'application.
+Sur Youdy, on a dû refaire 3 fois le système de [notifications push](/blog/notifications-push-guide-complet) avant de trouver le bon équilibre entre engagement et spam. Mais au-delà de l'aspect produit, c'est l'architecture event-driven qui nous a permis de gérer les pics de notifications sans impacter le reste de l'application.
 
 ### CQRS : séparer lecture et écriture
 
@@ -158,7 +158,7 @@ La scalabilité n'est pas un problème que vous réglez une fois pour toutes. C'
 
 L'important, c'est de construire sur des fondations solides et de garder la scalabilité en tête dès le début du projet. Pas besoin de sur-ingénierer un MVP, mais les décisions architecturales fondamentales doivent être prises en connaissance de cause.
 
-Chez Eurus, on accompagne nos clients de la première version à la millionième utilisateur. On sait que chaque phase a ses défis spécifiques, et on adapte notre approche en conséquence.
+Chez Eurus, on accompagne nos clients de la [première version](/blog/quest-ce-quun-mvp) à la millionième utilisateur. On sait que chaque phase a ses défis spécifiques, et on adapte notre approche en conséquence.
 
 ## FAQ
 

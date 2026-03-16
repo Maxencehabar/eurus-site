@@ -14,7 +14,7 @@ Chez Eurus, on a accompagné des projets healthtech. Et la leçon qu'on en tire,
 
 ## Qu'est-ce qu'une "donnée de santé" au sens du RGPD ?
 
-Première surprise pour beaucoup de porteurs de projet : la définition est plus large qu'on ne le croit. Le RGPD considère comme donnée de santé toute information relative à la santé physique ou mentale d'une personne, passée, présente ou future. Ça inclut évidemment les diagnostics et prescriptions. Mais aussi le nombre de pas quotidiens, les cycles de sommeil, les mensurations, ou même... le fait qu'une personne utilise votre app.
+Première surprise pour beaucoup de porteurs de projet : la définition est plus large qu'on ne le croit. Le [RGPD](/blog/rgpd-application-mobile) considère comme donnée de santé toute information relative à la santé physique ou mentale d'une personne, passée, présente ou future. Ça inclut évidemment les diagnostics et prescriptions. Mais aussi le nombre de pas quotidiens, les cycles de sommeil, les mensurations, ou même... le fait qu'une personne utilise votre app.
 
 Concrètement, si votre application permet de déduire l'état de santé d'un utilisateur, vous traitez des données de santé. Une app de suivi de règles ? Données de santé. Une app de coaching sportif qui mesure la fréquence cardiaque ? Données de santé. Un journal de humeur pour la santé mentale ? Données de santé.
 
@@ -75,7 +75,7 @@ La conformité n'est pas une couche qu'on ajoute après coup. Elle doit être in
 
 ### Privacy by Design : pas juste un buzzword
 
-Le RGPD impose la "protection des données dès la conception". En pratique, ça signifie :
+Le RGPD impose la "[protection des données](/blog/securite-application-mobile) dès la conception". En pratique, ça signifie :
 
 **Minimisation des données** : ne collectez que ce dont vous avez strictement besoin. Sur DrMilou, l'app vétérinaire qu'on maintient, on a passé deux sprints complets à supprimer des champs "au cas où" dans les formulaires. Résultat : moins de données = moins de risques = moins de conformité à gérer.
 
@@ -123,7 +123,7 @@ L'obligation HDS s'applique au "traitement" des données de santé. Ça inclut :
 - Les outils d'analytics si les données ne sont pas correctement anonymisées
 - Les systèmes de log si ils contiennent des données de santé
 
-On a vu un projet utiliser un hébergeur HDS pour la prod... et Firebase (non-HDS) pour les crash reports, qui incluaient l'état de l'utilisateur au moment du crash. Données de santé non-HDS = non-conformité.
+On a vu un projet utiliser un hébergeur HDS pour la prod... et [Firebase](/blog/backend-as-a-service-comparatif) (non-HDS) pour les crash reports, qui incluaient l'état de l'utilisateur au moment du crash. Données de santé non-HDS = non-conformité.
 
 ### Erreur 4 : Croire qu'une startup est exemptée
 
@@ -162,7 +162,7 @@ Développer une app santé conforme, c'est **minimum 6 mois de travail** pour un
 | Poste | Fourchette |
 |-------|------------|
 | Développement technique (app + back) | 80 000 - 200 000 € |
-| Conformité RGPD/HDS | 15 000 - 40 000 € |
+| [Conformité RGPD](/blog/rgpd-application-mobile)/HDS | 15 000 - 40 000 € |
 | Certification dispositif médical (si applicable) | 150 000 - 500 000 € |
 | Hébergement HDS (annuel) | 8 000 - 30 000 € |
 | Maintenance conformité (annuel) | 10 000 - 25 000 € |

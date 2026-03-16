@@ -14,7 +14,7 @@ Chez Eurus, on gère des applications en production depuis des années. DrMilou,
 
 La question peut paraître évidente, mais elle mérite qu'on s'y arrête. Parce que non, ce n'est pas juste "ajouter des features".
 
-**La sécurité d'abord.** Les failles de sécurité, ça ne prévient pas. Les librairies que vous utilisez aujourd'hui auront des vulnérabilités demain. Si vous ne mettez pas à jour, vous exposez vos utilisateurs. Et juridiquement, avec le RGPD, c'est votre responsabilité.
+**La sécurité d'abord.** Les failles de sécurité, ça ne prévient pas. Les librairies que vous utilisez aujourd'hui auront des vulnérabilités demain. Si vous ne mettez pas à jour, vous exposez vos utilisateurs. Et juridiquement, avec le [RGPD](/blog/rgpd-application-mobile), c'est votre responsabilité.
 
 **La compatibilité ensuite.** Apple sort une nouvelle version d'iOS chaque année. Google fait pareil avec Android. À chaque fois, des APIs changent, des comportements évoluent, des fonctionnalités sont dépréciées. Une app qui n'est pas mise à jour finit par casser. Pas "peut-être". Certainement.
 
@@ -80,7 +80,7 @@ Et c'est là que Google brille. Vous pouvez faire un **staged rollout** : déplo
 
 Pourquoi c'est génial ? Parce que si un bug critique passe en prod, vous n'avez impacté que 5% de votre base. Vous pouvez stopper le rollout, corriger, et repartir.
 
-Chez Eurus, c'est systématique pour toute mise à jour significative. On démarre à 10%, on attend 24-48h en surveillant les crashs via Firebase Crashlytics, puis on augmente progressivement. Sur DrMilou, cette approche nous a sauvés plus d'une fois. Une fois, un bug de synchronisation n'apparaissait que sur certaines configurations réseau. À 10%, on l'a détecté sur quelques dizaines d'utilisateurs. À 100%, ça aurait été des milliers de vétérinaires impactés en pleine journée de consultations.
+Chez Eurus, c'est systématique pour toute mise à jour significative. On démarre à 10%, on attend 24-48h en surveillant les crashs via [Firebase](/blog/backend-as-a-service-comparatif) Crashlytics, puis on augmente progressivement. Sur DrMilou, cette approche nous a sauvés plus d'une fois. Une fois, un bug de synchronisation n'apparaissait que sur certaines configurations réseau. À 10%, on l'a détecté sur quelques dizaines d'utilisateurs. À 100%, ça aurait été des milliers de vétérinaires impactés en pleine journée de consultations.
 
 ## Le process de mise à jour sur l'App Store
 
@@ -145,7 +145,7 @@ fastlane android release
 
 Derrière, Fastlane incrémente le build number, compile, signe, uploade, et nous ping sur Slack. Ce qui prenait 45 minutes manuellement prend maintenant 5 minutes d'attente passive.
 
-L'investissement initial pour configurer Fastlane, c'est une demi-journée à une journée. Mais sur une app avec des mises à jour régulières, ça se rentabilise en quelques semaines.
+L'[investissement initial](/blog/cout-application-mobile) pour configurer Fastlane, c'est une demi-journée à une journée. Mais sur une app avec des mises à jour régulières, ça se rentabilise en quelques semaines.
 
 ## Les mises à jour silencieuses et le hot reload
 

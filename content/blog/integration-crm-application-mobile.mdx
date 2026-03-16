@@ -82,7 +82,7 @@ Le temps réel (via webhooks) convient quand vos utilisateurs ont besoin de donn
 
 Le batch convient pour les synchronisations massives où la latence est acceptable. Importer tous les contacts chaque nuit. Mettre à jour les statistiques de ventes. Générer des rapports hebdomadaires.
 
-En pratique, la plupart des intégrations combinent les deux. Webhooks pour les événements critiques, batch pour le reste. Sur Youdy, on a dû refaire 3 fois le système de notifications push avant de trouver le bon équilibre entre engagement et spam. La leçon s'applique aussi aux syncs CRM : trop de temps réel, c'est du bruit ; pas assez, c'est de la frustration.
+En pratique, la plupart des intégrations combinent les deux. Webhooks pour les événements critiques, batch pour le reste. Sur Youdy, on a dû refaire 3 fois le système de [notifications push](/blog/notifications-push-guide-complet) avant de trouver le bon équilibre entre engagement et spam. La leçon s'applique aussi aux syncs CRM : trop de temps réel, c'est du bruit ; pas assez, c'est de la frustration.
 
 ### Gestion des conflits de synchronisation
 
@@ -252,7 +252,7 @@ Les tokens OAuth doivent être stockés de manière sécurisée. Pas en clair da
 
 ### Minimisation des données
 
-Le RGPD impose de ne collecter que les données strictement nécessaires. Avant de synchroniser un champ du CRM vers votre app, posez-vous la question : l'utilisateur mobile en a-t-il vraiment besoin ?
+Le [RGPD](/blog/rgpd-application-mobile) impose de ne collecter que les données strictement nécessaires. Avant de synchroniser un champ du CRM vers votre app, posez-vous la question : l'utilisateur mobile en a-t-il vraiment besoin ?
 
 Si vos commerciaux n'ont pas besoin de voir les revenus annuels des clients dans l'app, ne synchronisez pas ce champ. Moins de données = moins de risques.
 
@@ -260,7 +260,7 @@ Si vos commerciaux n'ont pas besoin de voir les revenus annuels des clients dans
 
 Un utilisateur demande la suppression de ses données ? Vous devez pouvoir les effacer du CRM ET de votre app. Documentez le processus et automatisez-le autant que possible.
 
-Selon une étude Gartner (2025), 78% des entreprises utilisant un CRM ont dû adapter leurs processus pour la conformité RGPD. Ne sous-estimez pas cet aspect.
+Selon une étude Gartner (2025), 78% des entreprises utilisant un CRM ont dû adapter leurs processus pour la [conformité RGPD](/blog/rgpd-application-mobile). Ne sous-estimez pas cet aspect.
 
 ## Performance et monitoring
 
@@ -314,7 +314,7 @@ Comptez entre 2 et 6 semaines de développement pour une intégration CRM standa
 - Tests d'intégration
 - Documentation
 
-Notre règle d'or chez Eurus : un MVP en 6 semaines max. Au-delà, on perd le feedback terrain. Pour une intégration CRM, on vise la première version fonctionnelle en 3 semaines, puis on itère.
+Notre règle d'or chez Eurus : un MVP en 6 semaines max. Au-delà, on perd le feedback terrain. Pour une intégration CRM, on vise la [première version](/blog/quest-ce-quun-mvp) fonctionnelle en 3 semaines, puis on itère.
 
 ### Coûts d'infrastructure
 

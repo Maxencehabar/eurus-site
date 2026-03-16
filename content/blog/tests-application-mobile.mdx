@@ -61,7 +61,7 @@ Les outils qu'on utilise :
 - **Flutter** : `integration_test` (natif) ou Patrol pour des tests plus avancés
 - **iOS** : XCUITest
 - **Android** : Espresso
-- **Cross-platform** : Appium, Detox, Maestro
+- **[Cross-platform](/blog/native-vs-cross-platform)** : Appium, Detox, Maestro
 
 Le piège des tests E2E ? Ils sont lents et fragiles. Un bouton qui change de position, un texte qui change, et votre test échoue. Du coup, on les réserve aux **parcours critiques** : inscription, achat, fonctionnalités core.
 
@@ -148,7 +148,7 @@ Les tests avant release, c'est bien. Mais votre app va rencontrer des situations
 
 ### Crash reporting
 
-**Firebase Crashlytics** est devenu le standard. Gratuit, facile à intégrer, et surtout : il regroupe les crashs par cause, vous montre les stack traces, et vous alerte sur les nouvelles régressions.
+**[Firebase](/blog/backend-as-a-service-comparatif) Crashlytics** est devenu le standard. Gratuit, facile à intégrer, et surtout : il regroupe les crashs par cause, vous montre les stack traces, et vous alerte sur les nouvelles régressions.
 
 Ce qu'on surveille :
 - **Crash-free rate** : on vise >99.5%. En dessous, c'est une urgence.
@@ -217,7 +217,7 @@ Après des années de projets, voici les erreurs qu'on voit (et qu'on a faites) 
 
 ### Combien de temps consacrer aux tests ?
 
-Règle empirique : prévoyez 20-30% du temps de développement pour les tests. Sur un sprint de 2 semaines, ça fait 2-3 jours. C'est un investissement qui se rentabilise en moins de bugs en production et moins de temps passé à débugger.
+Règle empirique : prévoyez 20-30% du [temps de développement](/blog/combien-temps-developper-application) pour les tests. Sur un sprint de 2 semaines, ça fait 2-3 jours. C'est un investissement qui se rentabilise en moins de bugs en production et moins de temps passé à débugger.
 
 ### Faut-il tester sur émulateur ou sur vraies devices ?
 

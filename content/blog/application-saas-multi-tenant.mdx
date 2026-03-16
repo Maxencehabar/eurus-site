@@ -209,7 +209,7 @@ On a vu des bugs subtils où un tenant récupérait le cache d'un autre parce qu
 
 ## Coûts réels d'une architecture multi-tenant
 
-Parlons argent. Combien coûte réellement une architecture multi-tenant ?
+Parlons argent. [Combien coûte](/blog/cout-application-mobile) réellement une architecture multi-tenant ?
 
 ### Coûts de développement initial
 
@@ -325,7 +325,7 @@ Chaque action doit être tracée avec le tenant_id. En cas de litige ou d'audit,
 
 ### Conformité RGPD
 
-Le RGPD impose le droit à l'effacement. En multi-tenant, supprimer toutes les données d'un tenant doit être trivial. Concevez votre schéma pour permettre un `DELETE FROM ... WHERE tenant_id = ?` propre.
+Le [RGPD](/blog/rgpd-application-mobile) impose le droit à l'effacement. En multi-tenant, supprimer toutes les données d'un tenant doit être trivial. Concevez votre schéma pour permettre un `DELETE FROM ... WHERE tenant_id = ?` propre.
 
 ### Certifications sectorielles
 
@@ -377,7 +377,7 @@ Mesurez l'usage réel : requêtes, stockage, bande passante. Agrégez par tenant
 
 ## Conclusion : le multi-tenant, un investissement rentable
 
-L'architecture multi-tenant demande un investissement initial plus important qu'une app single-tenant. Mais à partir de quelques dizaines de clients, les économies d'échelle sont massives. Et surtout, vous débloquez des modèles business (freemium, self-service, usage-based) impossibles autrement.
+L'architecture multi-tenant demande un [investissement initial](/blog/cout-application-mobile) plus important qu'une app single-tenant. Mais à partir de quelques dizaines de clients, les économies d'échelle sont massives. Et surtout, vous débloquez des modèles business (freemium, self-service, usage-based) impossibles autrement.
 
 Les clés du succès : isolation des données irréprochable, système de configuration flexible, monitoring proactif, et tests automatisés à chaque niveau.
 
