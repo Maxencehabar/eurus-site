@@ -1,17 +1,6 @@
 {
   "queue": [
     {
-      "slug": "commandes-vocales-application",
-      "title": "Commandes vocales et interface voice-first",
-      "description": "Ajouter la voix à votre app. Speech-to-text, assistants vocaux, UX conversationnelle.",
-      "tags": [
-        "Voice",
-        "UX",
-        "Innovation"
-      ],
-      "keyword": "commandes vocales application"
-    },
-    {
       "slug": "gamification-application-mobile",
       "title": "Gamification : augmenter l'engagement de votre application",
       "description": "Mécaniques de jeu pour fidéliser vos utilisateurs. Points, badges, classements, streaks.",
@@ -160,7 +149,11 @@
       "slug": "realite-augmentee-application-mobile",
       "title": "Réalité augmentée (AR) dans les applications mobiles",
       "description": "Intégrer l'AR dans votre app. ARKit, ARCore, cas d'usage retail, industrie, gaming.",
-      "tags": ["AR", "Innovation", "Mobile"],
+      "tags": [
+        "AR",
+        "Innovation",
+        "Mobile"
+      ],
       "keyword": "réalité augmentée application mobile",
       "publishedDate": "2026-03-15"
     },
@@ -168,7 +161,11 @@
       "slug": "application-sante-healthtech",
       "title": "Application santé (healthtech) : réglementation et développement",
       "description": "Développer une app santé conforme. RGPD santé, HDS, certification, cas d'usage.",
-      "tags": ["Healthtech", "Réglementation", "Mobile"],
+      "tags": [
+        "Healthtech",
+        "Réglementation",
+        "Mobile"
+      ],
       "keyword": "application santé healthtech",
       "publishedDate": "2026-03-15"
     },
@@ -231,7 +228,19 @@
       ],
       "keyword": "application e-commerce mobile",
       "publishedDate": "2026-03-14"
+    },
+    {
+      "slug": "commandes-vocales-application",
+      "title": "Commandes vocales et interface voice-first",
+      "description": "Ajouter la voix à votre app. Speech-to-text, assistants vocaux, UX conversationnelle.",
+      "tags": [
+        "Voice",
+        "UX",
+        "Innovation"
+      ],
+      "keyword": "commandes vocales application",
+      "publishedDate": "2026-03-16"
     }
   ],
-  "lastPublished": "2026-03-15"
+  "lastPublished": "2026-03-16"
 }
