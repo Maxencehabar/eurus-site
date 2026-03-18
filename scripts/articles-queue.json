@@ -1,17 +1,6 @@
 {
   "queue": [
     {
-      "slug": "gamification-application-mobile",
-      "title": "Gamification : augmenter l'engagement de votre application",
-      "description": "Mécaniques de jeu pour fidéliser vos utilisateurs. Points, badges, classements, streaks.",
-      "tags": [
-        "Gamification",
-        "Engagement",
-        "UX"
-      ],
-      "keyword": "gamification application mobile"
-    },
-    {
       "slug": "application-iot-objets-connectes",
       "title": "Applications IoT : connecter objets et mobile",
       "description": "Développer une app pour objets connectés. Bluetooth, MQTT, protocoles, cas d'usage.",
@@ -240,7 +229,19 @@
       ],
       "keyword": "commandes vocales application",
       "publishedDate": "2026-03-16"
+    },
+    {
+      "slug": "gamification-application-mobile",
+      "title": "Gamification : augmenter l'engagement de votre application",
+      "description": "Mécaniques de jeu pour fidéliser vos utilisateurs. Points, badges, classements, streaks.",
+      "tags": [
+        "Gamification",
+        "Engagement",
+        "UX"
+      ],
+      "keyword": "gamification application mobile",
+      "publishedDate": "2026-03-18"
     }
   ],
-  "lastPublished": "2026-03-16"
+  "lastPublished": "2026-03-18"
 }
