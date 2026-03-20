@@ -1,17 +1,6 @@
 {
   "queue": [
     {
-      "slug": "application-iot-objets-connectes",
-      "title": "Applications IoT : connecter objets et mobile",
-      "description": "Développer une app pour objets connectés. Bluetooth, MQTT, protocoles, cas d'usage.",
-      "tags": [
-        "IoT",
-        "Technique",
-        "Innovation"
-      ],
-      "keyword": "application IoT objets connectés"
-    },
-    {
       "slug": "internationalisation-application-multilingue",
       "title": "Internationalisation : rendre son application multilingue",
       "description": "Traduire et adapter votre app pour l'international. i18n, RTL, formats locaux.",
@@ -241,7 +230,19 @@
       ],
       "keyword": "gamification application mobile",
       "publishedDate": "2026-03-18"
+    },
+    {
+      "slug": "application-iot-objets-connectes",
+      "title": "Applications IoT : connecter objets et mobile",
+      "description": "Développer une app pour objets connectés. Bluetooth, MQTT, protocoles, cas d'usage.",
+      "tags": [
+        "IoT",
+        "Technique",
+        "Innovation"
+      ],
+      "keyword": "application IoT objets connectés",
+      "publishedDate": "2026-03-20"
     }
   ],
-  "lastPublished": "2026-03-18"
+  "lastPublished": "2026-03-20"
 }
