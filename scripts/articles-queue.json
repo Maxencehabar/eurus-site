@@ -1,17 +1,6 @@
 {
   "queue": [
     {
-      "slug": "internationalisation-application-multilingue",
-      "title": "Internationalisation : rendre son application multilingue",
-      "description": "Traduire et adapter votre app pour l'international. i18n, RTL, formats locaux.",
-      "tags": [
-        "i18n",
-        "International",
-        "Guide"
-      ],
-      "keyword": "internationalisation application multilingue"
-    },
-    {
       "slug": "dark-mode-implementation",
       "title": "Dark mode : implémentation et bonnes pratiques",
       "description": "Ajouter le mode sombre à votre app. Design system, accessibilité, préférences système.",
@@ -242,7 +231,19 @@
       ],
       "keyword": "application IoT objets connectés",
       "publishedDate": "2026-03-20"
+    },
+    {
+      "slug": "internationalisation-application-multilingue",
+      "title": "Internationalisation : rendre son application multilingue",
+      "description": "Traduire et adapter votre app pour l'international. i18n, RTL, formats locaux.",
+      "tags": [
+        "i18n",
+        "International",
+        "Guide"
+      ],
+      "keyword": "internationalisation application multilingue",
+      "publishedDate": "2026-03-23"
     }
   ],
-  "lastPublished": "2026-03-20"
+  "lastPublished": "2026-03-23"
 }
