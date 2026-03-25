@@ -1,17 +1,6 @@
 {
   "queue": [
     {
-      "slug": "dark-mode-implementation",
-      "title": "Dark mode : implémentation et bonnes pratiques",
-      "description": "Ajouter le mode sombre à votre app. Design system, accessibilité, préférences système.",
-      "tags": [
-        "Design",
-        "UX",
-        "Technique"
-      ],
-      "keyword": "dark mode application mobile"
-    },
-    {
       "slug": "synchronisation-offline-avancee",
       "title": "Synchronisation offline avancée : gestion des conflits",
       "description": "Stratégies de sync pour apps offline-first. Conflict resolution, CRDT, eventual consistency.",
@@ -243,7 +232,19 @@
       ],
       "keyword": "internationalisation application multilingue",
       "publishedDate": "2026-03-23"
+    },
+    {
+      "slug": "dark-mode-implementation",
+      "title": "Dark mode : implémentation et bonnes pratiques",
+      "description": "Ajouter le mode sombre à votre app. Design system, accessibilité, préférences système.",
+      "tags": [
+        "Design",
+        "UX",
+        "Technique"
+      ],
+      "keyword": "dark mode application mobile",
+      "publishedDate": "2026-03-25"
     }
   ],
-  "lastPublished": "2026-03-23"
+  "lastPublished": "2026-03-25"
 }

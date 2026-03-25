@@ -1,0 +1,362 @@
+---
+title: "Dark mode : implémentation et bonnes pratiques"
+description: "Guide complet pour ajouter le mode sombre à votre application. Design system, accessibilité, gestion des préférences système et pièges à éviter."
+date: "2026-03-25"
+author: "Eurus"
+tags: ["Design", "UX", "Technique"]
+---
+
+Le dark mode n'est plus une option. C'est une attente. En 2025, 82% des utilisateurs de smartphone ont activé le mode sombre sur leur appareil (source : Earthweb, 2024). Chez Eurus, on a implémenté le dark mode sur une dizaine d'applications ces deux dernières années. Et chaque fois, c'est la même histoire : ce qui semble simple en surface cache une complexité réelle. Couleurs qui ne fonctionnent pas, contrastes illisibles, images qui flashent — on a tout vu.
+
+Ce guide partage notre expérience terrain. Pas de théorie abstraite, mais des solutions concrètes aux problèmes que vous allez rencontrer. On va couvrir l'architecture technique, les erreurs de design à éviter, et surtout comment implémenter un dark mode qui améliore vraiment l'expérience de vos utilisateurs.
+
+## Pourquoi le dark mode est devenu incontournable
+
+Commençons par les faits. Selon une étude Gitnux de 2024, 82,3% des utilisateurs iOS 17 ont activé le mode sombre à l'échelle du système. Sur Android 14, ce taux atteint 76,5% (Q1 2024). Ce n'est plus une niche — c'est la majorité.
+
+Mais au-delà des chiffres, pourquoi cet engouement ?
+
+### L'argument batterie, vraiment ?
+
+On entend souvent que le dark mode économise la batterie. C'est vrai. Sur les écrans OLED, afficher du noir signifie éteindre les pixels. Une étude Purdue University a mesuré jusqu'à 47% d'économie de batterie en mode sombre sur des applications à fond blanc. Sur Getaway, notre app de voyage en Flutter, on a constaté une amélioration de 25-30% d'autonomie lors des longues sessions de navigation — significatif quand vos utilisateurs sont en mode avion dans un train.
+
+Mais attention : sur les écrans LCD, l'économie est négligeable voire nulle. Le rétroéclairage reste allumé quelle que soit la couleur affichée. Donc si votre app cible principalement des appareils d'entrée de gamme (souvent LCD), l'argument batterie ne tient pas.
+
+### Le vrai driver : le confort visuel
+
+En fait, la vraie raison du succès du dark mode, c'est le confort. 70% des utilisateurs activent le mode sombre après 18h (source : Android Authority, 2024). Dans un environnement peu éclairé, un écran blanc à pleine luminosité, c'est agressif. On a tous vécu ce moment où on ouvre une app la nuit et on se prend un flash en pleine figure.
+
+Sur DrMilou, notre application pour vétérinaires, le feedback a été unanime : les praticiens qui consultent les dossiers en salle d'examen (souvent avec un éclairage tamisé pour calmer les animaux) adorent le dark mode. Ce n'est pas du gadget — c'est fonctionnel.
+
+## Architecture technique : les fondations
+
+Avant de parler couleurs, parlons architecture. Comment structurer votre code pour supporter proprement deux modes d'affichage ?
+
+### Le principe du design token
+
+Oubliez les couleurs en dur. Si vous avez `backgroundColor: '#FFFFFF'` dispersé dans votre code, vous êtes mal parti. L'approche moderne, c'est les design tokens — des variables sémantiques qui décrivent l'intention, pas la valeur.
+
+Au lieu de :
+```
+background: #FFFFFF  // light
+background: #121212  // dark
+```
+
+Pensez :
+```
+background-primary: var(--surface-primary)
+// où --surface-primary vaut #FFFFFF ou #121212 selon le thème
+```
+
+Concrètement, votre architecture devrait ressembler à ça :
+
+| Niveau | Exemple | Description |
+|--------|---------|-------------|
+| Primitives | gray-900, blue-500 | Palette brute de couleurs |
+| Tokens sémantiques | surface-primary, text-secondary | Signification dans l'interface |
+| Composants | card-background, button-text | Application aux éléments UI |
+
+Sur Youdy, on a mis 3 semaines à migrer vers cette architecture après avoir lancé sans. Trois semaines. Sur une app de taille moyenne. Si vous démarrez un projet, faites-le bien dès le début.
+
+### Gestion des préférences système
+
+Votre app doit respecter les préférences système de l'utilisateur. C'est devenu une attente baseline.
+
+En CSS, c'est natif :
+```css
+@media (prefers-color-scheme: dark) {
+  :root {
+    --surface-primary: #121212;
+    --text-primary: #E1E1E1;
+  }
+}
+```
+
+En React Native / Flutter, vous avez des hooks dédiés. Sur Flutter :
+```dart
+final brightness = MediaQuery.of(context).platformBrightness;
+final isDarkMode = brightness == Brightness.dark;
+```
+
+Mais — et c'est important — offrez toujours un override manuel. Certains utilisateurs veulent votre app en mode sombre même si leur système est en clair (ou l'inverse). Les trois options standard : Clair, Sombre, Automatique (suit le système). Sur nos apps, "Automatique" est le choix par défaut, mais 35% des utilisateurs changent ce réglage manuellement.
+
+### Persistance du choix
+
+Un piège classique : l'utilisateur change le thème, ferme l'app, la rouvre... et c'est revenu au défaut. Stockez la préférence. SharedPreferences sur mobile, localStorage sur web, cookie si nécessaire pour le SSR.
+
+Sur Youdy, un bug de timezone a fait que les utilisateurs au Canada recevaient leurs rappels à 3h du mat. Leçon apprise : toujours tester les edge cases de persistance dans différents fuseaux horaires et contextes de fermeture d'app.
+
+## Design : les règles d'or (et les erreurs à éviter)
+
+Le dark mode, ce n'est pas "inverser les couleurs". C'est repenser votre design pour un nouveau contexte.
+
+### Règle #1 : pas de noir pur
+
+Le réflexe naturel : fond blanc → fond noir (#000000). Erreur. Le contraste blanc sur noir pur est trop violent, fatigue les yeux, et crée un effet de "halo" autour du texte.
+
+La recommandation Material Design : utilisez des gris foncés. Google suggère #121212 comme base. Chez Eurus, on utilise généralement #1A1A1A ou #0D0D0D selon les projets — légèrement plus sombre que les recommandations Google, mais avec des surfaces élevées (#242424, #2C2C2C) pour créer de la profondeur.
+
+### Règle #2 : hiérarchie par élévation, pas par teinte
+
+En mode clair, on crée la hiérarchie avec des ombres. En mode sombre, les ombres sont invisibles sur fond noir. La solution : des surfaces de plus en plus claires pour les éléments "élevés".
+
+| Élévation | Mode clair | Mode sombre |
+|-----------|------------|-------------|
+| 0dp (fond) | #FFFFFF | #121212 |
+| 1dp | shadow | #1E1E1E |
+| 2dp | shadow+ | #232323 |
+| 4dp | shadow++ | #272727 |
+| 8dp | shadow+++ | #2C2C2C |
+
+Une card en dark mode n'a pas d'ombre — elle a une couleur de fond plus claire que l'arrière-plan.
+
+### Règle #3 : attention aux contrastes
+
+Le WCAG recommande un ratio de contraste de 4.5:1 minimum pour le texte standard, 3:1 pour les grands textes. En dark mode, il faut vérifier chaque combinaison.
+
+Piège classique : votre bleu primaire (#2196F3) qui fonctionne parfaitement sur fond blanc (ratio 4.6:1) devient illisible sur fond #121212 (ratio 2.8:1). Solution : désaturer et éclaircir les couleurs en dark mode. Un bleu #64B5F6 ou #90CAF9 passera mieux.
+
+Comme le souligne Steve Schoger, co-auteur de Refactoring UI : "En dark mode, les couleurs saturées semblent vibrer et crier. Réduisez la saturation de 10-20% et augmentez la luminosité pour un rendu équilibré."
+
+### Règle #4 : les images, le grand oublié
+
+Les images à fond blanc deviennent des flashs aveuglants en dark mode. Plusieurs stratégies :
+
+**Icônes et illustrations vectorielles** : utilisez des couleurs adaptatives (currentColor en SVG, tint en natif).
+
+**Photos** : appliquez un léger overlay sombre (10-15% d'opacité) ou réduisez légèrement la luminosité.
+
+**Logos et assets brandés** : prévoyez des versions alternatives. Votre logo noir sur fond blanc ? Il disparaît en dark mode. Ayez une version blanche ou avec contour.
+
+Sur DrMilou, on a dû reprendre 47 icônes métier (seringues, pattes, stéthoscopes...) qui étaient en noir sur transparent. En dark mode, elles étaient invisibles. Leçon : anticipez dès la création des assets.
+
+## Implémentation pratique : cas concrets
+
+Passons au code. Voici comment on implémente le dark mode selon les stacks.
+
+### React / Next.js
+
+La stack moderne utilise CSS variables + contexte React :
+
+```jsx
+// ThemeProvider.jsx
+const ThemeContext = createContext();
+
+export function ThemeProvider({ children }) {
+  const [theme, setTheme] = useState(() => {
+    // Récupère la préférence stockée ou système
+    const stored = localStorage.getItem('theme');
+    if (stored) return stored;
+    return window.matchMedia('(prefers-color-scheme: dark)').matches 
+      ? 'dark' : 'light';
+  });
+
+  useEffect(() => {
+    document.documentElement.setAttribute('data-theme', theme);
+    localStorage.setItem('theme', theme);
+  }, [theme]);
+
+  return (
+    <ThemeContext.Provider value={{ theme, setTheme }}>
+      {children}
+    </ThemeContext.Provider>
+  );
+}
+```
+
+Et dans votre CSS :
+```css
+:root {
+  --bg-primary: #FFFFFF;
+  --text-primary: #1A1A1A;
+  --accent: #2563EB;
+}
+
+[data-theme="dark"] {
+  --bg-primary: #0F0F0F;
+  --text-primary: #E5E5E5;
+  --accent: #60A5FA;
+}
+```
+
+### Flutter
+
+Flutter a un excellent support natif du theming :
+
+```dart
+MaterialApp(
+  themeMode: ThemeMode.system, // ou .light, .dark
+  theme: ThemeData(
+    brightness: Brightness.light,
+    scaffoldBackgroundColor: Color(0xFFFAFAFA),
+    colorScheme: ColorScheme.light(
+      primary: Color(0xFF2563EB),
+      surface: Colors.white,
+    ),
+  ),
+  darkTheme: ThemeData(
+    brightness: Brightness.dark,
+    scaffoldBackgroundColor: Color(0xFF0F0F0F),
+    colorScheme: ColorScheme.dark(
+      primary: Color(0xFF60A5FA),
+      surface: Color(0xFF1A1A1A),
+    ),
+  ),
+)
+```
+
+Avec Getaway, on a choisi Flutter pour le cross-platform. Résultat : une seule codebase pour iOS et Android, et le dark mode a été implémenté en une journée grâce au système de thèmes natif. Le plus gros du travail ? Ajuster les assets et tester les edge cases.
+
+### React Native
+
+Avec React Native, combinez `useColorScheme` et un contexte :
+
+```jsx
+import { useColorScheme } from 'react-native';
+
+const colors = {
+  light: {
+    background: '#FFFFFF',
+    text: '#1A1A1A',
+    card: '#F5F5F5',
+  },
+  dark: {
+    background: '#0F0F0F',
+    text: '#E5E5E5',
+    card: '#1A1A1A',
+  },
+};
+
+function App() {
+  const colorScheme = useColorScheme();
+  const theme = colors[colorScheme ?? 'light'];
+  
+  return (
+    <ThemeContext.Provider value={theme}>
+      {/* ... */}
+    </ThemeContext.Provider>
+  );
+}
+```
+
+## Les pièges qu'on a rencontrés (pour que vous les évitiez)
+
+En 3 ans chez Eurus, j'ai vu des projets échouer non pas à cause du code, mais parce que personne n'avait vraiment anticipé les edge cases. Voici les pièges du dark mode qu'on a appris à nos dépens.
+
+### Le flash blanc au chargement
+
+Problème classique en web : l'utilisateur a choisi dark mode, mais pendant le chargement initial, il voit un flash blanc. Très désagréable.
+
+Solution : injectez le thème le plus tôt possible. En Next.js, utilisez un script inline dans `_document.js` qui s'exécute avant le rendu :
+
+```jsx
+<script dangerouslySetInnerHTML={{
+  __html: `
+    (function() {
+      const theme = localStorage.getItem('theme') || 
+        (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+      document.documentElement.setAttribute('data-theme', theme);
+    })();
+  `
+}} />
+```
+
+### Les inputs et formulaires système
+
+Les champs de formulaire ont souvent des styles par défaut du navigateur ou de l'OS. En dark mode, vous pouvez avoir un champ blanc avec du texte noir au milieu de votre interface sombre. 
+
+Pensez à styler explicitement :
+```css
+input, textarea, select {
+  background-color: var(--input-bg);
+  color: var(--text-primary);
+  border-color: var(--border-color);
+}
+```
+
+### Les webviews et contenu tiers
+
+Si votre app affiche du contenu web (CGU, aide, contenu dynamique), ce contenu ne suit pas forcément votre thème. Sur DrMilou, les fiches médicament (chargées depuis une API tierce en HTML) restaient en mode clair. 
+
+Solutions : injectez des styles CSS via JavaScript, ou wrappez le contenu dans un container avec un filtre d'inversion (en dernier recours).
+
+### L'oubli du mode auto
+
+40% des utilisateurs en "mode auto" changent de thème au coucher/lever du soleil. Votre app doit réagir en temps réel, pas seulement au lancement. Écoutez les changements :
+
+```javascript
+window.matchMedia('(prefers-color-scheme: dark)')
+  .addEventListener('change', (e) => {
+    if (userPreference === 'auto') {
+      setTheme(e.matches ? 'dark' : 'light');
+    }
+  });
+```
+
+## Accessibilité : ne pas oublier l'essentiel
+
+Le dark mode est souvent présenté comme "meilleur pour les yeux". C'est partiellement vrai, mais pas universellement.
+
+Selon une étude de l'Université de Passau (2024), la lisibilité est généralement meilleure en mode clair pour la lecture prolongée chez les personnes sans déficience visuelle. En revanche, pour les personnes sensibles à la lumière (migraines, photophobie), le dark mode est bénéfique.
+
+Moralité : offrez le choix. Ne forcez jamais un mode. Et surtout, testez vos contrastes dans les deux modes avec des outils comme Stark ou le contraste checker de WebAIM.
+
+Comme le rappelle la documentation WCAG : "Le choix du thème doit rester entre les mains de l'utilisateur. Un dark mode forcé peut être aussi problématique qu'un mode clair forcé pour certaines personnes."
+
+## Checklist avant de lancer
+
+Avant de shipper votre dark mode, vérifiez ces points :
+
+**Design**
+- [ ] Contrastes WCAG respectés (4.5:1 minimum)
+- [ ] Pas de noir pur (#000000) en fond
+- [ ] Couleurs accent désaturées/éclaircies
+- [ ] Hiérarchie par élévation (surfaces plus claires = plus élevées)
+- [ ] Assets graphiques adaptés (logos, icônes, illustrations)
+
+**Technique**
+- [ ] Préférence système respectée par défaut
+- [ ] Override manuel possible
+- [ ] Préférence persistée
+- [ ] Pas de flash au chargement
+- [ ] Transition fluide entre les modes
+- [ ] Inputs et formulaires stylés
+- [ ] Webviews/contenu tiers gérés
+
+**Test**
+- [ ] Testé sur iOS et Android
+- [ ] Testé avec le changement de mode système en cours d'utilisation
+- [ ] Testé avec différentes tailles de police système
+- [ ] Testé sur écrans OLED et LCD
+
+## FAQ
+
+### Le dark mode est-il vraiment meilleur pour les yeux ?
+
+Ça dépend. Pour une utilisation nocturne ou en faible luminosité, oui. Pour la lecture prolongée en journée, les études montrent une légère supériorité du mode clair. L'important est d'offrir le choix et de respecter les préférences système de l'utilisateur.
+
+### Combien de temps faut-il pour implémenter un dark mode ?
+
+Sur un projet bien structuré avec des design tokens en place, comptez 2-5 jours. Sur un projet avec des couleurs en dur partout, prévoyez 2-3 semaines de refactoring avant même de commencer. Chez Eurus, notre règle : un MVP en 6 semaines max. Au-delà, on perd le feedback terrain. Le dark mode fait partie du périmètre initial si le projet le justifie.
+
+### Faut-il proposer un mode "automatique" ?
+
+Oui, c'est devenu le standard. iOS et Android le proposent nativement, et les utilisateurs s'y attendent. Faites-en l'option par défaut, avec possibilité de forcer un mode.
+
+### Comment gérer les emails transactionnels ?
+
+Les clients mail ont leur propre gestion du dark mode, souvent brutale (inversion automatique des couleurs). Utilisez des tables HTML avec des couleurs inline, testez dans Gmail, Outlook et Apple Mail en mode sombre. Prévoyez des versions alternatives de vos images si nécessaire.
+
+### Le dark mode affecte-t-il les performances ?
+
+Marginalement. Le rendu de couleurs différentes ne change pas significativement les performances. L'impact positif sur la batterie (écrans OLED) est plus notable. Côté code, si votre architecture est propre (CSS variables), le switch de thème est quasi instantané.
+
+---
+
+## Besoin d'aide pour votre dark mode ?
+
+Implémenter un dark mode propre demande de l'expérience. Entre les subtilités de design, les pièges techniques et les edge cases d'accessibilité, il y a de quoi se perdre.
+
+Chez Eurus, on a implémenté le dark mode sur des apps de toutes tailles — de la startup early-stage au logiciel métier utilisé par des milliers de professionnels. On connaît les raccourcis qui marchent et les erreurs à éviter.
+
+**Vous avez un projet d'application avec des exigences de qualité élevées ?** [Parlons-en →](/contact)
