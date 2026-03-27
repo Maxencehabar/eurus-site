@@ -1,17 +1,6 @@
 {
   "queue": [
     {
-      "slug": "synchronisation-offline-avancee",
-      "title": "Synchronisation offline avancée : gestion des conflits",
-      "description": "Stratégies de sync pour apps offline-first. Conflict resolution, CRDT, eventual consistency.",
-      "tags": [
-        "Offline",
-        "Technique",
-        "Architecture"
-      ],
-      "keyword": "synchronisation offline application"
-    },
-    {
       "slug": "microservices-vs-monolithe",
       "title": "Microservices vs monolithe : quelle architecture choisir ?",
       "description": "Avantages et inconvénients de chaque approche. Quand passer aux microservices.",
@@ -244,7 +233,19 @@
       ],
       "keyword": "dark mode application mobile",
       "publishedDate": "2026-03-25"
+    },
+    {
+      "slug": "synchronisation-offline-avancee",
+      "title": "Synchronisation offline avancée : gestion des conflits",
+      "description": "Stratégies de sync pour apps offline-first. Conflict resolution, CRDT, eventual consistency.",
+      "tags": [
+        "Offline",
+        "Technique",
+        "Architecture"
+      ],
+      "keyword": "synchronisation offline application",
+      "publishedDate": "2026-03-27"
     }
   ],
-  "lastPublished": "2026-03-25"
+  "lastPublished": "2026-03-27"
 }
