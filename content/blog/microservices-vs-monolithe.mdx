@@ -1,0 +1,164 @@
+---
+title: "Microservices vs monolithe : quelle architecture choisir ?"
+description: "Avantages et inconvénients de chaque approche. Quand passer aux microservices, quand rester sur un monolithe. Guide pratique basé sur l'expérience terrain."
+date: "2026-03-30"
+author: "Eurus"
+tags: ["Architecture", "Backend", "Technique"]
+---
+
+# Microservices vs monolithe : quelle architecture choisir ?
+
+**La réponse courte : ça dépend.** Mais pas de la façon dont vous l'imaginez. En 2026, le choix entre microservices et monolithe ne se fait plus sur des critères techniques abstraits, mais sur des réalités très concrètes : la taille de votre équipe, votre budget opérationnel, et surtout votre capacité à gérer la complexité. Selon une étude IDC, plus de 90% des nouvelles applications d'entreprise sont désormais cloud-native et basées sur les microservices. Pourtant, un rapport CNCF de 2025 révèle que 42% des organisations qui ont adopté les microservices... font marche arrière. Amazon Prime Video a fait les gros titres en revenant à une architecture monolithique. Alors, qu'est-ce qui se passe vraiment ?
+
+Chez Eurus, on a vécu les deux mondes. On a migré des monolithes vers des microservices, et on a aussi vu des projets microservices échouer lamentablement. Ce qu'on a appris ? La bonne architecture, c'est celle qui correspond à votre contexte. Pas celle qui fait bien sur un diagramme.
+
+## Le monolithe : souvent sous-estimé, rarement dépassé
+
+Un monolithe, c'est une application où tout le code vit dans un seul déploiement. Une base de code, un serveur, une base de données. Simple, non ?
+
+Cette simplicité est en fait un super-pouvoir. Quand vous démarrez un projet, vous n'avez pas besoin de réfléchir à comment vos services vont communiquer. Pas de gestion de réseau entre composants. Pas de problèmes de latence inter-services. Pas de debugging distribué à s'arracher les cheveux.
+
+Concrètement, sur DrMilou — une application de gestion pour cabinets vétérinaires qu'on développe depuis plusieurs années — on a gardé une architecture monolithique pendant longtemps. Et c'était le bon choix. Les vétérinaires ont des contraintes qu'on n'imaginait pas au départ : connexion internet instable, PC sous Windows XP dans certains cabinets, et surtout des urgences qui arrivent pendant qu'on tape une ordonnance. Une architecture simple nous a permis d'itérer vite et de répondre aux vrais problèmes.
+
+### Les avantages concrets du monolithe
+
+**Développement rapide au démarrage.** Pas de coordination entre équipes, pas de contrats d'API à définir. Vous codez, vous déployez, vous itérez. Pour un MVP, c'est imbattable.
+
+**Debugging simplifié.** Quand quelque chose casse, vous avez une stack trace complète. Pas besoin de tracer une requête à travers quinze services différents.
+
+**Coûts d'infrastructure réduits.** Un serveur, une base de données. Selon Gartner (2025), les entreprises qui restent sur des monolithes pour des applications de taille moyenne réduisent leurs coûts de 25% par rapport aux architectures microservices équivalentes.
+
+**Transactions ACID natives.** Votre base de données gère la cohérence. Pas de saga patterns complexes, pas de compensation transactions.
+
+Le consensus parmi les experts en 2025 est clair : en dessous de 10 développeurs, le monolithe reste généralement plus performant en termes de vélocité de développement. Docker et Kubernetes ajoutent de la complexité sans bénéfices clairs pour des équipes de cette taille.
+
+### Quand le monolithe atteint ses limites
+
+Évidemment, tout n'est pas rose. Le monolithe a ses problèmes.
+
+**Scalabilité verticale uniquement.** Vous pouvez ajouter du CPU et de la RAM, mais vous ne pouvez pas scaler indépendamment une partie de l'application. Si votre module de génération de PDF consomme toutes les ressources, c'est toute l'application qui en souffre.
+
+**Déploiements risqués.** Un changement dans le module de facturation peut casser le module d'authentification. Et vous ne le découvrez parfois qu'en production.
+
+**Couplage fort.** Au fil du temps, les dépendances s'accumulent. Le code devient un plat de spaghetti où toucher à une partie impacte des zones inattendues.
+
+Sur DrMilou, on a fini par migrer le backend de PHP vers Java. Trois mois de travail intense, mais les temps de réponse ont été divisés par quatre. Le monolithe en Java nous convenait encore — on n'avait pas besoin de microservices — mais on a dû faire ce refactoring massif parce que le code PHP était devenu trop enchevêtré.
+
+## Les microservices : la promesse et la réalité
+
+Les microservices, c'est l'idée de découper votre application en petits services indépendants. Chaque service a sa propre base de données, son propre déploiement, sa propre équipe responsable.
+
+Netflix l'a fait. Amazon l'a fait. Spotify l'a fait. Donc ça marche, non ?
+
+Oui, mais pas pour les raisons qu'on croit. Ces entreprises ont des milliers d'ingénieurs. Elles ont des équipes dédiées uniquement à l'infrastructure. Elles peuvent se permettre la complexité opérationnelle parce qu'elles ont les ressources pour la gérer.
+
+Selon une étude Gartner de 2025, 60% des équipes regrettent d'avoir choisi les microservices pour des applications de petite et moyenne taille. Le problème n'est pas technique — les microservices fonctionnent très bien. Le problème, c'est que la plupart des équipes sous-estiment drastiquement le coût opérationnel.
+
+### Ce que les microservices apportent vraiment
+
+**Scalabilité granulaire.** Votre service de traitement d'images est surchargé ? Scalez-le indépendamment. Le reste de l'application continue de tourner sur des instances plus modestes.
+
+**Déploiements indépendants.** L'équipe paiement peut déployer trois fois par jour sans impacter l'équipe produit. Chaque service évolue à son propre rythme.
+
+**Résilience.** Un service qui crash n'emporte pas toute l'application. Avec les bons patterns (circuit breakers, retries), le système continue de fonctionner en mode dégradé.
+
+**Liberté technologique.** Le service de machine learning peut être en Python, le service de paiement en Java, l'API gateway en Go. Chaque équipe utilise l'outil le plus adapté.
+
+Le marché des microservices représente aujourd'hui 7,45 milliards de dollars et devrait atteindre 15,97 milliards en quatre ans. L'adoption continue de croître, avec 89% des organisations qui ont adopté cette architecture selon les surveys de 2025. Mais — et c'est un gros mais — adopter ne veut pas dire réussir.
+
+### Le coût caché des microservices
+
+En 3 ans chez Eurus, j'ai vu des projets échouer non pas à cause du code, mais parce que personne n'avait vraiment compris le besoin métier. Et les microservices amplifient ce problème. Si vous ne comprenez pas bien votre domaine, vous allez découper au mauvais endroit. Et redécouper plus tard coûte extrêmement cher.
+
+**La complexité opérationnelle explose.** Kubernetes, service mesh, observabilité distribuée, gestion des secrets, CI/CD pour chaque service... Selon les données CNCF, les organisations en microservices ont besoin de 2 à 3 fois plus d'ingénieurs DevOps/SRE qu'en monolithe.
+
+**Le debugging devient un cauchemar.** Une requête traverse huit services. Où est le problème ? Vous avez besoin de tracing distribué (Jaeger, Zipkin), de logs centralisés (ELK, Loki), de métriques corrélées. Sans ces outils, vous êtes aveugle.
+
+**La latence réseau s'accumule.** Chaque appel inter-service, c'est du réseau. Même sur un cluster bien configuré, ça s'additionne. Une opération qui prenait 50ms en monolithe peut facilement atteindre 200ms en microservices.
+
+**Les transactions distribuées sont un enfer.** Comment garantir la cohérence quand une opération touche trois services avec trois bases de données différentes ? Les patterns existent (saga, outbox), mais ils ajoutent une complexité considérable.
+
+## Quand choisir quoi : le framework de décision
+
+Voici comment on raisonne chez Eurus quand un client nous demande conseil.
+
+### Restez en monolithe si...
+
+Vous avez moins de 10 développeurs. La coordination nécessaire pour les microservices ne vaut pas le coup à cette échelle.
+
+Votre domaine métier n'est pas encore stabilisé. Vous pivotez encore, vous découvrez votre marché. Garder un monolithe vous permet de refactorer facilement.
+
+Vous n'avez pas d'équipe DevOps dédiée. Kubernetes et les microservices nécessitent une expertise opérationnelle significative. Sans elle, vous allez souffrir.
+
+Vos besoins de scalabilité sont prévisibles. Si vous savez que vous aurez 10x plus d'utilisateurs dans 2 ans, vous pouvez planifier. Pas besoin de scalabilité élastique en temps réel.
+
+Notre règle d'or chez Eurus : un MVP en 6 semaines max. Au-delà, on perd le feedback terrain. Et pour livrer en 6 semaines, le monolithe est quasi toujours le bon choix.
+
+### Passez aux microservices si...
+
+Vous avez plusieurs équipes qui doivent avancer indépendamment. Au-delà de 15-20 développeurs, la coordination sur un monolithe devient un goulot d'étranglement.
+
+Vous avez des besoins de scalabilité très hétérogènes. Une partie de votre application est 100x plus sollicitée que le reste.
+
+Vous avez l'expertise DevOps. Vraiment. Pas "on va apprendre en faisant". Vous avez des gens qui savent opérer Kubernetes en production.
+
+Votre domaine métier est bien compris et stable. Vous savez où couper. Les bounded contexts sont clairs.
+
+Comme le souligne Sam Newman, auteur de "Building Microservices" : "Si vous ne savez pas comment construire un bon monolithe, vous ne saurez pas comment construire de bons microservices. Les mêmes compétences de design s'appliquent."
+
+## L'option du milieu : le monolithe modulaire
+
+Et si le vrai choix n'était pas binaire ?
+
+Le monolithe modulaire, c'est un monolithe conçu avec des frontières claires entre modules. Chaque module a son propre package, ses propres interfaces. Les dépendances entre modules sont explicites et contrôlées.
+
+Vous gardez la simplicité du déploiement unique. Vous gardez les transactions ACID. Mais vous préparez le terrain pour une extraction future si nécessaire.
+
+Sur Youdy — une application sociale qu'on développe — on a commencé avec cette approche. Le module de notifications est bien séparé du module de profils. Le jour où les notifications deviendront un bottleneck (et ce jour viendra), on pourra l'extraire en service indépendant sans tout réécrire.
+
+D'ailleurs, sur Youdy, on a dû refaire 3 fois le système de notifications push avant de trouver le bon équilibre entre engagement et spam. Si on avait commencé en microservices, chaque itération aurait coûté beaucoup plus cher. Le monolithe modulaire nous a permis d'expérimenter vite.
+
+## Comparatif synthétique
+
+| Critère | Monolithe | Microservices |
+|---------|-----------|---------------|
+| Temps de mise en place | Rapide | Long |
+| Coût infrastructure | Faible | Élevé (2-3x) |
+| Complexité opérationnelle | Faible | Très élevée |
+| Scalabilité | Verticale | Horizontale granulaire |
+| Taille d'équipe idéale | 1-15 devs | 15+ devs |
+| Debugging | Simple | Complexe |
+| Déploiement | Tout ou rien | Indépendant |
+| Transactions | ACID natives | Distributed sagas |
+
+## FAQ
+
+### Peut-on migrer d'un monolithe vers des microservices progressivement ?
+
+Oui, c'est même la seule façon raisonnable de le faire. Le pattern "strangler fig" consiste à extraire progressivement des fonctionnalités du monolithe vers des services. Vous commencez par les parties les plus indépendantes, celles qui ont le moins de dépendances. Le monolithe et les nouveaux services coexistent pendant la transition.
+
+### Les microservices sont-ils plus sécurisés ?
+
+Pas automatiquement. La surface d'attaque augmente (plus de points d'entrée réseau), mais vous pouvez aussi mieux isoler les données sensibles. La sécurité dépend de l'implémentation, pas de l'architecture.
+
+### Quel est le coût réel de passage aux microservices ?
+
+Comptez un facteur 2 à 3 sur vos coûts d'infrastructure et vos besoins en ingénieurs DevOps/SRE. Ajoutez 6 à 12 mois de mise en place des outils (observabilité, CI/CD, service mesh). La vélocité de développement baisse temporairement avant de potentiellement augmenter.
+
+### Le serverless est-il une alternative aux microservices ?
+
+Le serverless (AWS Lambda, Cloud Functions) est une façon de déployer des microservices, pas une alternative. Vous avez toujours la complexité distribuée, mais vous déléguez la gestion de l'infrastructure. Ça peut être un bon compromis pour certains cas d'usage.
+
+### Comment savoir si mon monolithe devient ingérable ?
+
+Quelques signaux d'alerte : les déploiements prennent des heures, les tests de régression échouent constamment, les équipes se marchent sur les pieds dans le code, les temps de build explosent. Mais avant de passer aux microservices, essayez d'abord de modulariser votre monolithe.
+
+## Conclusion
+
+Le débat microservices vs monolithe est souvent présenté comme une question de modernité. Les microservices seraient "modernes", le monolithe serait "legacy". C'est une vision simpliste qui coûte cher à beaucoup d'entreprises.
+
+La réalité, c'est que l'architecture doit servir vos objectifs business, pas l'inverse. Si vous êtes une startup de 5 personnes qui cherche son product-market fit, un monolithe bien conçu vous permettra d'itérer 3 fois plus vite qu'une architecture distribuée. Si vous êtes une scale-up de 100 ingénieurs avec des équipes produit autonomes, les microservices vous donneront la flexibilité dont vous avez besoin.
+
+J'ai appris à mes dépens qu'un client qui dit "on veut des microservices" et un client qui a vraiment besoin de microservices, c'est pas pareil. Notre job chez Eurus, c'est de comprendre le vrai besoin et de proposer la solution adaptée — même si elle est moins sexy sur le papier.
+
+Vous hésitez sur l'architecture de votre projet ? [Parlons-en](/contact). On peut vous aider à faire le bon choix.

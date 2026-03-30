@@ -1,17 +1,6 @@
 {
   "queue": [
     {
-      "slug": "microservices-vs-monolithe",
-      "title": "Microservices vs monolithe : quelle architecture choisir ?",
-      "description": "Avantages et inconvénients de chaque approche. Quand passer aux microservices.",
-      "tags": [
-        "Architecture",
-        "Backend",
-        "Technique"
-      ],
-      "keyword": "microservices vs monolithe"
-    },
-    {
       "slug": "websockets-temps-reel-avance",
       "title": "WebSockets : temps réel au-delà du chat",
       "description": "Cas d'usage avancés des WebSockets. Collaboration, live updates, gaming, trading.",
@@ -245,7 +234,19 @@
       ],
       "keyword": "synchronisation offline application",
       "publishedDate": "2026-03-27"
+    },
+    {
+      "slug": "microservices-vs-monolithe",
+      "title": "Microservices vs monolithe : quelle architecture choisir ?",
+      "description": "Avantages et inconvénients de chaque approche. Quand passer aux microservices.",
+      "tags": [
+        "Architecture",
+        "Backend",
+        "Technique"
+      ],
+      "keyword": "microservices vs monolithe",
+      "publishedDate": "2026-03-30"
     }
   ],
-  "lastPublished": "2026-03-27"
+  "lastPublished": "2026-03-30"
 }
