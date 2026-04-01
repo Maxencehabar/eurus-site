@@ -1,17 +1,6 @@
 {
   "queue": [
     {
-      "slug": "websockets-temps-reel-avance",
-      "title": "WebSockets : temps réel au-delà du chat",
-      "description": "Cas d'usage avancés des WebSockets. Collaboration, live updates, gaming, trading.",
-      "tags": [
-        "Technique",
-        "Temps réel",
-        "WebSocket"
-      ],
-      "keyword": "WebSocket temps réel application"
-    },
-    {
       "slug": "modele-abonnement-application",
       "title": "Modèle abonnement (subscription) dans une application",
       "description": "Implémenter un système d'abonnement. Pricing, gestion, rétention, churn.",
@@ -246,7 +235,19 @@
       ],
       "keyword": "microservices vs monolithe",
       "publishedDate": "2026-03-30"
+    },
+    {
+      "slug": "websockets-temps-reel-avance",
+      "title": "WebSockets : temps réel au-delà du chat",
+      "description": "Cas d'usage avancés des WebSockets. Collaboration, live updates, gaming, trading.",
+      "tags": [
+        "Technique",
+        "Temps réel",
+        "WebSocket"
+      ],
+      "keyword": "WebSocket temps réel application",
+      "publishedDate": "2026-04-01"
     }
   ],
-  "lastPublished": "2026-03-30"
+  "lastPublished": "2026-04-01"
 }
