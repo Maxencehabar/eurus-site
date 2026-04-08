@@ -7,6 +7,7 @@ interface Service {
   title: string;
   description: string;
   details: string[];
+  href?: string;
 }
 
 const services: Service[] = [
@@ -37,6 +38,14 @@ const services: Service[] = [
     description:
       "Besoin d'un regard externe ? Audit de code, choix d'architecture, accompagnement technique pour vos équipes.",
     details: ["Audit technique", "Architecture", "Formation", "CTO as a service"],
+  },
+  {
+    number: "05",
+    title: "Industrie & IA",
+    description:
+      "Outils sur mesure pour PME industrielles : dashboards de production, apps terrain, assistants IA branchés sur vos outils.",
+    details: ["Dashboards", "Apps terrain", "Assistants IA", "Portails B2B"],
+    href: "/industrie",
   },
 ];
 
@@ -79,11 +88,15 @@ export default function Services() {
 
         {/* Services grid */}
         <div className="grid md:grid-cols-2 gap-6 md:gap-8">
-          {services.map((service, index) => (
-            <div
+          {services.map((service, index) => {
+            const Wrapper = service.href ? "a" : "div";
+            const wrapperProps = service.href ? { href: service.href } : {};
+            return (
+            <Wrapper
               key={service.number}
-              ref={(el) => { refs.current[index] = el; }}
-              className={`group bg-bg-card border border-border rounded-2xl p-8 md:p-10 transition-all duration-700 hover:border-accent/30 hover:shadow-lg hover:shadow-accent/5 ${
+              {...wrapperProps}
+              ref={(el: HTMLDivElement | HTMLAnchorElement | null) => { refs.current[index] = el as HTMLDivElement | null; }}
+              className={`group bg-bg-card border border-border rounded-2xl p-8 md:p-10 transition-all duration-700 hover:border-accent/30 hover:shadow-lg hover:shadow-accent/5 ${service.href ? "cursor-pointer" : ""} ${
                 visibleItems.has(index)
                   ? "opacity-100 translate-y-0"
                   : "opacity-0 translate-y-8"
@@ -124,8 +137,9 @@ export default function Services() {
                   </span>
                 ))}
               </div>
-            </div>
-          ))}
+            </Wrapper>
+          );
+          })}
         </div>
       </div>
     </section>

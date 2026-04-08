@@ -11,8 +11,9 @@ export const SOCIAL_LINKS = {
 
 export const NAV_ITEMS = [
   { label: "Services", href: "#services" },
+  { label: "Industrie", href: "/industrie" },
+  { label: "IA sur mesure", href: "/ia" },
   { label: "Projets", href: "#projets" },
-  { label: "À propos", href: "#apropos" },
   { label: "Blog", href: "/blog" },
   { label: "Contact", href: "#contact" },
 ] as const;

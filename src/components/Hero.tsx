@@ -51,8 +51,8 @@ export default function Hero() {
             isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
           }`}
         >
-          Eurus accompagne startups et PME dans la conception d&apos;applications 
-          mobiles et web sur mesure. De l&apos;idée à la production.
+          Eurus accompagne startups, PME et industriels dans la conception
+          d&apos;applications mobiles, web et d&apos;outils IA sur mesure. De l&apos;idée à la production.
         </p>
 
         {/* CTA buttons */}
