@@ -92,7 +92,7 @@ export default function Hero() {
         >
           {[
             { value: "5+", label: "Projets livrés" },
-            { value: "3", label: "Années d'expertise" },
+            { value: "8", label: "Années d'expertise" },
             { value: "700+", label: "Utilisateurs actifs" },
             { value: "100%", label: "Clients satisfaits" },
           ].map((stat, i) => (
