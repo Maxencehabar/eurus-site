@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { SITE_NAME, SITE_URL, CONTACT_EMAIL } from "@/lib/constants";
+import { SITE_NAME, SITE_URL, CONTACT_EMAIL, CTA_URL } from "@/lib/constants";
 import FadeIn from "@/components/FadeIn";
 
 const PAGE_TITLE = "Intégration IA sur mesure pour PME et startups";
@@ -18,6 +18,7 @@ export const metadata: Metadata = {
     siteName: SITE_NAME,
     locale: "fr_FR",
     type: "website",
+    images: [{ url: "/og-image.png", width: 1200, height: 630, alt: "Eurus — Agence de développement" }],
   },
   twitter: {
     card: "summary_large_image",
@@ -157,7 +158,9 @@ export default function IAPage() {
           <FadeIn className="delay-300">
             <div className="flex flex-wrap gap-4">
               <a
-                href="#contact-ia"
+                href={CTA_URL}
+                target="_blank"
+                rel="noopener noreferrer"
                 className="group inline-flex items-center gap-3 bg-bg-dark text-white px-8 py-4 rounded-full text-[0.95rem] font-medium transition-all hover:gap-4 hover:shadow-xl hover:shadow-black/10"
               >
                 Réserver un audit gratuit
@@ -523,7 +526,9 @@ export default function IAPage() {
               </p>
               <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
                 <a
-                  href={`mailto:${CONTACT_EMAIL}?subject=Audit IA — ${SITE_NAME}&body=Bonjour,%0A%0AJe souhaiterais discuter d'un projet d'intégration IA.%0A%0A`}
+                  href={CTA_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="group inline-flex items-center gap-3 bg-bg-dark text-white px-8 py-4 rounded-full text-[0.95rem] font-medium transition-all hover:gap-4 hover:shadow-xl hover:shadow-black/10"
                 >
                   Réserver un appel découverte

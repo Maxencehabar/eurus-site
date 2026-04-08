@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { SITE_NAME, SITE_URL } from "@/lib/constants";
+import { SITE_NAME, SITE_URL, CONTACT_EMAIL, CTA_URL } from "@/lib/constants";
 import FadeIn from "@/components/FadeIn";
 
 export const metadata: Metadata = {
@@ -15,6 +15,7 @@ export const metadata: Metadata = {
     siteName: SITE_NAME,
     locale: "fr_FR",
     type: "website",
+    images: [{ url: "/og-image.png", width: 1200, height: 630, alt: "Eurus — Agence de développement" }],
   },
 };
 
@@ -201,7 +202,9 @@ export default function IndustriePage() {
           <FadeIn className="delay-300">
             <div className="flex flex-wrap gap-4">
               <a
-                href="#contact"
+                href={CTA_URL}
+                target="_blank"
+                rel="noopener noreferrer"
                 className="group inline-flex items-center gap-3 bg-bg-dark text-white px-8 py-4 rounded-full text-[0.95rem] font-medium transition-all hover:gap-4 hover:shadow-xl hover:shadow-black/10"
               >
                 Diagnostic gratuit &mdash; 45 min
@@ -402,7 +405,9 @@ export default function IndustriePage() {
               </p>
               <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
                 <a
-                  href="mailto:maxencehabar@gmail.com?subject=Diagnostic%20PME%20industrielle"
+                  href={CTA_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="group inline-flex items-center gap-3 bg-bg-dark text-white px-8 py-4 rounded-full text-[0.95rem] font-medium transition-all hover:gap-4 hover:shadow-xl hover:shadow-black/10"
                 >
                   Prendre rendez-vous
@@ -417,7 +422,7 @@ export default function IndustriePage() {
                   </svg>
                 </a>
                 <a
-                  href="mailto:maxencehabar@gmail.com"
+                  href={`mailto:${CONTACT_EMAIL}`}
                   className="inline-flex items-center gap-2 text-text-secondary hover:text-accent transition-colors text-sm"
                 >
                   <svg
@@ -433,7 +438,7 @@ export default function IndustriePage() {
                       d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
                     />
                   </svg>
-                  maxencehabar@gmail.com
+                  {CONTACT_EMAIL}
                 </a>
               </div>
             </div>

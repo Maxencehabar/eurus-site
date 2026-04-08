@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import ContactForm from "./ContactForm";
+import { CONTACT_EMAIL } from "@/lib/constants";
 
 export default function ContactSection() {
   const [isVisible, setIsVisible] = useState(false);
@@ -69,10 +70,10 @@ export default function ContactSection() {
                 <div>
                   <p className="text-sm text-text-muted">Email</p>
                   <a
-                    href="mailto:maxencehabar@gmail.com"
+                    href={`mailto:${CONTACT_EMAIL}`}
                     className="text-text-primary hover:text-accent transition-colors"
                   >
-                    maxencehabar@gmail.com
+                    {CONTACT_EMAIL}
                   </a>
                 </div>
               </div>

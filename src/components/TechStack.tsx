@@ -1,5 +1,3 @@
-"use client";
-
 const technologies = [
   "Flutter",
   "React",

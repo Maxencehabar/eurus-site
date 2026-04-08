@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { getProjectBySlug, getAllProjectSlugs } from "@/data/projects";
-import { SITE_URL } from "@/lib/constants";
+import { SITE_URL, SITE_NAME } from "@/lib/constants";
 
 export function generateStaticParams() {
   return getAllProjectSlugs().map((slug) => ({ slug }));
@@ -38,16 +38,62 @@ export default async function ProjectPage({
   const project = getProjectBySlug(slug);
   if (!project) notFound();
 
+  const breadcrumbJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      {
+        "@type": "ListItem",
+        position: 1,
+        name: "Accueil",
+        item: SITE_URL,
+      },
+      {
+        "@type": "ListItem",
+        position: 2,
+        name: "Projets",
+        item: `${SITE_URL}/#projets`,
+      },
+      {
+        "@type": "ListItem",
+        position: 3,
+        name: project.title,
+        item: `${SITE_URL}/projets/${slug}`,
+      },
+    ],
+  };
+
   return (
     <section className="mx-auto max-w-4xl px-8 pt-32 pb-24 max-md:px-6 max-md:pt-24">
+      {/* Breadcrumb Schema */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
+      />
+
+      {/* Breadcrumb navigation */}
+      <nav aria-label="Breadcrumb" className="mb-8 text-sm text-text-muted">
+        <ol className="flex items-center gap-2">
+          <li>
+            <Link href="/" className="hover:text-accent transition-colors">
+              Accueil
+            </Link>
+          </li>
+          <li>/</li>
+          <li>
+            <Link href="/#projets" className="hover:text-accent transition-colors">
+              Projets
+            </Link>
+          </li>
+          <li>/</li>
+          <li className="text-text-secondary truncate max-w-[200px]">
+            {project.title}
+          </li>
+        </ol>
+      </nav>
+
       {/* Hero */}
       <div className="mb-16">
-        <Link
-          href="/#projets"
-          className="mb-6 inline-flex items-center gap-2 text-sm text-text-secondary transition-colors hover:text-accent"
-        >
-          &larr; Retour aux projets
-        </Link>
         <div className="mb-4 flex items-center gap-4">
           <span className="bg-gradient-to-br from-accent to-[#8b5cf6] bg-clip-text text-6xl font-bold leading-none text-transparent opacity-30">
             {project.number}

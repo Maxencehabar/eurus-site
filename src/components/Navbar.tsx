@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useState, useEffect } from "react";
-import { NAV_ITEMS, SITE_NAME } from "@/lib/constants";
+import { NAV_ITEMS, SITE_NAME, CTA_URL } from "@/lib/constants";
 
 export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -49,7 +49,9 @@ export default function Navbar() {
 
         {/* CTA Button */}
         <a
-          href="#contact"
+          href={CTA_URL}
+          target="_blank"
+          rel="noopener noreferrer"
           className="hidden md:inline-flex items-center gap-2 bg-bg-dark text-white px-5 py-2.5 rounded-full text-sm font-medium transition-all hover:bg-text-secondary"
         >
           Parlons-en
@@ -103,7 +105,9 @@ export default function Navbar() {
             ))}
             <li className="pt-2">
               <a
-                href="#contact"
+                href={CTA_URL}
+                target="_blank"
+                rel="noopener noreferrer"
                 onClick={() => setIsMobileMenuOpen(false)}
                 className="inline-flex items-center gap-2 bg-bg-dark text-white px-5 py-2.5 rounded-full text-sm font-medium"
               >

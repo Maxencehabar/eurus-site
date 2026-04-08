@@ -184,6 +184,8 @@ export default function ContactForm() {
               <option value="app-web">Application web</option>
               <option value="site-vitrine">Site vitrine</option>
               <option value="backend-api">Backend / API</option>
+              <option value="industrie">Digitalisation industrielle</option>
+              <option value="ia">Intégration IA</option>
               <option value="autre">Autre</option>
             </select>
           </div>

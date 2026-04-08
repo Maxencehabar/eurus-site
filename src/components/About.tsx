@@ -45,19 +45,19 @@ export default function About() {
             </h2>
             <div className="space-y-4 text-text-secondary leading-relaxed">
               <p>
-                Eurus est née d&apos;une conviction : le développement d&apos;applications 
-                ne devrait pas être un parcours du combattant. Trop de projets 
-                échouent par manque de communication, de compréhension métier, 
-                ou simplement de rigueur technique.
+                Maxence développe depuis 2018. À 22 ans, après une prépa ingé
+                et des premières missions en freelance, il crée Eurus en 2021
+                avec une conviction : le développement sur mesure ne devrait pas
+                être réservé aux grandes entreprises.
               </p>
               <p>
-                Notre approche est différente. Nous prenons le temps de comprendre 
-                votre vision avant d&apos;écrire la première ligne de code. Nous 
-                privilégions les solutions pragmatiques aux usines à gaz. Et nous 
-                restons à vos côtés bien après la mise en production.
+                Avec Théo et Tom, on construit des applications mobiles, des
+                outils web et des assistants IA pour des startups et des PME
+                industrielles. On parle votre langue — qu&apos;il s&apos;agisse
+                de React ou de traçabilité qualité en atelier.
               </p>
               <p className="text-text-primary font-medium">
-                Basés en France, nous accompagnons startups et PME depuis 2021.
+                Basés en France, nous accompagnons startups et PME industrielles depuis 2021.
               </p>
             </div>
           </div>
@@ -77,17 +77,17 @@ export default function About() {
               {
                 icon: "⚡",
                 title: "Efficacité",
-                desc: "MVP en 6 semaines, itérations rapides",
+                desc: "Premier outil livré en 2-4 semaines. Itérations rapides.",
               },
               {
                 icon: "🎯",
                 title: "Pragmatisme",
-                desc: "Les bonnes solutions, pas les plus complexes",
+                desc: "L'outil qui résout votre problème, pas un ERP à 200k€.",
               },
               {
-                icon: "🤝",
-                title: "Engagement",
-                desc: "Votre succès est notre priorité",
+                icon: "🏭",
+                title: "Expertise terrain",
+                desc: "On comprend vos contraintes — atelier, production, logistique.",
               },
             ].map((value) => (
               <div

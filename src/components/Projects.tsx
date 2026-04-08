@@ -2,44 +2,14 @@
 
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
+import { getProjectSummaries } from "@/data/projects";
 
-interface Project {
-  slug: string;
-  title: string;
-  category: string;
-  description: string;
-  technologies: string[];
-  color: string;
-}
+const projects = getProjectSummaries();
 
-const projects: Project[] = [
-  {
-    slug: "drmilou",
-    title: "DrMilou",
-    category: "Application vétérinaire",
-    description:
-      "Gestion complète de cabinet vétérinaire : dossiers patients, ordonnances, facturation. Utilisé par des centaines de praticiens.",
-    technologies: ["Java Spring Boot", "React", "PostgreSQL"],
-    color: "from-emerald-500/10 to-teal-500/10",
-  },
-  {
-    slug: "youdy",
-    title: "Youdy",
-    category: "Plateforme sociale",
-    description:
-      "Mise en relation intelligente entre apprentis et entreprises. Matching, messagerie temps réel, gestion des candidatures.",
-    technologies: ["React", "Firebase", "Node.js"],
-    color: "from-blue-500/10 to-indigo-500/10",
-  },
-  {
-    slug: "getaway",
-    title: "Getaway",
-    category: "Application voyage",
-    description:
-      "Carnet de voyage mobile avec gestion photos offline, géolocalisation, et partage d'itinéraires entre voyageurs.",
-    technologies: ["Flutter", "Firebase", "Cloud Functions"],
-    color: "from-orange-500/10 to-amber-500/10",
-  },
+const cardColors = [
+  "from-orange-500/10 to-amber-500/10",
+  "from-blue-500/10 to-indigo-500/10",
+  "from-emerald-500/10 to-teal-500/10",
 ];
 
 export default function Projects() {
@@ -102,14 +72,14 @@ export default function Projects() {
               >
                 {/* Background gradient */}
                 <div
-                  className={`absolute inset-0 bg-gradient-to-br ${project.color} opacity-0 group-hover:opacity-100 transition-opacity duration-500`}
+                  className={`absolute inset-0 bg-gradient-to-br ${cardColors[index % cardColors.length]} opacity-0 group-hover:opacity-100 transition-opacity duration-500`}
                 />
 
                 <div className="relative p-8 md:p-12 flex flex-col md:flex-row md:items-center gap-6 md:gap-12">
                   {/* Project info */}
                   <div className="flex-1">
                     <span className="text-sm text-accent font-medium mb-2 block">
-                      {project.category}
+                      {project.subtitle}
                     </span>
                     <h3 className="heading-editorial text-2xl md:text-3xl text-text-primary mb-3">
                       {project.title}
@@ -121,12 +91,12 @@ export default function Projects() {
 
                   {/* Technologies */}
                   <div className="flex flex-wrap gap-2 md:w-64">
-                    {project.technologies.map((tech) => (
+                    {project.tags.map((tag) => (
                       <span
-                        key={tech}
+                        key={tag}
                         className="text-xs px-3 py-1.5 rounded-full bg-bg-secondary text-text-muted border border-border"
                       >
-                        {tech}
+                        {tag}
                       </span>
                     ))}
                   </div>

@@ -150,6 +150,47 @@ const projects: ProjectDetail[] = [
     metaDescription:
       "Découvrez DrMilou, le back-office de gestion d'entreprise développé par Eurus. Vue.js, Spring Boot, PostgreSQL, 5x plus rapide.",
   },
+  {
+    number: "04",
+    slug: "refonte-industrielle",
+    title: "Refonte digitale PME industrielle",
+    subtitle: "Dashboard + App terrain — Usinage de précision",
+    description:
+      "Digitalisation complète du suivi de production pour une PME de 50 salariés",
+    tags: ["Next.js", "Flutter", "PostgreSQL", "Firebase"],
+    stat: "40% de temps de saisie en moins",
+    heroDescription:
+      "Une PME d'usinage de précision de 50 salariés en Île-de-France. Planning de production sur Excel, fiches qualité sur papier, reporting compilé à la main. Aucune visibilité temps réel sur l'atelier.",
+    problem:
+      "Le planning de production tournait sur un fichier Excel modifié par 3 personnes. Les conflits de version étaient quotidiens. Les fiches qualité étaient remplies sur papier en atelier, puis ressaisies le lendemain dans un autre Excel. Le reporting direction prenait 3 heures par semaine à compiler. 94% des spreadsheets en entreprise contiennent des erreurs (étude Poon, 2024). Ici, ce n'était pas une statistique — c'était le quotidien.",
+    solution: {
+      approach:
+        "On a construit deux outils ciblés en 3 semaines. Un dashboard web (Next.js) pour le planning et le reporting, connecté en temps réel à la production. Et une application mobile (Flutter) pour les opérateurs en atelier : saisie qualité, photos des non-conformités, horodatage automatique. Le tout synchronisé avec leur ERP existant via API.",
+      features: [
+        "Dashboard temps réel KPI/TRS",
+        "App mobile terrain offline-first",
+        "Saisie qualité avec photos",
+        "Reporting automatique direction",
+        "Connexion ERP existant",
+        "Formation opérateurs incluse",
+      ],
+    },
+    techStack: [
+      { label: "Frontend", items: ["Next.js", "TypeScript", "Tailwind CSS"] },
+      { label: "Mobile", items: ["Flutter", "Dart"] },
+      { label: "Backend", items: ["PostgreSQL", "Firebase", "REST API"] },
+      { label: "Infrastructure", items: ["Vercel", "Docker"] },
+    ],
+    results: [
+      { value: "-40%", label: "temps de saisie" },
+      { value: "0", label: "papier en atelier" },
+      { value: "3 sem.", label: "de développement" },
+      { value: "Temps réel", label: "visibilité direction" },
+    ],
+    metaTitle: "Refonte digitale PME industrielle — Dashboard & App terrain | Eurus",
+    metaDescription:
+      "Digitalisation complète d'une PME d'usinage : dashboard Next.js, app Flutter terrain, reporting automatique. -40% de temps de saisie en 3 semaines.",
+  },
 ];
 
 export function getProjectBySlug(slug: string): ProjectDetail | undefined {

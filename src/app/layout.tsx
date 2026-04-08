@@ -6,7 +6,7 @@ import Footer from "@/components/Footer";
 import FloatingCTA from "@/components/FloatingCTA";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
-import { SITE_NAME, SITE_URL, SITE_DESCRIPTION } from "@/lib/constants";
+import { SITE_NAME, SITE_URL, SITE_DESCRIPTION, CONTACT_EMAIL, FOUNDING_YEAR } from "@/lib/constants";
 
 const instrumentSerif = Instrument_Serif({
   subsets: ["latin"],
@@ -34,6 +34,7 @@ export const metadata: Metadata = {
     siteName: SITE_NAME,
     locale: "fr_FR",
     type: "website",
+    images: [{ url: "/og-image.png", width: 1200, height: 630, alt: "Eurus — Agence de développement" }],
   },
   twitter: {
     card: "summary_large_image",
@@ -52,8 +53,8 @@ const organizationJsonLd = {
   url: SITE_URL,
   description: SITE_DESCRIPTION,
   logo: `${SITE_URL}/favicon.svg`,
-  email: "maxencehabar@gmail.com",
-  foundingDate: "2023",
+  email: CONTACT_EMAIL,
+  foundingDate: String(FOUNDING_YEAR),
   address: {
     "@type": "PostalAddress",
     addressCountry: "FR",
@@ -64,7 +65,7 @@ const organizationJsonLd = {
   ],
   contactPoint: {
     "@type": "ContactPoint",
-    email: "maxencehabar@gmail.com",
+    email: CONTACT_EMAIL,
     contactType: "sales",
     availableLanguage: ["French", "English"],
   },
@@ -92,42 +93,42 @@ const faqJsonLd = {
   mainEntity: [
     {
       "@type": "Question",
-      name: "Combien coûte le développement d'une application mobile ?",
+      name: "Qui est Eurus et que faites-vous ?",
       acceptedAnswer: {
         "@type": "Answer",
-        text: "Le coût d'une application mobile varie entre 15 000€ et 150 000€+ selon la complexité. Un MVP simple coûte généralement entre 15 000€ et 40 000€, une application moyenne entre 40 000€ et 80 000€, et une application complexe avec fonctionnalités avancées peut dépasser 100 000€.",
+        text: "Eurus est une agence de développement de 3 personnes basée en France, spécialisée dans les applications mobiles, web et les outils IA sur mesure pour les startups et PME industrielles.",
       },
     },
     {
       "@type": "Question",
-      name: "Combien de temps faut-il pour développer une application ?",
+      name: "Travaillez-vous avec des PME industrielles ?",
       acceptedAnswer: {
         "@type": "Answer",
-        text: "Un MVP peut être développé en 6 à 8 semaines. Une application complète prend généralement 3 à 6 mois. Les délais varient selon la complexité, le nombre de fonctionnalités et les intégrations nécessaires.",
+        text: "Oui, nous développons des dashboards de production, des applications terrain et des assistants IA pour les PME industrielles de 20 à 250 salariés. Consultez notre page dédiée.",
       },
     },
     {
       "@type": "Question",
-      name: "Flutter ou React Native : quelle technologie choisir ?",
+      name: "Combien coûte un projet chez Eurus ?",
       acceptedAnswer: {
         "@type": "Answer",
-        text: "Flutter offre de meilleures performances et un contrôle total sur l'UI, idéal pour des apps avec des interfaces complexes. React Native est préférable si votre équipe maîtrise déjà JavaScript/React. Les deux permettent de développer pour iOS et Android avec une seule codebase.",
+        text: "Un MVP démarre à 15 000€, une application complète entre 40 000€ et 80 000€, et un outil industriel avec IA entre 10 000€ et 50 000€. Chaque projet est chiffré sur mesure après un appel découverte gratuit.",
       },
     },
     {
       "@type": "Question",
-      name: "Vaut-il mieux choisir une agence ou un freelance ?",
+      name: "Quel est le délai pour un projet ?",
       acceptedAnswer: {
         "@type": "Answer",
-        text: "Une agence offre une équipe complète (dev, design, PM), une continuité de service et des processus éprouvés — idéal pour des projets complexes. Un freelance convient pour des missions ponctuelles ou des budgets serrés, mais présente des risques de disponibilité.",
+        text: "Un premier outil ciblé est livré en 2 à 4 semaines. Un MVP complet en 6 à 12 semaines. Nous travaillons en sprints courts avec des démos régulières.",
       },
     },
     {
       "@type": "Question",
-      name: "Qu'est-ce qu'un MVP et pourquoi commencer par là ?",
+      name: "Proposez-vous un diagnostic gratuit ?",
       acceptedAnswer: {
         "@type": "Answer",
-        text: "Un MVP (Minimum Viable Product) est une version minimale de votre application avec uniquement les fonctionnalités essentielles. Il permet de valider votre idée auprès des utilisateurs, de réduire les risques financiers et d'itérer rapidement selon les retours du marché.",
+        text: "Oui, nous proposons un appel découverte de 30 minutes gratuit et sans engagement pour comprendre votre besoin et vous proposer une solution adaptée.",
       },
     },
   ],
