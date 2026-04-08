@@ -91,9 +91,8 @@ export default function Hero() {
           }`}
         >
           {[
-            { value: "5+", label: "Projets livrés" },
+            { value: "25+", label: "Projets livrés" },
             { value: "8", label: "Années d'expertise" },
-            { value: "700+", label: "Utilisateurs actifs" },
             { value: "100%", label: "Clients satisfaits" },
           ].map((stat, i) => (
             <div key={i} className="text-center md:text-left">
