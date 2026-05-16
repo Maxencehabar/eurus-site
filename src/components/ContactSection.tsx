@@ -1,44 +1,26 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { motion } from "motion/react";
+import { fadeUp, staggerContainer, VIEWPORT_ONCE } from "@/lib/animations/motion-presets";
 import ContactForm from "./ContactForm";
 import { CONTACT_EMAIL } from "@/lib/constants";
 
 export default function ContactSection() {
-  const [isVisible, setIsVisible] = useState(false);
-  const sectionRef = useRef<HTMLElement>(null);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true);
-        }
-      },
-      { threshold: 0.1 }
-    );
-
-    if (sectionRef.current) {
-      observer.observe(sectionRef.current);
-    }
-
-    return () => observer.disconnect();
-  }, []);
-
   return (
     <section
-      ref={sectionRef}
       id="contact"
       className="py-24 md:py-32 bg-bg-secondary"
     >
       <div className="mx-auto max-w-[1400px] px-6 md:px-12">
-        <div className="grid md:grid-cols-2 gap-12 md:gap-20">
+        <motion.div
+          className="grid md:grid-cols-2 gap-12 md:gap-20"
+          initial="hidden"
+          whileInView="visible"
+          viewport={VIEWPORT_ONCE}
+          variants={staggerContainer}
+        >
           {/* Left column */}
-          <div
-            className={`transition-all duration-700 ${
-              isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-            }`}
-          >
+          <motion.div variants={fadeUp}>
             <span className="text-accent text-sm font-medium tracking-wide uppercase mb-4 block">
               Contact
             </span>
@@ -46,7 +28,7 @@ export default function ContactSection() {
               Parlons de votre projet
             </h2>
             <p className="text-text-secondary leading-relaxed mb-8 max-w-md">
-              Une idée ? Un besoin ? Contactez-nous et discutons ensemble de 
+              Une idée ? Un besoin ? Contactez-nous et discutons ensemble de
               comment la réaliser. Réponse garantie sous 24h.
             </p>
 
@@ -134,17 +116,13 @@ export default function ContactSection() {
                 </a>
               </div>
             </div>
-          </div>
+          </motion.div>
 
           {/* Right column - Form */}
-          <div
-            className={`transition-all duration-700 delay-200 ${
-              isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-            }`}
-          >
+          <motion.div variants={fadeUp}>
             <ContactForm />
-          </div>
-        </div>
+          </motion.div>
+        </motion.div>
       </div>
     </section>
   );
