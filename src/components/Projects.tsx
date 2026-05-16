@@ -6,7 +6,7 @@ import { motion, AnimatePresence } from "motion/react";
 import { Asset } from "@/components/ui/Asset";
 import { getAsset } from "@/data/assets";
 import { getProjectSummaries } from "@/data/projects";
-import { fadeUp, staggerContainer, VIEWPORT_ONCE } from "@/lib/animations/motion-presets";
+import { fadeUp, VIEWPORT_ONCE } from "@/lib/animations/motion-presets";
 
 const categories = [
   { id: "all", label: "Tous" },
@@ -73,12 +73,7 @@ export default function Projects() {
           })}
         </div>
 
-        <motion.div
-          variants={staggerContainer}
-          initial="hidden"
-          animate="visible"
-          className="space-y-12 md:space-y-16"
-        >
+        <div className="space-y-12 md:space-y-16">
           <AnimatePresence mode="popLayout">
             {filtered.map((project, index) => {
               const reversed = index % 2 === 1;
@@ -94,7 +89,7 @@ export default function Projects() {
                 >
                   <Link
                     href={`/projets/${project.slug}`}
-                    className={`group grid md:grid-cols-2 gap-8 md:gap-16 items-center ${
+                    className={`group grid md:grid-cols-2 gap-8 md:gap-16 items-center rounded-2xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent ${
                       reversed ? "md:[&>*:first-child]:order-2" : ""
                     }`}
                   >
@@ -108,6 +103,7 @@ export default function Projects() {
                           asset={getAsset(project.heroAssetId)}
                           className="w-full h-auto object-cover"
                           sizes="(max-width: 768px) 100vw, 50vw"
+                          priority={index === 0}
                         />
                       </motion.div>
                     </div>
@@ -154,7 +150,7 @@ export default function Projects() {
               );
             })}
           </AnimatePresence>
-        </motion.div>
+        </div>
       </div>
     </section>
   );

@@ -19,16 +19,16 @@ export function GalleryScroll({ assetIds }: GalleryScrollProps) {
     () => {
       if (reduced || !containerRef.current || !trackRef.current) return;
       const track = trackRef.current;
-      const distance = track.scrollWidth - window.innerWidth;
-      if (distance <= 0) return;
+      const getDistance = () => Math.max(0, track.scrollWidth - window.innerWidth);
+      if (getDistance() <= 0) return;
 
       const tween = gsap.to(track, {
-        x: -distance,
+        x: () => -getDistance(),
         ease: "none",
         scrollTrigger: {
           trigger: containerRef.current,
           start: "top top",
-          end: `+=${distance}`,
+          end: () => `+=${getDistance()}`,
           scrub: 0.5,
           pin: true,
           invalidateOnRefresh: true,
@@ -70,13 +70,15 @@ export function GalleryScroll({ assetIds }: GalleryScrollProps) {
           return (
             <div
               key={id}
-              className={`flex-shrink-0 ${isPortrait ? "w-[40vh] md:w-[50vh]" : "w-[80vw] md:w-[60vw]"} rounded-2xl overflow-hidden border border-border bg-bg-card`}
+              className={`flex-shrink-0 h-full flex items-center justify-center ${isPortrait ? "w-[40vh] md:w-[50vh]" : "w-[80vw] md:w-[60vw]"}`}
             >
-              <Asset
-                asset={asset}
-                className="w-full h-auto object-cover"
-                sizes={isPortrait ? "50vh" : "60vw"}
-              />
+              <div className="relative w-full max-h-[80vh] rounded-2xl overflow-hidden border border-border bg-bg-card">
+                <Asset
+                  asset={asset}
+                  className="w-full h-auto max-h-[80vh] object-contain"
+                  sizes={isPortrait ? "50vh" : "60vw"}
+                />
+              </div>
             </div>
           );
         })}
