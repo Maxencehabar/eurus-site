@@ -4,6 +4,7 @@ import Projects from "@/components/Projects";
 import Testimonials from "@/components/Testimonials";
 import TechStack from "@/components/TechStack";
 import About from "@/components/About";
+import Team from "@/components/Team";
 import ProcessSteps from "@/components/ProcessSteps";
 import Pricing from "@/components/Pricing";
 import ContactSection from "@/components/ContactSection";
@@ -17,6 +18,7 @@ export default function Home() {
       <Testimonials />
       <TechStack />
       <About />
+      <Team />
       <ProcessSteps />
       <Pricing />
       <ContactSection />
