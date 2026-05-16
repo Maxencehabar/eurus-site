@@ -5,7 +5,9 @@ export interface ProjectSummary {
   subtitle: string;
   description: string;
   tags: string[];
+  category: "mobile" | "web" | "industrie";
   stat?: string;
+  heroAssetId: string;
 }
 
 export interface TechCategory {
@@ -22,6 +24,7 @@ export interface ProjectDetail extends ProjectSummary {
   };
   techStack: TechCategory[];
   results: { value: string; label: string }[];
+  galleryAssetIds: string[];
   metaTitle: string;
   metaDescription: string;
 }
@@ -35,7 +38,9 @@ const projects: ProjectDetail[] = [
     description:
       "App de matching qui met en relation des voyageurs partageant les mêmes destinations et dates. Disponible sur iOS avec plus de 700 utilisateurs actifs.",
     tags: ["Flutter", "Firebase", "iOS"],
+    category: "mobile",
     stat: "700+ utilisateurs",
+    heroAssetId: "project-getaway-1",
     heroDescription:
       "Une application mobile de matching qui connecte les voyageurs partageant les mêmes destinations et dates de voyage. Swipez, matchez, voyagez ensemble.",
     problem:
@@ -64,6 +69,7 @@ const projects: ProjectDetail[] = [
       { value: "4.6/5", label: "Note moyenne" },
       { value: "<200ms", label: "Temps de réponse API" },
     ],
+    galleryAssetIds: ["project-getaway-1", "project-getaway-2", "project-getaway-3"],
     metaTitle: "Getaway — Application de matching voyage | Eurus",
     metaDescription:
       "Découvrez Getaway, l'application mobile de matching entre voyageurs développée par Eurus. Flutter, Firebase, 700+ utilisateurs actifs.",
@@ -76,7 +82,9 @@ const projects: ProjectDetail[] = [
     description:
       "Système complet de réservation avec paiement Stripe, gestion de calendrier et notifications. Architecture full-stack moderne.",
     tags: ["React", "Next.js", "Spring Boot", "Firestore", "Stripe"],
+    category: "web",
     stat: "Livré en 3 mois",
+    heroAssetId: "project-youdy-1",
     heroDescription:
       "Une plateforme SaaS complète de mise en relation entre apprenants et formateurs, avec réservation, paiement et gestion de calendrier intégrés.",
     problem:
@@ -105,6 +113,7 @@ const projects: ProjectDetail[] = [
       { value: "Stripe", label: "Paiements sécurisés" },
       { value: "99.9%", label: "Uptime garanti" },
     ],
+    galleryAssetIds: ["project-youdy-1", "project-youdy-2", "project-youdy-3"],
     metaTitle: "Youdy — Plateforme SaaS formation | Eurus",
     metaDescription:
       "Découvrez Youdy, la plateforme de mise en relation apprenants/formateurs développée par Eurus. React, Next.js, Stripe, livrée en 3 mois.",
@@ -117,7 +126,9 @@ const projects: ProjectDetail[] = [
     description:
       "Application de gestion complète : données métier, tableaux de bord interactifs, exports analytics. Interface fluide et performante.",
     tags: ["Spring Boot", "Vue.js", "PostgreSQL"],
+    category: "web",
     stat: "5x plus rapide",
+    heroAssetId: "project-drmilou-1",
     heroDescription:
       "Un back-office sur mesure pour la gestion d'entreprise : données métier, tableaux de bord interactifs et exports analytics en temps réel.",
     problem:
@@ -146,6 +157,7 @@ const projects: ProjectDetail[] = [
       { value: "< 1s", label: "Temps de chargement" },
       { value: "100%", label: "Données migrées" },
     ],
+    galleryAssetIds: ["project-drmilou-1", "project-drmilou-2", "project-drmilou-3"],
     metaTitle: "DrMilou — Back-office gestion d'entreprise | Eurus",
     metaDescription:
       "Découvrez DrMilou, le back-office de gestion d'entreprise développé par Eurus. Vue.js, Spring Boot, PostgreSQL, 5x plus rapide.",
@@ -158,7 +170,9 @@ const projects: ProjectDetail[] = [
     description:
       "Digitalisation complète du suivi de production pour une PME de 50 salariés",
     tags: ["Next.js", "Flutter", "PostgreSQL", "Firebase"],
+    category: "industrie",
     stat: "40% de temps de saisie en moins",
+    heroAssetId: "project-refonte-1",
     heroDescription:
       "Une PME d'usinage de précision de 50 salariés en Île-de-France. Planning de production sur Excel, fiches qualité sur papier, reporting compilé à la main. Aucune visibilité temps réel sur l'atelier.",
     problem:
@@ -187,6 +201,7 @@ const projects: ProjectDetail[] = [
       { value: "3 sem.", label: "de développement" },
       { value: "Temps réel", label: "visibilité direction" },
     ],
+    galleryAssetIds: ["project-refonte-1", "project-refonte-2", "project-refonte-3"],
     metaTitle: "Refonte digitale PME industrielle — Dashboard & App terrain | Eurus",
     metaDescription:
       "Digitalisation complète d'une PME d'usinage : dashboard Next.js, app Flutter terrain, reporting automatique. -40% de temps de saisie en 3 semaines.",
@@ -202,13 +217,15 @@ export function getAllProjectSlugs(): string[] {
 }
 
 export function getProjectSummaries(): ProjectSummary[] {
-  return projects.map(({ number, slug, title, subtitle, description, tags, stat }) => ({
+  return projects.map(({ number, slug, title, subtitle, description, tags, category, stat, heroAssetId }) => ({
     number,
     slug,
     title,
     subtitle,
     description,
     tags,
+    category,
     stat,
+    heroAssetId,
   }));
 }
