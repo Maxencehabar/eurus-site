@@ -7,6 +7,7 @@ import FloatingCTA from "@/components/FloatingCTA";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { SITE_NAME, SITE_URL, SITE_DESCRIPTION, CONTACT_EMAIL, FOUNDING_YEAR } from "@/lib/constants";
+import { SmoothScrollProvider } from "@/components/providers/SmoothScrollProvider";
 
 const instrumentSerif = Instrument_Serif({
   subsets: ["latin"],
@@ -156,7 +157,9 @@ export default function RootLayout({
           Aller au contenu principal
         </a>
         <Navbar />
-        <main id="main">{children}</main>
+        <SmoothScrollProvider>
+          <main id="main">{children}</main>
+        </SmoothScrollProvider>
         <Footer />
         <FloatingCTA />
         <Analytics />

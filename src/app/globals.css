@@ -21,10 +21,6 @@
   --font-body: var(--font-body), system-ui, sans-serif;
 }
 
-html {
-  scroll-behavior: smooth;
-}
-
 body {
   background: var(--color-bg-primary);
   color: var(--color-text-primary);
