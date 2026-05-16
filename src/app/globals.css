@@ -297,6 +297,11 @@ body {
   border-width: 0;
 }
 
+html.custom-cursor-active,
+html.custom-cursor-active * {
+  cursor: none !important;
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,

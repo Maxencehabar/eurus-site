@@ -8,6 +8,7 @@ import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { SITE_NAME, SITE_URL, SITE_DESCRIPTION, CONTACT_EMAIL, FOUNDING_YEAR } from "@/lib/constants";
 import { SmoothScrollProvider } from "@/components/providers/SmoothScrollProvider";
+import { CustomCursor } from "@/components/providers/CustomCursor";
 
 const instrumentSerif = Instrument_Serif({
   subsets: ["latin"],
@@ -156,6 +157,7 @@ export default function RootLayout({
         <a href="#main" className="skip-to-content">
           Aller au contenu principal
         </a>
+        <CustomCursor />
         <Navbar />
         <SmoothScrollProvider>
           <main id="main">{children}</main>
