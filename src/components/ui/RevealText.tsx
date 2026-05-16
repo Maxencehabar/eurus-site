@@ -47,9 +47,11 @@ export function RevealText({
     { scope: ref as React.RefObject<HTMLElement>, dependencies: [reduced, delay, stagger] },
   );
 
+  const TagAny = Tag as React.ElementType;
+
   return (
-    <Tag ref={ref as React.RefObject<HTMLElement>} className={className} style={{ overflow: "hidden", display: "block" }}>
+    <TagAny ref={ref} className={className} style={{ overflow: "hidden", display: "block" }}>
       {children}
-    </Tag>
+    </TagAny>
   );
 }
