@@ -19,7 +19,8 @@ export function MagneticButton({
   strength = 0.3,
   onClick,
 }: MagneticButtonProps) {
-  const ref = useRef<HTMLAnchorElement | HTMLButtonElement>(null);
+  const anchorRef = useRef<HTMLAnchorElement>(null);
+  const buttonRef = useRef<HTMLButtonElement>(null);
   const reduced = usePrefersReducedMotion();
   const x = useMotionValue(0);
   const y = useMotionValue(0);
@@ -27,8 +28,10 @@ export function MagneticButton({
   const springY = useSpring(y, { stiffness: 200, damping: 20 });
 
   function handleMouseMove(event: React.MouseEvent) {
-    if (reduced || !ref.current) return;
-    const rect = ref.current.getBoundingClientRect();
+    if (reduced) return;
+    const node = href ? anchorRef.current : buttonRef.current;
+    if (!node) return;
+    const rect = node.getBoundingClientRect();
     const offsetX = (event.clientX - (rect.left + rect.width / 2)) * strength;
     const offsetY = (event.clientY - (rect.top + rect.height / 2)) * strength;
     x.set(offsetX);
@@ -36,16 +39,30 @@ export function MagneticButton({
   }
 
   function handleMouseLeave() {
+    if (reduced) return;
     x.set(0);
     y.set(0);
   }
 
-  const Component = href ? motion.a : motion.button;
+  if (href) {
+    return (
+      <motion.a
+        ref={anchorRef}
+        href={href}
+        onMouseMove={handleMouseMove}
+        onMouseLeave={handleMouseLeave}
+        style={{ x: springX, y: springY }}
+        className={className}
+      >
+        {children}
+      </motion.a>
+    );
+  }
 
   return (
-    <Component
-      ref={ref as never}
-      href={href}
+    <motion.button
+      ref={buttonRef}
+      type="button"
       onClick={onClick}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
@@ -53,6 +70,6 @@ export function MagneticButton({
       className={className}
     >
       {children}
-    </Component>
+    </motion.button>
   );
 }

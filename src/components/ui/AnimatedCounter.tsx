@@ -13,6 +13,10 @@ interface AnimatedCounterProps {
   className?: string;
 }
 
+function formatValue(value: number, decimals: number): string {
+  return decimals > 0 ? value.toFixed(decimals) : Math.round(value).toString();
+}
+
 export function AnimatedCounter({
   value,
   suffix = "",
@@ -24,10 +28,8 @@ export function AnimatedCounter({
   const ref = useRef<HTMLSpanElement>(null);
   const inView = useInView(ref, { once: true, amount: 0.5 });
   const reduced = usePrefersReducedMotion();
-  const count = useMotionValue(reduced ? value : 0);
-  const rounded = useTransform(count, (latest) =>
-    decimals > 0 ? latest.toFixed(decimals) : Math.round(latest).toString(),
-  );
+  const count = useMotionValue(0);
+  const rounded = useTransform(count, (latest) => formatValue(latest, decimals));
 
   useEffect(() => {
     if (!inView || reduced) return;
@@ -35,10 +37,12 @@ export function AnimatedCounter({
     return () => controls.stop();
   }, [inView, reduced, value, duration, count]);
 
+  const shouldRenderFinal = reduced || !inView;
+
   return (
     <span ref={ref} className={className}>
       {prefix}
-      <motion.span style={{ display: "inline" }}>{rounded}</motion.span>
+      {shouldRenderFinal ? formatValue(value, decimals) : <motion.span>{rounded}</motion.span>}
       {suffix}
     </span>
   );

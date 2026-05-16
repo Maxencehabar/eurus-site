@@ -82,7 +82,7 @@ export default function Hero() {
 
         <h1 className="heading-editorial text-[clamp(2.75rem,8vw,6rem)] max-w-[1000px] mb-8">
           <RevealText className="block">Nous créons des</RevealText>
-          <span className="block" style={{ overflow: "hidden" }}>
+          <span className="block overflow-hidden" aria-hidden="true">
             <span
               ref={rotatingRef}
               className="text-accent inline-block"
@@ -91,6 +91,7 @@ export default function Hero() {
               {ROTATING_WORDS[0]}
             </span>
           </span>
+          <span className="sr-only">applications, outils IA, dashboards, apps mobiles</span>
           <RevealText className="block" delay={0.2}>
             qui <em className="not-italic text-accent">marquent</em>
           </RevealText>
@@ -139,7 +140,7 @@ export default function Hero() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 1.0, ease: [0.22, 1, 0.36, 1] }}
-          className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-12 pt-12 border-t border-border"
+          className="grid grid-cols-2 md:grid-cols-3 gap-8 md:gap-12 pt-12 border-t border-border"
         >
           {[
             { value: 12, suffix: "+", label: "Projets livrés" },

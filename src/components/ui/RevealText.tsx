@@ -7,10 +7,11 @@ import { usePrefersReducedMotion } from "@/lib/animations/usePrefersReducedMotio
 
 interface RevealTextProps {
   children: React.ReactNode;
-  as?: keyof React.JSX.IntrinsicElements;
+  as?: React.ElementType;
   className?: string;
   delay?: number;
   stagger?: number;
+  ariaLabel?: string;
 }
 
 export function RevealText({
@@ -19,9 +20,12 @@ export function RevealText({
   className,
   delay = 0,
   stagger = 0.04,
+  ariaLabel,
 }: RevealTextProps) {
   const ref = useRef<HTMLElement | null>(null);
   const reduced = usePrefersReducedMotion();
+
+  const resolvedLabel = ariaLabel ?? (typeof children === "string" ? children : undefined);
 
   useGSAP(
     () => {
@@ -47,11 +51,13 @@ export function RevealText({
     { scope: ref as React.RefObject<HTMLElement>, dependencies: [reduced, delay, stagger] },
   );
 
-  const TagAny = Tag as React.ElementType;
-
   return (
-    <TagAny ref={ref} className={className} style={{ overflow: "hidden", display: "block" }}>
-      {children}
-    </TagAny>
+    <Tag
+      ref={ref}
+      aria-label={resolvedLabel}
+      className={`overflow-hidden block ${className ?? ""}`.trim()}
+    >
+      <span aria-hidden={resolvedLabel ? "true" : undefined}>{children}</span>
+    </Tag>
   );
 }
