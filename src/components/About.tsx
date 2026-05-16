@@ -1,41 +1,72 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { motion } from "motion/react";
+import { Asset } from "@/components/ui/Asset";
+import { getAsset } from "@/data/assets";
+import { fadeUp, staggerContainer, VIEWPORT_ONCE } from "@/lib/animations/motion-presets";
+
+const values = [
+  {
+    title: "Communication",
+    desc: "Transparence totale sur l'avancement et les décisions",
+    icon: (
+      <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5} aria-hidden="true">
+        <path strokeLinecap="round" strokeLinejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+      </svg>
+    ),
+  },
+  {
+    title: "Efficacité",
+    desc: "Premier outil livré en 2-4 semaines. Itérations rapides.",
+    icon: (
+      <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5} aria-hidden="true">
+        <path strokeLinecap="round" strokeLinejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
+      </svg>
+    ),
+  },
+  {
+    title: "Pragmatisme",
+    desc: "L'outil qui résout votre problème, pas un ERP à 200k€.",
+    icon: (
+      <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5} aria-hidden="true">
+        <circle cx="12" cy="12" r="9" />
+        <circle cx="12" cy="12" r="5" />
+        <circle cx="12" cy="12" r="1.5" fill="currentColor" />
+      </svg>
+    ),
+  },
+  {
+    title: "Expertise terrain",
+    desc: "On comprend vos contraintes — atelier, production, logistique.",
+    icon: (
+      <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5} aria-hidden="true">
+        <path strokeLinecap="round" strokeLinejoin="round" d="M3 21h18M5 21V7l7-4 7 4v14M9 9h.01M9 13h.01M9 17h.01M15 9h.01M15 13h.01M15 17h.01" />
+      </svg>
+    ),
+  },
+];
 
 export default function About() {
-  const [isVisible, setIsVisible] = useState(false);
-  const sectionRef = useRef<HTMLElement>(null);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true);
-        }
-      },
-      { threshold: 0.2 }
-    );
-
-    if (sectionRef.current) {
-      observer.observe(sectionRef.current);
-    }
-
-    return () => observer.disconnect();
-  }, []);
-
   return (
     <section
-      ref={sectionRef}
       id="apropos"
-      className="py-24 md:py-32 bg-bg-secondary"
+      className="relative py-24 md:py-32 bg-bg-secondary overflow-hidden"
     >
-      <div className="mx-auto max-w-[1400px] px-6 md:px-12">
+      <div className="absolute inset-0 opacity-[0.06] pointer-events-none">
+        <Asset
+          asset={getAsset("office-ambient")}
+          className="w-full h-full object-cover"
+          sizes="100vw"
+        />
+      </div>
+
+      <div className="relative mx-auto max-w-[1400px] px-6 md:px-12">
         <div className="grid md:grid-cols-2 gap-12 md:gap-20 items-center">
-          {/* Left column - Text */}
-          <div
-            className={`transition-all duration-700 ${
-              isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-            }`}
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={VIEWPORT_ONCE}
+            variants={fadeUp}
           >
             <span className="text-accent text-sm font-medium tracking-wide uppercase mb-4 block">
               À propos
@@ -45,65 +76,41 @@ export default function About() {
             </h2>
             <div className="space-y-4 text-text-secondary leading-relaxed">
               <p>
-                Maxence développe depuis 2018. À 22 ans, après une prépa ingé
-                et des premières missions en freelance, il crée Eurus en 2021
-                avec une conviction : le développement sur mesure ne devrait pas
-                être réservé aux grandes entreprises.
+                Maxence développe depuis 2018. Après une prépa ingé et plusieurs missions
+                en freelance, il crée Eurus en 2021 avec une conviction : le développement
+                sur mesure ne devrait pas être réservé aux grandes entreprises.
               </p>
               <p>
-                Avec Théo et Tom, on construit des applications mobiles, des
-                outils web et des assistants IA pour des startups et des PME
-                industrielles. On parle votre langue — qu&apos;il s&apos;agisse
-                de React ou de traçabilité qualité en atelier.
+                Avec Théo et Tom, on construit des applications mobiles, des outils web
+                et des assistants IA pour des startups et des PME industrielles. On parle
+                votre langue — qu&apos;il s&apos;agisse de React ou de traçabilité qualité
+                en atelier.
               </p>
               <p className="text-text-primary font-medium">
                 Basés en France, nous accompagnons startups et PME industrielles depuis 2021.
               </p>
             </div>
-          </div>
+          </motion.div>
 
-          {/* Right column - Values */}
-          <div
-            className={`grid grid-cols-2 gap-4 transition-all duration-700 delay-200 ${
-              isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-            }`}
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={VIEWPORT_ONCE}
+            variants={staggerContainer}
+            className="grid grid-cols-2 gap-4"
           >
-            {[
-              {
-                icon: "💬",
-                title: "Communication",
-                desc: "Transparence totale sur l'avancement et les décisions",
-              },
-              {
-                icon: "⚡",
-                title: "Efficacité",
-                desc: "Premier outil livré en 2-4 semaines. Itérations rapides.",
-              },
-              {
-                icon: "🎯",
-                title: "Pragmatisme",
-                desc: "L'outil qui résout votre problème, pas un ERP à 200k€.",
-              },
-              {
-                icon: "🏭",
-                title: "Expertise terrain",
-                desc: "On comprend vos contraintes — atelier, production, logistique.",
-              },
-            ].map((value) => (
-              <div
+            {values.map((value) => (
+              <motion.div
                 key={value.title}
-                className="bg-bg-card border border-border rounded-xl p-6 hover:border-accent/30 transition-colors"
+                variants={fadeUp}
+                className="bg-bg-card border border-border rounded-xl p-6 hover:border-accent/30 hover:-translate-y-1 transition-all duration-300"
               >
-                <span className="text-2xl mb-3 block">{value.icon}</span>
-                <h3 className="font-semibold text-text-primary mb-2">
-                  {value.title}
-                </h3>
-                <p className="text-sm text-text-muted leading-relaxed">
-                  {value.desc}
-                </p>
-              </div>
+                <div className="text-accent mb-3">{value.icon}</div>
+                <h3 className="font-semibold text-text-primary mb-2">{value.title}</h3>
+                <p className="text-sm text-text-muted leading-relaxed">{value.desc}</p>
+              </motion.div>
             ))}
-          </div>
+          </motion.div>
         </div>
       </div>
     </section>
