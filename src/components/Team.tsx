@@ -1,19 +1,25 @@
 "use client";
 
-import { motion, useScroll, useTransform } from "motion/react";
+import { motion, useScroll, useTransform, useReducedMotion } from "motion/react";
 import { useRef } from "react";
 import { Asset } from "@/components/ui/Asset";
+import { SocialIcon } from "@/components/ui/SocialIcon";
 import { team } from "@/data/team";
 import { getAsset } from "@/data/assets";
 import { fadeUp, staggerContainer, VIEWPORT_ONCE } from "@/lib/animations/motion-presets";
 
 export default function Team() {
   const sectionRef = useRef<HTMLElement>(null);
+  const reduceMotion = useReducedMotion();
   const { scrollYProgress } = useScroll({
     target: sectionRef,
     offset: ["start end", "end start"],
   });
-  const groupY = useTransform(scrollYProgress, [0, 1], ["-8%", "8%"]);
+  const groupY = useTransform(
+    scrollYProgress,
+    [0, 1],
+    reduceMotion ? ["0%", "0%"] : ["-8%", "8%"],
+  );
 
   return (
     <section
@@ -37,8 +43,11 @@ export default function Team() {
           </h2>
         </motion.div>
 
-        <div className="relative mb-16 overflow-hidden rounded-2xl border border-border">
-          <motion.div style={{ y: groupY }} className="relative aspect-[21/9]">
+        <div className="relative mb-16 overflow-hidden rounded-2xl border border-border aspect-[21/9]">
+          <motion.div
+            style={{ y: groupY }}
+            className="absolute inset-x-0 -top-[10%] -bottom-[10%]"
+          >
             <Asset
               asset={getAsset("team-group")}
               className="absolute inset-0 w-full h-full object-cover"
@@ -66,8 +75,8 @@ export default function Team() {
                   className="w-full h-full object-cover transition-all duration-700 group-hover:scale-105 grayscale group-hover:grayscale-0"
                   sizes="(max-width: 768px) 100vw, 33vw"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-bg-dark/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                <div className="absolute bottom-0 left-0 right-0 p-6 translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500">
+                <div className="absolute inset-0 bg-gradient-to-t from-bg-dark/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 transition-opacity duration-500" />
+                <div className="absolute bottom-0 left-0 right-0 p-6 translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 group-focus-within:translate-y-0 group-focus-within:opacity-100 transition-all duration-500">
                   <div className="flex flex-wrap gap-1.5 mb-3">
                     {member.expertise.slice(0, 4).map((skill) => (
                       <span
@@ -78,18 +87,16 @@ export default function Team() {
                       </span>
                     ))}
                   </div>
-                  <div className="flex gap-3">
+                  <div className="flex gap-2">
                     {member.links.linkedin && (
                       <a
                         href={member.links.linkedin}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="text-white/80 hover:text-white transition-colors"
+                        className="text-white/80 hover:text-white p-1.5 rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent transition-colors"
                         aria-label={`LinkedIn de ${member.name}`}
                       >
-                        <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                          <path d="M20.45 20.45h-3.55v-5.57c0-1.33-.03-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.95v5.66H9.36V9h3.41v1.56h.05a3.74 3.74 0 0 1 3.37-1.85c3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43A2.07 2.07 0 1 1 5.34 3.3a2.07 2.07 0 0 1 0 4.13zM7.12 20.45H3.56V9h3.56v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.72v20.56C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.72V1.72C24 .77 23.2 0 22.22 0z" />
-                        </svg>
+                        <SocialIcon type="linkedin" className="w-5 h-5" />
                       </a>
                     )}
                     {member.links.github && (
@@ -97,12 +104,10 @@ export default function Team() {
                         href={member.links.github}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="text-white/80 hover:text-white transition-colors"
+                        className="text-white/80 hover:text-white p-1.5 rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent transition-colors"
                         aria-label={`GitHub de ${member.name}`}
                       >
-                        <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                          <path d="M12 .3a12 12 0 0 0-3.8 23.4c.6.1.8-.3.8-.6v-2c-3.3.7-4-1.6-4-1.6-.6-1.4-1.4-1.8-1.4-1.8-1-.7.1-.7.1-.7 1.2 0 1.9 1.2 1.9 1.2 1 1.8 2.8 1.3 3.5 1 0-.8.4-1.3.7-1.6-2.7-.3-5.5-1.3-5.5-6 0-1.2.5-2.3 1.3-3.1-.2-.4-.6-1.6 0-3.2 0 0 1-.3 3.4 1.2a11.5 11.5 0 0 1 6 0c2.3-1.5 3.3-1.2 3.3-1.2.7 1.6.2 2.8.1 3.2.8.8 1.3 1.9 1.3 3.1 0 4.6-2.8 5.6-5.5 5.9.5.4.9 1.1.9 2.3v3.3c0 .3.1.7.8.6A12 12 0 0 0 12 .3" />
-                        </svg>
+                        <SocialIcon type="github" className="w-5 h-5" />
                       </a>
                     )}
                   </div>
