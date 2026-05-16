@@ -9,6 +9,7 @@ import { SpeedInsights } from "@vercel/speed-insights/next";
 import { SITE_NAME, SITE_URL, SITE_DESCRIPTION, CONTACT_EMAIL, FOUNDING_YEAR } from "@/lib/constants";
 import { SmoothScrollProvider } from "@/components/providers/SmoothScrollProvider";
 import { CustomCursor } from "@/components/providers/CustomCursor";
+import { PageTransition } from "@/components/providers/PageTransition";
 
 const instrumentSerif = Instrument_Serif({
   subsets: ["latin"],
@@ -160,7 +161,9 @@ export default function RootLayout({
         <CustomCursor />
         <Navbar />
         <SmoothScrollProvider>
-          <main id="main">{children}</main>
+          <main id="main">
+            <PageTransition>{children}</PageTransition>
+          </main>
         </SmoothScrollProvider>
         <Footer />
         <FloatingCTA />
