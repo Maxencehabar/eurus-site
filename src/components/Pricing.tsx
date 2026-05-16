@@ -1,4 +1,9 @@
-import FadeIn from "@/components/FadeIn";
+"use client";
+
+import Link from "next/link";
+import type { Route } from "next";
+import { motion } from "motion/react";
+import { fadeUp, VIEWPORT_ONCE } from "@/lib/animations/motion-presets";
 
 const plans = [
   {
@@ -12,6 +17,7 @@ const plans = [
       "1 plateforme (web ou mobile)",
     ],
     popular: false,
+    caseStudySlug: "getaway",
   },
   {
     name: "Application complète",
@@ -24,6 +30,7 @@ const plans = [
       "Intégrations tierces (Stripe, etc.)",
     ],
     popular: false,
+    caseStudySlug: "youdy",
   },
   {
     name: "Outil industriel + IA",
@@ -36,6 +43,7 @@ const plans = [
       "Formation incluse",
     ],
     popular: true,
+    caseStudySlug: "refonte-industrielle",
   },
 ];
 
@@ -45,7 +53,12 @@ export default function Pricing() {
   return (
     <section id="tarifs" className="py-24 md:py-32 bg-bg-secondary">
       <div className="mx-auto max-w-[1400px] px-6 md:px-12">
-        <FadeIn>
+        <motion.div
+          initial="hidden"
+          whileInView="visible"
+          viewport={VIEWPORT_ONCE}
+          variants={fadeUp}
+        >
           <div className="text-center mb-16">
             <span className="text-accent text-sm font-medium tracking-wide uppercase mb-4 block">
               Tarifs
@@ -58,11 +71,17 @@ export default function Pricing() {
               mesure après un appel découverte.
             </p>
           </div>
-        </FadeIn>
+        </motion.div>
 
         <div className="grid md:grid-cols-3 gap-6 md:gap-8">
-          {plans.map((plan, index) => (
-            <FadeIn key={plan.name} className={`delay-${(index + 1) * 100}`}>
+          {plans.map((plan) => (
+            <motion.div
+              key={plan.name}
+              initial="hidden"
+              whileInView="visible"
+              viewport={VIEWPORT_ONCE}
+              variants={fadeUp}
+            >
               <div
                 className={`relative bg-bg-card border rounded-xl p-8 h-full flex flex-col ${
                   plan.popular
@@ -108,12 +127,23 @@ export default function Pricing() {
                     </li>
                   ))}
                 </ul>
+                <Link
+                  href={`/projets/${plan.caseStudySlug}` as Route}
+                  className="mt-6 text-sm text-accent font-medium inline-flex items-center gap-1 hover:gap-2 transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded"
+                >
+                  Voir un cas concret →
+                </Link>
               </div>
-            </FadeIn>
+            </motion.div>
           ))}
         </div>
 
-        <FadeIn className="delay-500">
+        <motion.div
+          initial="hidden"
+          whileInView="visible"
+          viewport={VIEWPORT_ONCE}
+          variants={fadeUp}
+        >
           <div className="text-center mt-12">
             <a
               href={calendlyUrl || "#contact"}
@@ -136,7 +166,7 @@ export default function Pricing() {
               </svg>
             </a>
           </div>
-        </FadeIn>
+        </motion.div>
       </div>
     </section>
   );
