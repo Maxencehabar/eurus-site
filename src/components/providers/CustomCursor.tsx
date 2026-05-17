@@ -10,8 +10,8 @@ export function CustomCursor() {
   const [hovering, setHovering] = useState(false);
   const x = useMotionValue(0);
   const y = useMotionValue(0);
-  const springX = useSpring(x, { stiffness: 500, damping: 40, mass: 0.5 });
-  const springY = useSpring(y, { stiffness: 500, damping: 40, mass: 0.5 });
+  const ringX = useSpring(x, { stiffness: 1500, damping: 60, mass: 0.2 });
+  const ringY = useSpring(y, { stiffness: 1500, damping: 60, mass: 0.2 });
 
   useEffect(() => {
     if (reduced) return;
@@ -48,13 +48,13 @@ export function CustomCursor() {
       <motion.div
         aria-hidden="true"
         className="fixed top-0 left-0 z-[9999] pointer-events-none w-2 h-2 bg-accent rounded-full"
-        style={{ x: springX, y: springY, translateX: "-50%", translateY: "-50%" }}
+        style={{ x, y, translateX: "-50%", translateY: "-50%" }}
       />
       <motion.div
         aria-hidden="true"
         className="fixed top-0 left-0 z-[9998] pointer-events-none rounded-full border border-bg-dark/30 mix-blend-difference"
         animate={{ width: hovering ? 48 : 32, height: hovering ? 48 : 32 }}
-        style={{ x: springX, y: springY, translateX: "-50%", translateY: "-50%" }}
+        style={{ x: ringX, y: ringY, translateX: "-50%", translateY: "-50%" }}
         transition={{ type: "spring", stiffness: 300, damping: 25 }}
       />
     </>
