@@ -13,7 +13,8 @@ export interface AssetDefinition {
 export const assets: Record<string, AssetDefinition> = {
   "team-maxence-portrait": {
     id: "team-maxence-portrait",
-    status: "pending",
+    status: "ready",
+    src: "/team/maxence.jpg",
     alt: "Maxence Habar, fondateur d'Eurus",
     width: 800,
     height: 1000,
@@ -29,7 +30,8 @@ export const assets: Record<string, AssetDefinition> = {
   },
   "team-theo-portrait": {
     id: "team-theo-portrait",
-    status: "pending",
+    status: "ready",
+    src: "/team/theo.jpg",
     alt: "Théo, développeur Eurus",
     width: 800,
     height: 1000,
@@ -37,7 +39,8 @@ export const assets: Record<string, AssetDefinition> = {
   },
   "team-leo-portrait": {
     id: "team-leo-portrait",
-    status: "pending",
+    status: "ready",
+    src: "/team/leo.jpg",
     alt: "Léo, développeur Eurus",
     width: 800,
     height: 1000,
