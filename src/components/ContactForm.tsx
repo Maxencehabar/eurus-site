@@ -14,6 +14,7 @@ export default function ContactForm() {
     email: "",
     projectType: "",
     message: "",
+    source: "",
   });
 
   function update(field: string, value: string) {
@@ -72,6 +73,7 @@ export default function ContactForm() {
           name: form.name,
           email: form.email,
           projectType: form.projectType,
+          source: form.source || "Non renseign\u00e9",
           message: form.message || "Non renseign\u00e9",
         }),
       });
@@ -212,6 +214,31 @@ export default function ContactForm() {
               placeholder="Quelques mots sur votre id&eacute;e..."
               className={`${inputClass} min-h-[120px] resize-y`}
             />
+          </div>
+          <div className="mb-5">
+            <label
+              htmlFor="source"
+              className="mb-2 block text-sm font-medium text-text-secondary"
+            >
+              Comment nous avez-vous connus ? (optionnel)
+            </label>
+            <select
+              id="source"
+              value={form.source}
+              onChange={(e) => update("source", e.target.value)}
+              className={selectClass}
+            >
+              <option value="" disabled>
+                S&eacute;lectionnez...
+              </option>
+              <option value="Recherche Google">Recherche Google</option>
+              <option value="ChatGPT ou autre IA">ChatGPT ou autre IA</option>
+              <option value="Recommandation / bouche-à-oreille">
+                Recommandation / bouche-&agrave;-oreille
+              </option>
+              <option value="LinkedIn">LinkedIn</option>
+              <option value="Autre">Autre</option>
+            </select>
           </div>
         </div>
       )}
