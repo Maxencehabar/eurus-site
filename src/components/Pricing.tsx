@@ -8,7 +8,6 @@ import { fadeUp, VIEWPORT_ONCE } from "@/lib/animations/motion-presets";
 const plans = [
   {
     name: "Automatisation / agent IA",
-    price: "À partir de 10 000€",
     description:
       "Agent IA ou outil interne sur mesure : recouvrement, back-office, app terrain. Remplace Excel, le papier et les ressaisies.",
     features: [
@@ -21,7 +20,6 @@ const plans = [
   },
   {
     name: "MVP / App simple",
-    price: "À partir de 15 000€",
     description:
       "Application mobile ou web avec les fonctionnalités essentielles. Idéal pour valider une idée.",
     features: [
@@ -34,7 +32,6 @@ const plans = [
   },
   {
     name: "Application complète",
-    price: "À partir de 40 000€",
     description:
       "Application multi-plateforme avec backend, intégrations et panel admin. Pour les projets ambitieux.",
     features: [
@@ -61,14 +58,14 @@ export default function Pricing() {
         >
           <div className="text-center mb-16">
             <span className="text-accent text-sm font-medium tracking-wide uppercase mb-4 block">
-              Tarifs
+              Offres
             </span>
             <h2 className="heading-editorial text-[clamp(2rem,5vw,3rem)] mb-4">
-              Nos tarifs
+              Nos offres
             </h2>
             <p className="text-text-secondary max-w-2xl mx-auto leading-relaxed">
-              Transparence totale sur nos prix. Chaque projet est chiffré sur
-              mesure après un appel découverte.
+              Chaque projet est chiffré sur mesure après un appel découverte,
+              avec un budget transparent et sans surprise.
             </p>
           </div>
         </motion.div>
@@ -97,9 +94,6 @@ export default function Pricing() {
                 <h3 className="text-lg font-semibold text-text-primary mb-2">
                   {plan.name}
                 </h3>
-                <p className="text-accent text-2xl font-bold mb-4">
-                  {plan.price}
-                </p>
                 <p className="text-text-secondary text-sm leading-relaxed mb-6">
                   {plan.description}
                 </p>

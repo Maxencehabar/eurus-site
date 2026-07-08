@@ -77,7 +77,6 @@ const solutions = [
   {
     number: "01",
     title: "Agent de recouvrement",
-    price: "10 - 20 k€",
     description:
       "Relances de factures par paliers, rapprochement des paiements, courriers de mise en demeure. Votre équipe supervise, l'agent exécute.",
     tags: ["Relances auto", "Rapprochement bancaire", "Claude API", "Outlook"],
@@ -85,7 +84,6 @@ const solutions = [
   {
     number: "02",
     title: "Traitement de documents",
-    price: "10 - 25 k€",
     description:
       "Extraction, classement et saisie automatique de vos devis, factures, bons de commande et formulaires. Fini les ressaisies.",
     tags: ["OCR + IA", "Extraction", "Intégration ERP", "Zéro ressaisie"],
@@ -93,7 +91,6 @@ const solutions = [
   {
     number: "03",
     title: "Assistant IA métier",
-    price: "10 - 25 k€",
     description:
       "Un assistant branché sur vos outils (ERP, base documentaire, mails). Vos équipes posent des questions, il répond avec vos données.",
     tags: ["Claude API", "RAG", "Vos données", "Sécurisé"],
@@ -286,9 +283,6 @@ export function AutomatisationPageBody() {
                   <div className="flex items-start justify-between mb-6">
                     <span className="text-5xl font-light text-border-strong group-hover:text-accent/30 transition-colors">
                       {solution.number}
-                    </span>
-                    <span className="text-sm px-3 py-1.5 rounded-full bg-accent/10 text-accent font-medium">
-                      {solution.price}
                     </span>
                   </div>
                   <h3 className="text-xl font-semibold text-text-primary mb-3">

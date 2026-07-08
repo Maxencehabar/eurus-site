@@ -77,7 +77,6 @@ const solutions = [
   {
     number: "01",
     title: "Dashboard + App terrain",
-    price: "15 - 25 k€",
     description:
       "Dashboard web Next.js + application mobile Flutter pour vos equipes terrain. Remplace vos fichiers Excel et vos fiches papier.",
     tags: ["Next.js", "Flutter", "Firebase", "Temps reel"],
@@ -85,7 +84,6 @@ const solutions = [
   {
     number: "02",
     title: "Assistant IA metier",
-    price: "10 - 25 k€",
     description:
       "Chatbot branche sur vos outils existants (ERP, Jira, base documentaire). Vos equipes posent des questions, l’IA repond avec vos donnees.",
     tags: ["Claude API", "RAG", "Integration ERP", "NLP"],
@@ -93,7 +91,6 @@ const solutions = [
   {
     number: "03",
     title: "Portail client B2B",
-    price: "30 - 50 k€",
     description:
       "Commande en ligne, suivi de livraison, pricing par client. Vos clients commandent en autonomie, 24h/24.",
     tags: ["Next.js", "PostgreSQL", "Stripe", "API REST"],
@@ -288,9 +285,6 @@ export function IndustriePageBody() {
                   <div className="flex items-start justify-between mb-6">
                     <span className="text-5xl font-light text-border-strong group-hover:text-accent/30 transition-colors">
                       {solution.number}
-                    </span>
-                    <span className="text-sm px-3 py-1.5 rounded-full bg-accent/10 text-accent font-medium">
-                      {solution.price}
                     </span>
                   </div>
                   <h3 className="text-xl font-semibold text-text-primary mb-3">
