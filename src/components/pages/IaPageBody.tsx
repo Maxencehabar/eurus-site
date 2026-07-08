@@ -386,16 +386,15 @@ export function IaPageBody() {
           <motion.div initial="hidden" whileInView="visible" viewport={VIEWPORT_ONCE} variants={fadeUp}>
             <div className="max-w-[800px] mx-auto text-center">
               <span className="text-accent text-sm font-medium tracking-wide uppercase mb-4 block">
-                Tarif
+                Notre approche
               </span>
               <h2 className="heading-editorial text-[clamp(2rem,5vw,3.5rem)] mb-6">
-                À partir de{" "}
-                <em className="not-italic text-accent">10 000&euro;</em>
+                Tout compris, <em className="not-italic text-accent">sans surprise</em>
               </h2>
               <p className="text-text-secondary text-lg leading-relaxed mb-10">
-                Un tarif tout compris. Audit, développement, déploiement et
-                formation de vos équipes inclus. Pas de surprise, pas
-                d&apos;abonnement caché.
+                Chaque projet est chiffré sur mesure après l&apos;audit. Audit,
+                développement, déploiement et formation de vos équipes inclus.
+                Pas de surprise, pas d&apos;abonnement caché.
               </p>
 
               <div className="bg-bg-card border border-border rounded-2xl p-8 md:p-10 text-left">

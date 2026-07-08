@@ -51,7 +51,7 @@ export default function Footer() {
                   href="/#tarifs"
                   className="text-gray-400 hover:text-white transition-colors"
                 >
-                  Tarifs
+                  Nos offres
                 </Link>
               </li>
             </ul>
