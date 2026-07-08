@@ -7,6 +7,19 @@ import { fadeUp, VIEWPORT_ONCE } from "@/lib/animations/motion-presets";
 
 const plans = [
   {
+    name: "Automatisation / agent IA",
+    price: "À partir de 10 000€",
+    description:
+      "Agent IA ou outil interne sur mesure : recouvrement, back-office, app terrain. Remplace Excel, le papier et les ressaisies.",
+    features: [
+      "2-4 semaines",
+      "Connecté à vos outils (ERP, mail…)",
+      "Formation incluse",
+    ],
+    popular: true,
+    caseStudySlug: "refonte-industrielle",
+  },
+  {
     name: "MVP / App simple",
     price: "À partir de 15 000€",
     description:
@@ -31,19 +44,6 @@ const plans = [
     ],
     popular: false,
     caseStudySlug: "youdy",
-  },
-  {
-    name: "Outil industriel + IA",
-    price: "À partir de 10 000€",
-    description:
-      "Dashboard, app terrain ou assistant IA sur mesure. Remplace Excel et le papier.",
-    features: [
-      "2-4 semaines",
-      "Connecté à votre ERP",
-      "Formation incluse",
-    ],
-    popular: true,
-    caseStudySlug: "refonte-industrielle",
   },
 ];
 

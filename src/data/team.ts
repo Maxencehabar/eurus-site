@@ -35,12 +35,12 @@ export const team: TeamMember[] = [
     portraitAssetId: "team-theo-portrait",
   },
   {
-    slug: "tom",
-    name: "Tom",
+    slug: "leo",
+    name: "Léo",
     role: "Mobile & Frontend",
     bio: "Spécialiste applications mobiles natives et cross-platform. Obsédé par la qualité d'UX.",
     expertise: ["Flutter", "React Native", "iOS", "Android", "Figma"],
     links: {},
-    portraitAssetId: "team-tom-portrait",
+    portraitAssetId: "team-leo-portrait",
   },
 ];

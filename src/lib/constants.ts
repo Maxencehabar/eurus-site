@@ -1,7 +1,7 @@
 export const SITE_NAME = "Eurus";
 export const SITE_URL = "https://eurus.agency";
 export const SITE_DESCRIPTION =
-  "Eurus est une agence de développement basée en France, spécialisée dans la création d'applications mobiles et web sur mesure.";
+  "Eurus conçoit des automatisations, agents IA et outils internes sur mesure pour PME et professionnels : recouvrement, back-office, apps métier.";
 export const CONTACT_EMAIL = "maxencehabar@gmail.com";
 export const FOUNDING_YEAR = 2021;
 
@@ -15,9 +15,9 @@ export const SOCIAL_LINKS = {
 
 export const NAV_ITEMS = [
   { label: "Services", href: "#services" },
-  { label: "Équipe", href: "#equipe" },
+  { label: "Automatisation", href: "/automatisation" },
   { label: "Industrie", href: "/industrie" },
-  { label: "IA sur mesure", href: "/ia" },
+  { label: "Équipe", href: "#equipe" },
   { label: "Projets", href: "#projets" },
   { label: "Blog", href: "/blog" },
   { label: "Contact", href: "#contact" },

@@ -8,7 +8,7 @@ import { MagneticButton } from "@/components/ui/MagneticButton";
 import { gsap, useGSAP } from "@/lib/animations/useGsapScrollTrigger";
 import { usePrefersReducedMotion } from "@/lib/animations/usePrefersReducedMotion";
 
-const ROTATING_WORDS = ["applications", "outils IA", "dashboards", "apps mobiles"];
+const ROTATING_WORDS = ["vos process", "votre facturation", "votre back-office", "vos outils métier"];
 
 export default function Hero() {
   const sectionRef = useRef<HTMLElement>(null);
@@ -81,7 +81,7 @@ export default function Hero() {
         </motion.div>
 
         <h1 className="heading-editorial text-[clamp(2.75rem,8vw,6rem)] max-w-[1000px] mb-8">
-          <RevealText className="block">Nous créons des</RevealText>
+          <RevealText className="block">Nous automatisons</RevealText>
           <span className="block overflow-hidden" aria-hidden="true">
             <span
               ref={rotatingRef}
@@ -91,9 +91,9 @@ export default function Hero() {
               {ROTATING_WORDS[0]}
             </span>
           </span>
-          <span className="sr-only">applications, outils IA, dashboards, apps mobiles</span>
+          <span className="sr-only">vos process, votre facturation, votre back-office, vos outils métier</span>
           <RevealText className="block" delay={0.2}>
-            qui <em className="not-italic text-accent">marquent</em>
+            avec des outils <em className="not-italic text-accent">sur mesure</em>
           </RevealText>
         </h1>
 
@@ -103,8 +103,9 @@ export default function Hero() {
           transition={{ duration: 0.8, delay: 0.6, ease: [0.22, 1, 0.36, 1] }}
           className="text-lg md:text-xl text-text-secondary max-w-[600px] mb-12 leading-relaxed"
         >
-          Eurus accompagne startups, PME et industriels dans la conception
-          d&apos;applications mobiles, web et d&apos;outils IA sur mesure. De l&apos;idée à la production.
+          Eurus conçoit des agents IA et des outils internes sur mesure pour
+          PME : recouvrement, suivi de production, back-office. Vos équipes
+          gagnent des heures chaque semaine. De l&apos;idée à la production.
         </motion.p>
 
         <motion.div
@@ -143,17 +144,13 @@ export default function Hero() {
           className="grid grid-cols-2 md:grid-cols-3 gap-8 md:gap-12 pt-12 border-t border-border"
         >
           {[
-            { value: 12, suffix: "+", label: "Projets livrés" },
-            { value: 5, suffix: " ans", label: "D'expérience" },
-            { value: 4.8, decimals: 1, suffix: "/5", label: "Satisfaction client" },
+            { value: 25, suffix: "+", label: "Projets livrés" },
+            { value: 8, suffix: " ans", label: "D'expérience" },
+            { value: 100, suffix: "%", label: "Clients satisfaits" },
           ].map((stat) => (
             <div key={stat.label} className="text-center md:text-left">
               <div className="heading-editorial text-3xl md:text-4xl text-text-primary mb-1">
-                <AnimatedCounter
-                  value={stat.value}
-                  suffix={stat.suffix}
-                  decimals={stat.decimals ?? 0}
-                />
+                <AnimatedCounter value={stat.value} suffix={stat.suffix} />
               </div>
               <div className="text-sm text-text-muted">{stat.label}</div>
             </div>

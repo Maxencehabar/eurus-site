@@ -35,10 +35,10 @@ export const assets: Record<string, AssetDefinition> = {
     height: 1000,
     briefing: "Même setup que Maxence (cohérence cadrage / lumière obligatoire)",
   },
-  "team-tom-portrait": {
-    id: "team-tom-portrait",
+  "team-leo-portrait": {
+    id: "team-leo-portrait",
     status: "pending",
-    alt: "Tom, développeur Eurus",
+    alt: "Léo, développeur Eurus",
     width: 800,
     height: 1000,
     briefing: "Même setup que Maxence (cohérence cadrage / lumière obligatoire)",

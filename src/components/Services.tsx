@@ -15,19 +15,32 @@ interface Service {
 const services: Service[] = [
   {
     number: "01",
-    title: "Applications mobiles",
+    title: "Automatisation & agents IA",
     description:
-      "iOS et Android avec une seule base de code. Flutter et React Native pour un développement rapide et des performances natives.",
-    details: ["Flutter", "React Native", "iOS", "Android"],
+      "Relances de factures, traitement de documents, tâches répétitives : des agents IA branchés sur vos outils qui font le travail à votre place.",
+    details: ["Agents IA", "Recouvrement", "Back-office", "Claude API"],
+    href: "/automatisation",
     icon: (
       <svg className="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5} aria-hidden="true">
-        <rect x="7" y="2" width="10" height="20" rx="2" />
-        <line x1="11" y1="18" x2="13" y2="18" />
+        <path d="M13 2L3 14h8l-1 8 11-14h-8l0-6z" />
       </svg>
     ),
   },
   {
     number: "02",
+    title: "Outils métier & dashboards",
+    description:
+      "Apps terrain, portails B2B, gestion interne : les outils sur mesure qui remplacent Excel, le papier et les ressaisies.",
+    details: ["Dashboards", "Apps terrain", "Portails B2B", "Intégration ERP"],
+    href: "/industrie",
+    icon: (
+      <svg className="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5} aria-hidden="true">
+        <path d="M2 20h20M4 20V8l4-2v14M12 20V4l4-2v18M20 20V12l-4-2" />
+      </svg>
+    ),
+  },
+  {
+    number: "03",
     title: "Applications web",
     description:
       "Des interfaces modernes et réactives. SPA, SSR, ou sites vitrines complexes avec les meilleurs frameworks du marché.",
@@ -40,20 +53,20 @@ const services: Service[] = [
     ),
   },
   {
-    number: "03",
-    title: "Backend & API",
+    number: "04",
+    title: "Applications mobiles",
     description:
-      "Architectures robustes qui tiennent la charge. API REST ou GraphQL, bases de données optimisées, intégrations tierces.",
-    details: ["Node.js", "Java Spring", "PostgreSQL", "Firebase"],
+      "iOS et Android avec une seule base de code. Flutter et React Native pour un développement rapide et des performances natives.",
+    details: ["Flutter", "React Native", "iOS", "Android"],
     icon: (
       <svg className="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5} aria-hidden="true">
-        <ellipse cx="12" cy="5" rx="9" ry="3" />
-        <path d="M3 5v6c0 1.66 4.03 3 9 3s9-1.34 9-3V5M3 11v6c0 1.66 4.03 3 9 3s9-1.34 9-3v-6" />
+        <rect x="7" y="2" width="10" height="20" rx="2" />
+        <line x1="11" y1="18" x2="13" y2="18" />
       </svg>
     ),
   },
   {
-    number: "04",
+    number: "05",
     title: "Conseil & Audit",
     description:
       "Besoin d'un regard externe ? Audit de code, choix d'architecture, accompagnement technique pour vos équipes.",
@@ -62,19 +75,6 @@ const services: Service[] = [
       <svg className="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5} aria-hidden="true">
         <circle cx="11" cy="11" r="8" />
         <path d="M21 21l-4.35-4.35" />
-      </svg>
-    ),
-  },
-  {
-    number: "05",
-    title: "Industrie & IA",
-    description:
-      "Outils sur mesure pour PME industrielles : dashboards de production, apps terrain, assistants IA branchés sur vos outils.",
-    details: ["Dashboards", "Apps terrain", "Assistants IA", "Portails B2B"],
-    href: "/industrie",
-    icon: (
-      <svg className="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5} aria-hidden="true">
-        <path d="M2 20h20M4 20V8l4-2v14M12 20V4l4-2v18M20 20V12l-4-2" />
       </svg>
     ),
   },
