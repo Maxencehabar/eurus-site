@@ -47,15 +47,6 @@ export const assets: Record<string, AssetDefinition> = {
     height: 1000,
     briefing: "Même setup que Maxence (cohérence cadrage / lumière obligatoire)",
   },
-  "team-group": {
-    id: "team-group",
-    status: "ready",
-    src: "/team/group-v5.jpg",
-    alt: "L'équipe Eurus",
-    width: 2400,
-    height: 1029,
-    briefing: "Photo équipe à 3 en format cinémascope (21:9), ambiance studio ou bureau",
-  },
   "office-setup": {
     id: "office-setup",
     status: "ready",

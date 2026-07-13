@@ -1,7 +1,6 @@
 "use client";
 
-import { motion, useScroll, useTransform, useReducedMotion } from "motion/react";
-import { useRef } from "react";
+import { motion } from "motion/react";
 import { Asset } from "@/components/ui/Asset";
 import { SocialIcon } from "@/components/ui/SocialIcon";
 import { team } from "@/data/team";
@@ -9,21 +8,8 @@ import { getAsset } from "@/data/assets";
 import { fadeUp, staggerContainer, VIEWPORT_ONCE } from "@/lib/animations/motion-presets";
 
 export default function Team() {
-  const sectionRef = useRef<HTMLElement>(null);
-  const reduceMotion = useReducedMotion();
-  const { scrollYProgress } = useScroll({
-    target: sectionRef,
-    offset: ["start end", "end start"],
-  });
-  const groupY = useTransform(
-    scrollYProgress,
-    [0, 1],
-    reduceMotion ? ["0%", "0%"] : ["-8%", "8%"],
-  );
-
   return (
     <section
-      ref={sectionRef}
       id="equipe"
       className="py-24 md:py-32 bg-bg-primary"
     >
@@ -42,19 +28,6 @@ export default function Team() {
             Trois développeurs, <em className="not-italic text-accent">une seule</em> exigence
           </h2>
         </motion.div>
-
-        <div className="relative mb-16 overflow-hidden rounded-2xl border border-border aspect-[21/9]">
-          <motion.div
-            style={{ y: groupY }}
-            className="absolute inset-x-0 -top-[10%] -bottom-[10%]"
-          >
-            <Asset
-              asset={getAsset("team-group")}
-              className="absolute inset-0 w-full h-full object-cover"
-              sizes="(max-width: 1400px) 100vw, 1400px"
-            />
-          </motion.div>
-        </div>
 
         <motion.div
           initial="hidden"
