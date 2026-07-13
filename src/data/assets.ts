@@ -50,7 +50,7 @@ export const assets: Record<string, AssetDefinition> = {
   "team-group": {
     id: "team-group",
     status: "ready",
-    src: "/team/group.jpg",
+    src: "/team/group-v3.jpg",
     alt: "L'équipe Eurus",
     width: 2400,
     height: 1029,
