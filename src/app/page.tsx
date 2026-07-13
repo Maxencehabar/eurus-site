@@ -2,8 +2,9 @@ import Hero from "@/components/Hero";
 import Services from "@/components/Services";
 import Projects from "@/components/Projects";
 import Testimonials from "@/components/Testimonials";
-import TechStack from "@/components/TechStack";
+import TechStackLogos from "@/components/TechStackLogos";
 import About from "@/components/About";
+import Team from "@/components/Team";
 import ProcessSteps from "@/components/ProcessSteps";
 import Pricing from "@/components/Pricing";
 import ContactSection from "@/components/ContactSection";
@@ -15,8 +16,9 @@ export default function Home() {
       <Services />
       <Projects />
       <Testimonials />
-      <TechStack />
+      <TechStackLogos />
       <About />
+      <Team />
       <ProcessSteps />
       <Pricing />
       <ContactSection />

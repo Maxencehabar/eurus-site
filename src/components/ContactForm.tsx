@@ -182,6 +182,7 @@ export default function ContactForm() {
               <option value="" disabled>
                 S&eacute;lectionnez...
               </option>
+              <option value="automatisation">Automatisation / agent IA</option>
               <option value="app-mobile">Application mobile</option>
               <option value="app-web">Application web</option>
               <option value="site-vitrine">Site vitrine</option>

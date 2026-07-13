@@ -1,46 +1,38 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
-import { useEffect, useRef, useState } from "react";
+import { motion, AnimatePresence } from "motion/react";
+import { Asset } from "@/components/ui/Asset";
+import { getAsset } from "@/data/assets";
 import { getProjectSummaries } from "@/data/projects";
+import { fadeUp, VIEWPORT_ONCE } from "@/lib/animations/motion-presets";
+
+const categories = [
+  { id: "all", label: "Tous" },
+  { id: "mobile", label: "Mobile" },
+  { id: "web", label: "Web" },
+  { id: "industrie", label: "Industrie / IA" },
+] as const;
+
+type CategoryId = (typeof categories)[number]["id"];
 
 const projects = getProjectSummaries();
 
-const cardColors = [
-  "from-orange-500/10 to-amber-500/10",
-  "from-blue-500/10 to-indigo-500/10",
-  "from-emerald-500/10 to-teal-500/10",
-];
-
 export default function Projects() {
-  const [visibleItems, setVisibleItems] = useState<Set<number>>(new Set());
-  const refs = useRef<(HTMLDivElement | null)[]>([]);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          const index = refs.current.indexOf(entry.target as HTMLDivElement);
-          if (entry.isIntersecting && index !== -1) {
-            setVisibleItems((prev) => new Set([...prev, index]));
-          }
-        });
-      },
-      { threshold: 0.15 }
-    );
-
-    refs.current.forEach((ref) => {
-      if (ref) observer.observe(ref);
-    });
-
-    return () => observer.disconnect();
-  }, []);
+  const [filter, setFilter] = useState<CategoryId>("all");
+  const filtered = filter === "all" ? projects : projects.filter((p) => p.category === filter);
 
   return (
     <section id="projets" className="py-24 md:py-32">
       <div className="mx-auto max-w-[1400px] px-6 md:px-12">
-        {/* Section header */}
-        <div className="flex flex-col md:flex-row md:items-end md:justify-between mb-16 md:mb-20 gap-6">
+        <motion.div
+          initial="hidden"
+          whileInView="visible"
+          viewport={VIEWPORT_ONCE}
+          variants={fadeUp}
+          className="flex flex-col md:flex-row md:items-end md:justify-between mb-12 gap-6"
+        >
           <div>
             <span className="text-accent text-sm font-medium tracking-wide uppercase mb-4 block">
               Portfolio
@@ -52,75 +44,112 @@ export default function Projects() {
           <p className="text-text-secondary max-w-md">
             Des projets concrets, livrés en production, pour des clients qui nous font confiance.
           </p>
+        </motion.div>
+
+        <div role="tablist" aria-label="Filtrer les projets par catégorie" className="flex flex-wrap gap-2 mb-12">
+          {categories.map((cat) => {
+            const active = filter === cat.id;
+            return (
+              <button
+                key={cat.id}
+                type="button"
+                role="tab"
+                aria-selected={active}
+                onClick={() => setFilter(cat.id)}
+                className={`relative px-5 py-2 rounded-full text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent ${
+                  active ? "text-white" : "text-text-secondary hover:text-text-primary"
+                }`}
+              >
+                {active && (
+                  <motion.span
+                    layoutId="category-pill"
+                    className="absolute inset-0 bg-bg-dark rounded-full"
+                    transition={{ type: "spring", stiffness: 400, damping: 30 }}
+                  />
+                )}
+                <span className="relative z-10">{cat.label}</span>
+              </button>
+            );
+          })}
         </div>
 
-        {/* Projects list */}
-        <div className="space-y-6">
-          {projects.map((project, index) => (
-            <Link
-              key={project.slug}
-              href={`/projets/${project.slug}`}
-            >
-              <div
-                ref={(el) => { refs.current[index] = el; }}
-                className={`group relative overflow-hidden rounded-2xl border border-border bg-bg-card transition-all duration-700 hover:border-accent/30 hover:shadow-xl hover:shadow-black/5 ${
-                  visibleItems.has(index)
-                    ? "opacity-100 translate-y-0"
-                    : "opacity-0 translate-y-8"
-                }`}
-                style={{ transitionDelay: `${index * 150}ms` }}
-              >
-                {/* Background gradient */}
-                <div
-                  className={`absolute inset-0 bg-gradient-to-br ${cardColors[index % cardColors.length]} opacity-0 group-hover:opacity-100 transition-opacity duration-500`}
-                />
-
-                <div className="relative p-8 md:p-12 flex flex-col md:flex-row md:items-center gap-6 md:gap-12">
-                  {/* Project info */}
-                  <div className="flex-1">
-                    <span className="text-sm text-accent font-medium mb-2 block">
-                      {project.subtitle}
-                    </span>
-                    <h3 className="heading-editorial text-2xl md:text-3xl text-text-primary mb-3">
-                      {project.title}
-                    </h3>
-                    <p className="text-text-secondary leading-relaxed max-w-lg">
-                      {project.description}
-                    </p>
-                  </div>
-
-                  {/* Technologies */}
-                  <div className="flex flex-wrap gap-2 md:w-64">
-                    {project.tags.map((tag) => (
-                      <span
-                        key={tag}
-                        className="text-xs px-3 py-1.5 rounded-full bg-bg-secondary text-text-muted border border-border"
+        <div className="space-y-12 md:space-y-16">
+          <AnimatePresence mode="popLayout">
+            {filtered.map((project, index) => {
+              const reversed = index % 2 === 1;
+              return (
+                <motion.div
+                  key={project.slug}
+                  layout
+                  variants={fadeUp}
+                  initial="hidden"
+                  whileInView="visible"
+                  viewport={VIEWPORT_ONCE}
+                  exit={{ opacity: 0, y: -20 }}
+                >
+                  <Link
+                    href={`/projets/${project.slug}`}
+                    className={`group grid md:grid-cols-2 gap-8 md:gap-16 items-center rounded-2xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent ${
+                      reversed ? "md:[&>*:first-child]:order-2" : ""
+                    }`}
+                  >
+                    <div className="relative overflow-hidden rounded-2xl border border-border bg-bg-secondary transition-all duration-500 group-hover:border-accent/40 group-hover:shadow-2xl group-hover:shadow-black/10">
+                      <motion.div
+                        whileHover={{ scale: 1.03, rotate: reversed ? -0.5 : 0.5 }}
+                        transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+                        className="relative"
                       >
-                        {tag}
-                      </span>
-                    ))}
-                  </div>
+                        <Asset
+                          asset={getAsset(project.heroAssetId)}
+                          className="w-full h-auto object-cover"
+                          sizes="(max-width: 768px) 100vw, 50vw"
+                          priority={index === 0}
+                        />
+                      </motion.div>
+                    </div>
 
-                  {/* Arrow */}
-                  <div className="hidden md:flex items-center justify-center w-12 h-12 rounded-full border border-border group-hover:border-accent group-hover:bg-accent transition-all">
-                    <svg
-                      className="w-5 h-5 text-text-muted group-hover:text-white transition-colors"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={1.5}
-                        d="M7 17L17 7M17 7H7M17 7V17"
-                      />
-                    </svg>
-                  </div>
-                </div>
-              </div>
-            </Link>
-          ))}
+                    <div>
+                      <span className="text-xs px-3 py-1 rounded-full bg-accent/10 text-accent font-medium inline-block mb-4">
+                        {project.subtitle}
+                      </span>
+                      <h3 className="heading-editorial text-3xl md:text-4xl text-text-primary mb-4 group-hover:text-accent transition-colors">
+                        {project.title}
+                      </h3>
+                      <p className="text-text-secondary leading-relaxed mb-6">
+                        {project.description}
+                      </p>
+                      <div className="flex flex-wrap gap-2 mb-6">
+                        {project.tags.map((tag) => (
+                          <span
+                            key={tag}
+                            className="text-xs px-3 py-1.5 rounded-full bg-bg-secondary text-text-muted border border-border"
+                          >
+                            {tag}
+                          </span>
+                        ))}
+                      </div>
+                      {project.stat && (
+                        <p className="heading-editorial text-2xl text-accent mb-6">{project.stat}</p>
+                      )}
+                      <span className="inline-flex items-center gap-2 text-text-primary font-medium group-hover:gap-3 transition-all">
+                        Voir le cas complet
+                        <svg
+                          className="w-4 h-4"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                          strokeWidth={2}
+                          aria-hidden="true"
+                        >
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                        </svg>
+                      </span>
+                    </div>
+                  </Link>
+                </motion.div>
+              );
+            })}
+          </AnimatePresence>
         </div>
       </div>
     </section>

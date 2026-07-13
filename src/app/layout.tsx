@@ -7,6 +7,8 @@ import FloatingCTA from "@/components/FloatingCTA";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { SITE_NAME, SITE_URL, SITE_DESCRIPTION, CONTACT_EMAIL, FOUNDING_YEAR } from "@/lib/constants";
+import { SmoothScrollProvider } from "@/components/providers/SmoothScrollProvider";
+import { PageTransition } from "@/components/providers/PageTransition";
 
 const instrumentSerif = Instrument_Serif({
   subsets: ["latin"],
@@ -23,12 +25,12 @@ const dmSans = DM_Sans({
 });
 
 export const metadata: Metadata = {
-  title: `${SITE_NAME} — Agence de développement mobile & web`,
+  title: `${SITE_NAME} — Automatisation & outils sur mesure pour les pros`,
   description: SITE_DESCRIPTION,
   metadataBase: new URL(SITE_URL),
   alternates: { canonical: "/" },
   openGraph: {
-    title: `${SITE_NAME} — Agence de développement mobile & web`,
+    title: `${SITE_NAME} — Automatisation & outils sur mesure pour les pros`,
     description: SITE_DESCRIPTION,
     url: SITE_URL,
     siteName: SITE_NAME,
@@ -38,7 +40,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: `${SITE_NAME} — Agence de développement mobile & web`,
+    title: `${SITE_NAME} — Automatisation & outils sur mesure pour les pros`,
     description: SITE_DESCRIPTION,
   },
   icons: {
@@ -156,7 +158,11 @@ export default function RootLayout({
           Aller au contenu principal
         </a>
         <Navbar />
-        <main id="main">{children}</main>
+        <SmoothScrollProvider>
+          <main id="main">
+            <PageTransition>{children}</PageTransition>
+          </main>
+        </SmoothScrollProvider>
         <Footer />
         <FloatingCTA />
         <Analytics />
